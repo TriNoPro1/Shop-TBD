@@ -460,6 +460,468 @@
                     </div>
                     
                     <div id="auth-status-area">
+                        <div class="icon-text" onclick="showAuth<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop TBD - Cổng Dịch Vụ Game</title>
+    <link rel="icon" href="https://img.icons8.com/fluent/48/000000/shop.png" type="image/x-icon">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #2c3e50;
+        }
+        .header-main .logo-text {
+            font-size: 1.8em;
+            font-weight: 900;
+            color: #ff5722;
+            letter-spacing: 1px;
+        }
+        .top-bar {
+            background-color: #f8f8f8;
+            padding: 8px 0;
+            font-size: 0.9em;
+            border-bottom: 1px solid #eee;
+        }
+        .top-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .top-bar-left input[type="text"] {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        .top-bar-left button {
+            background-color: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+        }
+        .top-bar-right .icon-text {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+            color: #555;
+        }
+        .top-bar-right .icon-text img {
+            width: 18px;
+            height: 18px;
+            margin-right: 5px;
+        }
+        .top-bar-right .top-up-btn {
+            background-color: #ff0077;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .top-bar-right .top-up-btn img {
+            width: 18px;
+            height: 18px;
+            margin-right: 5px;
+        }
+        .announcement-bar {
+            background-color: #ffeb3b;
+            color: #333;
+            padding: 8px 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            padding: 20px 0;
+            align-items: start;
+        }
+        .main-left {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .main-banner {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background-color: #fff;
+        }
+        .main-banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .small-banners {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .small-banner-item {
+            width: 100%;
+            height: 150px;
+            background-color: #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .small-banner-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .main-right {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .top-up-form h3 {
+            margin-top: 0;
+            color: #ff0077;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .top-up-form .form-group {
+            margin-bottom: 15px;
+        }
+        .top-up-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .top-up-form input[type="text"],
+        .top-up-form select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        .top-up-form button {
+            width: 100%;
+            background-color: #ff0077;
+            color: white;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .top-up-form button:hover {
+            background-color: #cc005f;
+        }
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        .tab-buttons button {
+            flex: 1;
+            padding: 10px;
+            background-color: #eee;
+            border-bottom: 2px solid #ccc;
+            color: #555;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .tab-buttons button.active {
+            background-color: #ff0077;
+            color: white;
+            border-color: #ff0077;
+        }
+        .category-icons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+        }
+        .category-item {
+            text-align: center;
+            color: #555;
+            font-size: 0.9em;
+        }
+        .category-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .products-section {
+            background-color: #fff;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .products-header h2 {
+            margin: 0;
+            color: #ff0077;
+            font-size: 1.5em;
+        }
+        .products-header .view-all-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-card .tag {
+            background-color: #ff0077;
+            color: white;
+            font-size: 0.75em;
+            padding: 3px 8px;
+            border-radius: 0 0 5px 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+        .product-card .thumbnail {
+            position: relative;
+            width: 100%;
+            height: 120px;
+            overflow: hidden;
+            border-bottom: 1px solid #eee;
+        }
+        .product-card .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .product-card .info {
+            padding: 10px;
+            text-align: left;
+        }
+        .product-card .info h4 {
+            margin: 0 0 5px 0;
+            font-size: 1em;
+            color: #333;
+            height: 2.4em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .product-card .info .price {
+            font-size: 0.9em;
+            color: #888;
+            margin-bottom: 5px;
+        }
+        .product-card .info .price strong {
+            color: #ff0077;
+        }
+        .product-card .info .sold-count {
+            font-size: 0.8em;
+            color: #666;
+        }
+        .footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9em;
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .top-bar .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .top-bar-left, .top-bar-right {
+                margin-bottom: 10px;
+            }
+            .top-bar-right {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .top-bar-right .icon-text, .top-bar-right .top-up-btn {
+                margin-left: 0;
+                margin-right: 10px;
+                margin-bottom: 5px;
+            }
+            .small-banners {
+                grid-template-columns: 1fr;
+            }
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+            text-align: center;
+        }
+        .modal-content h2 {
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        .modal-input {
+            width: calc(100% - 20px);
+            padding: 15px 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+        .modal-login-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #ff0000;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        .modal-register-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: white;
+            color: #ff0000;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: 1px solid #ff0000;
+            border-radius: 6px;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #999;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-step {
+            display: none;
+        }
+        .modal-step.active {
+            display: block;
+        }
+        .admin-btn {
+            background-color: #4CAF50; 
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-main">
+            <div class="container">
+                <span class="logo-text">Shop TBD</span>
+            </div>
+        </div>
+        <div class="top-bar">
+            <div class="container">
+                <div class="top-bar-left">
+                    <input type="text" placeholder="Tìm kiếm dịch vụ...">
+                    <button>Tìm kiếm</button>
+                </div>
+                <div class="top-bar-right">
+                    <button class="top-up-btn" onclick="showAlert('Chức năng Nạp Tiền')">
+                        <img src="https://img.icons8.com/plasticine/100/000000/money--v2.png" alt="Nạp Tiền Icon"> Nạp tiền
+                    </button>
+                    <div class="icon-text" onclick="showAlert('Thông báo')">
+                        <img src="https://img.icons8.com/ios-filled/50/000000/bell.png" alt="Notification Icon">
+                    </div>
+                    
+                    <div id="auth-status-area">
                         <div class="icon-text" onclick="showAuthPrompt()">
                             <img src="https://img.icons8.com/ios-filled/50/000000/user--v1.png" alt="User Icon"> Đăng nhập
                         </div>
@@ -1020,3 +1482,4 @@
     </script>
 </body>
 </html>
+
