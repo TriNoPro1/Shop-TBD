@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vòng Quay Robux - Shop TBD</title>
+    <link rel="icon" href="https://img.icons8.com/fluent/48/000000/shop.png" type="image/x-icon">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+        .container {
+            max-width: 600px;
+            text-align: center;
+            background-color: #34495e;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        .header-main {
+            width: 100%;
+            background-color: #34495e;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+        .header-main a {
+            color: #ff5722;
+            font-size: 1.8em;
+            font-weight: 900;
+            text-decoration: none;
+        }
+        #balanceDisplay {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            color: #00ffaa;
+            display: block;
+        }
+        #loginPrompt {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            color: #f39c12;
+        }
+        /* VÒNG QUAY */
+        .wheel-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 20px auto;
+        }
+        #wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #2980b9;
+            position: relative;
+            transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1);
+            border: 8px solid #f1c40f;
+        }
+        .segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: 100% 100%;
+            clip-path: polygon(0 0, 50% 100%, 0 100%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: white;
+            border-left: 2px solid #2c3e50;
+        }
+        .segment-content {
+            transform: rotate(45deg);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .segment-content img {
+            width: 25px;
+            height: 25px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        #indicator {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 25px 15px 0 15px;
+            border-color: #e74c3c transparent transparent transparent;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        /* Colors for 8 segments (45 degrees each) */
+        .segment:nth-child(1) { background: #3498db; transform: rotate(0deg); }
+        .segment:nth-child(2) { background: #2ecc71; transform: rotate(45deg); }
+        .segment:nth-child(3) { background: #f1c40f; transform: rotate(90deg); }
+        .segment:nth-child(4) { background: #e67e22; transform: rotate(135deg); }
+        .segment:nth-child(5) { background: #9b59b6; transform: rotate(180deg); }
+        .segment:nth-child(6) { background: #3498db; transform: rotate(225deg); }
+        .segment:nth-child(7) { background: #c0392b; transform: rotate(270deg); }
+        .segment:nth-child(8) { background: #2ecc71; transform: rotate(315deg); }
+
+        #spinButton {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            font-weight: bold;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.2s;
+        }
+        #spinButton:hover:not(:disabled) {
+            background-color: #c0392b;
+        }
+        #spinButton:disabled {
+            background-color: #7f8c8d;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <header class="header-main">
+        <a href="index.html">Shop TBD</a>
+    </header>
+
+    <div class="container">
+        <h1>VÒNG QUAY ROBUX CHÍNH HÃNG</h1>
+        <p>Phí mỗi lượt quay: 15,000 VND | Cơ hội trúng 500 Robux là 2%!</p>
+        
+        <div id="loginPrompt">Vui lòng đăng nhập để bắt đầu quay.</div>
+        <div id="balanceDisplay" style="display: none;">Số dư: <strong>0 VND</strong></div>
+
+        <div class="wheel-container">
+            <div id="indicator"></div>
+            <div id="wheel">
+                <div class="segment" data-value="10"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 10 R</div></div>
+                <div class="segment" data-value="50"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 50 R</div></div>
+                <div class="segment" data-value="100"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 100 R</div></div>
+                <div class="segment" data-value="150"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 150 R</div></div>
+                <div class="segment" data-value="200"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 200 R</div></div>
+                <div class="segment" data-value="300"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 300 R</div></div>
+                <div class="segment" data-value="400"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 400 R</div></div>
+                <div class="segment" data-value="500"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 500 R</div></div>
+            </div>
+        </div>
+
+        <button id="spinButton" disabled>QUAY (15,000 VND)</button>
+    </div>
+
+    <script>
+        // --- CHUẨN BỊ FIREBASE VÀ LOGIC QUAY THƯỞNG ---
+
+        // 1. Cấu hình Firebase (Lấy từ index.html)
+        const firebaseConfig = {
+          apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
+          authDomain: "shop-tbd.firebaseapp.com",
+          projectId: "shop-tbd",
+          storageBucket: "shop-tbd.firebaseapp.com",
+          messagingSenderId: "777222985748",
+          appId: "1:777222985748:web:94a9deF4894a3dd7b6f01",
+          measurementId: "G-ZR4F57QMJX8"
+        };
+        
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
+        const db = firebaseApp.firestore(); 
+
+        // 2. Hàm đọc/ghi dữ liệu User (Đã đồng bộ)
+        async function fetchUserData(username) {
+            const doc = await db.collection("users").doc(username).get();
+            if (doc.exists) {
+                return doc.data();
+            }
+            return null;
+        }
+
+        async function saveUserData(username, userData) {
+            await db.collection("users").doc(username).set(userData);
+            return true;
+        }
+        
+        // --- LOGIC VÒNG QUAY ---
+
+        const spinCost = 15000;
+        const rewardWeights = [
+            { value: 500, weight: 2 }, // 2%
+            { value: 400, weight: 3 }, // 3%
+            { value: 300, weight: 5 }, // 5%
+            { value: 200, weight: 10 }, // 10%
+            { value: 150, weight: 15 }, // 15%
+            { value: 100, weight: 20 }, // 20%
+            { value: 50, weight: 25 }, // 25%
+            { value: 10, value: 10, weight: 20 }  // 20%
+            // Total weight: 100
+        ];
+        
+        const wheel = document.getElementById('wheel');
+        const spinButton = document.getElementById('spinButton');
+        const balanceDisplay = document.getElementById('balanceDisplay');
+        const loginPrompt = document.getElementById('loginPrompt');
+        
+        let currentUserData = null;
+        
+        // Hàm tính toán phần thưởng dựa trên tỉ lệ (Weighted Random)
+        function getWeightedReward() {
+            let totalWeight = rewardWeights.reduce((sum, item) => sum + item.weight, 0);
+            let random = Math.random() * totalWeight;
+            let current = 0;
+            
+            for (const reward of rewardWeights) {
+                current += reward.weight;
+                if (random < current) {
+                    return reward.value;
+                }
+            }
+            return 10; // Fallback to lowest reward
+        }
+
+        // Hàm xác định góc quay để nhắm trúng phần thưởng
+        function calculateStopAngle(winningValue) {
+            const rewards = [500, 400, 300, 200, 150, 100, 50, 10]; // Sắp xếp theo thứ tự hiển thị trên bánh xe
+            const segmentAngle = 360 / rewards.length; // 45 degrees per segment
+
+            // Vòng quay CSS bắt đầu từ 0 độ (segment 500), sau đó 45 độ (segment 400), v.v.
+            let winningIndex = rewards.indexOf(winningValue);
+
+            // Góc cần quay thêm (Base angle for the segment center)
+            let rotationOffset = (winningIndex * segmentAngle) + (segmentAngle / 2);
+            
+            // Quay thêm 5-10 vòng (1800 - 3600 độ)
+            const extraSpins = 360 * 6; // 6 vòng quay
+            
+            // Kết quả cuối cùng (đảo ngược góc vì wheel quay theo chiều ngược kim đồng hồ trong CSS)
+            let stopAngle = extraSpins + (360 - rotationOffset);
+
+            // Thêm một chút ngẫu nhiên bên trong segment (ví dụ: +/- 10 độ)
+            const randomJitter = Math.floor(Math.random() * 20) - 10; 
+
+            return stopAngle + randomJitter;
+        }
+        
+        // --- HÀM QUAY CHÍNH ---
+        spinButton.addEventListener('click', async () => {
+            if (!currentUserData) {
+                alert("Vui lòng đăng nhập trước khi quay.");
+                return;
+            }
+            
+            if (currentUserData.balance < spinCost) {
+                alert("Lỗi: Số dư tài khoản không đủ 15,000 VND!");
+                return;
+            }
+
+            // Tắt nút để ngăn double-click
+            spinButton.disabled = true;
+
+            // 1. Tính toán kết quả trúng thưởng (Robux)
+            const winningRobux = getWeightedReward();
+            const angle = calculateStopAngle(winningRobux);
+
+            // 2. Trừ tiền khỏi số dư trong Database
+            currentUserData.balance -= spinCost;
+            await saveUserData(currentUserData.username, currentUserData);
+            
+            // 3. Cập nhật giao diện số dư
+            updateBalanceDisplay(currentUserData);
+
+            // 4. Bắt đầu Animation quay
+            wheel.style.transform = `rotate(${angle}deg)`;
+
+            // 5. Kết thúc quay và thông báo kết quả
+            setTimeout(async () => {
+                alert(`🎉 Chúc mừng! Bạn đã trúng ${winningRobux} Robux!\nSố dư đã bị trừ 15,000 VND.`);
+                
+                // --- THÊM ROBUX (LOGIC GIẢ LẬP) ---
+                // Đây là nơi code thực tế sẽ kích hoạt giao Robux.
+                // Chúng ta sẽ không thay đổi số dư VND vì đây là Robux.
+
+                spinButton.disabled = false;
+            }, 5500); // 5.5 giây = thời gian animation + 0.5s buffer
+        });
+
+        // --- CÁC HÀM HỖ TRỢ TRẠNG THÁI ---
+
+        function updateBalanceDisplay(user) {
+            balanceDisplay.innerHTML = `Số dư: <strong>${user.balance.toLocaleString('vi-VN')} VND</strong>`;
+            balanceDisplay.style.display = 'block';
+            loginPrompt.style.display = 'none';
+        }
+
+        async function checkLoginStatus() {
+            const username = localStorage.getItem('currentUser');
+            if (username) {
+                const user = await fetchUserData(username);
+                if (user) {
+                    currentUserData = user;
+                    updateBalanceDisplay(user);
+                    spinButton.disabled = false;
+                    return;
+                }
+            }
+            
+            // Nếu chưa đăng nhập hoặc lỗi
+            currentUserData = null;
+            balanceDisplay.style.display = 'none';
+            loginPrompt.style.display = 'block';
+            spinButton.disabled = true;
+        }
+
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+</html>
