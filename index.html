@@ -853,7 +853,10 @@
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
             if (doc.exists) {
-                return doc.data();
+                const data = doc.data();
+                // Đảm bảo robuxBalance được khởi tạo để tránh lỗi hiển thị
+                data.robuxBalance = data.robuxBalance || 0; 
+                return data;
             }
             return null;
         }
@@ -873,7 +876,7 @@
         }
 
         async function saveCardData(cardCode, cardData) {
-            await db.collection("users").doc(cardCode).set(cardData);
+            await db.collection("card_records").doc(cardCode).set(cardData);
             return true;
         }
         
@@ -961,7 +964,15 @@
                 return;
             }
 
-            const newUser = { username, password, balance: 50000, lastClaim: 0, canClaimReward: false };
+            // Cập nhật: Khởi tạo thêm Robux Balance
+            const newUser = { 
+                username, 
+                password, 
+                balance: 50000, 
+                robuxBalance: 0, // <-- THÊM ROBux BALANCE
+                lastClaim: 0, 
+                canClaimReward: false 
+            };
             await saveUserData(username, newUser);
             
             alert("Đăng ký thành công! Bạn có 50,000 VND. Vui lòng đăng nhập.");
@@ -1098,7 +1109,11 @@
                             <span class="dropdown-arrow">&#9660;</span>
                         </button>
                         <div class="dropdown-content" id="profileDropdown">
-                            <div class="dropdown-header">Số dư: ${user.balance.toLocaleString('vi-VN')} VND</div>
+                            <div class="dropdown-header">
+                                Số dư: ${user.balance.toLocaleString('vi-VN')} VND 
+                                <br>
+                                Robux: ${user.robuxBalance.toLocaleString('vi-VN')} 💎
+                            </div>
                             <a href="taikhoan.html" class="red-text">Quản lý tài khoản</a>
                             <a href="taikhoan.html#lichsunap">Lịch sử nạp tiền</a>
                             <a href="taikhoan.html#lichsumua">Lịch sử mua nick</a>
