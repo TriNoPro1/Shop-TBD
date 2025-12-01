@@ -8,52 +8,79 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <style>
+        /* BASE STYLES */
         body {
             font-family: Arial, sans-serif;
-            background-color: #2c3e50;
-            color: #ecf0f1;
+            background-color: #f0f2f5; 
+            color: #333;
             margin: 0;
+            padding: 0;
+        }
+        .app-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .top-bar-nav {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            padding-top: 50px;
-        }
-        .container {
-            max-width: 600px;
-            text-align: center;
-            background-color: #34495e;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-        .header-main {
-            width: 100%;
-            background-color: #34495e;
-            padding: 10px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
             margin-bottom: 20px;
         }
-        .header-main a {
-            color: #ff5722;
+        .top-bar-nav h1 {
+            color: #e74c3c;
             font-size: 1.8em;
-            font-weight: 900;
-            text-decoration: none;
+            margin: 0;
+        }
+        .top-bar-nav button {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.2s;
+        }
+        .top-bar-nav button:hover {
+            background-color: #bdc3c7;
+        }
+
+        /* STATS AND BALANCE */
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-radius: 8px;
+        }
+        #playersOnline {
+            font-size: 1.1em;
+            color: #27ae60;
+            font-weight: bold;
         }
         #balanceDisplay {
-            margin-bottom: 20px;
-            font-size: 1.2em;
-            color: #00ffaa;
-            display: block;
+            font-size: 1.1em;
+            color: #e74c3c;
+            font-weight: bold;
         }
         #loginPrompt {
-            margin-bottom: 20px;
-            font-size: 1.2em;
             color: #f39c12;
+            font-size: 1em;
         }
-        /* VÒNG QUAY */
+
+        /* WHEEL UI */
         .wheel-container {
             position: relative;
-            width: 400px;
-            height: 400px;
+            width: 450px;
+            height: 450px;
             margin: 20px auto;
         }
         #wheel {
@@ -64,7 +91,8 @@
             background: #2980b9;
             position: relative;
             transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1);
-            border: 8px solid #f1c40f;
+            border: 10px solid #f1c40f;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
         .segment {
             position: absolute;
@@ -76,7 +104,7 @@
             justify-content: center;
             align-items: flex-end;
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 0.9em;
             color: white;
             border-left: 2px solid #2c3e50;
         }
@@ -84,12 +112,15 @@
             transform: rotate(45deg);
             margin-bottom: 30px;
             text-align: center;
+            line-height: 1.1;
         }
         .segment-content img {
             width: 25px;
             height: 25px;
             vertical-align: middle;
             margin-right: 5px;
+            display: block;
+            margin: 0 auto 3px;
         }
         #indicator {
             width: 0;
@@ -103,33 +134,62 @@
             transform: translateX(-50%);
             z-index: 10;
         }
-        /* Colors for 8 segments (45 degrees each) */
+
+        /* Segment Colors (Adjusted for blue/diamond aesthetic) */
         .segment:nth-child(1) { background: #3498db; transform: rotate(0deg); }
         .segment:nth-child(2) { background: #2ecc71; transform: rotate(45deg); }
-        .segment:nth-child(3) { background: #f1c40f; transform: rotate(90deg); }
-        .segment:nth-child(4) { background: #e67e22; transform: rotate(135deg); }
-        .segment:nth-child(5) { background: #9b59b6; transform: rotate(180deg); }
-        .segment:nth-child(6) { background: #3498db; transform: rotate(225deg); }
-        .segment:nth-child(7) { background: #c0392b; transform: rotate(270deg); }
+        .segment:nth-child(3) { background: #9b59b6; transform: rotate(90deg); }
+        .segment:nth-child(4) { background: #3498db; transform: rotate(135deg); }
+        .segment:nth-child(5) { background: #2ecc71; transform: rotate(180deg); }
+        .segment:nth-child(6) { background: #9b59b6; transform: rotate(225deg); }
+        .segment:nth-child(7) { background: #3498db; transform: rotate(270deg); }
         .segment:nth-child(8) { background: #2ecc71; transform: rotate(315deg); }
 
-        #spinButton {
-            padding: 15px 30px;
-            font-size: 1.5em;
-            font-weight: bold;
-            background-color: #e74c3c;
-            color: white;
-            border-radius: 8px;
-            cursor: pointer;
+
+        /* ACTION BUTTONS & DROPDOWN */
+        .action-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin-top: 20px;
-            transition: background-color 0.2s;
+            gap: 10px;
+        }
+        #costDropdown {
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1em;
+            border: 1px solid #bdc3c7;
+        }
+        .play-button {
+            padding: 15px 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        .play-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .play-button img {
+            width: 20px;
+            margin-right: 5px;
+        }
+        #spinButton {
+            background-color: #e74c3c; /* Quay Ngay - Red */
         }
         #spinButton:hover:not(:disabled) {
             background-color: #c0392b;
         }
-        #spinButton:disabled {
-            background-color: #7f8c8d;
-            cursor: not-allowed;
+        #tryButton {
+            background-color: #f39c12; /* Chơi Thử - Orange */
+        }
+        #tryButton:hover:not(:disabled) {
+            background-color: #e67e22;
         }
     </style>
 </head>
@@ -138,12 +198,20 @@
         <a href="index.html">Shop TBD</a>
     </header>
 
-    <div class="container">
-        <h1>VÒNG QUAY ROBUX CHÍNH HÃNG</h1>
-        <p>Phí mỗi lượt quay: 15,000 VND | Cơ hội trúng 500 Robux là 2%!</p>
-        
-        <div id="loginPrompt">Vui lòng đăng nhập để bắt đầu quay.</div>
-        <div id="balanceDisplay" style="display: none;">Số dư: <strong>0 VND</strong></div>
+    <div class="app-container">
+        <div class="top-bar-nav">
+            <h1>VÒNG QUAY ROBUX</h1>
+            <div>
+                <button onclick="showAlert('Đang hiển thị các quy tắc quay thưởng...')">Thẻ lệ</button>
+                <button onclick="showAlert('Đang hiển thị lịch sử quay...')">Lịch sử chơi</button>
+            </div>
+        </div>
+
+        <div class="status-header">
+            <div id="playersOnline">Đang chơi: 244 🧑‍🤝‍🧑</div>
+            <div id="loginPrompt">Vui lòng đăng nhập để chơi.</div>
+            <div id="balanceDisplay" style="display: none;">Số dư: <strong>0 VND</strong></div>
+        </div>
 
         <div class="wheel-container">
             <div id="indicator"></div>
@@ -159,7 +227,18 @@
             </div>
         </div>
 
-        <button id="spinButton" disabled>QUAY (15,000 VND)</button>
+        <div class="action-row">
+            <select id="costDropdown">
+                <option value="15000">15,000 VND / 1 Lượt Quay</option>
+                <option value="70000">70,000 VND / 5 Lượt Quay</option>
+            </select>
+            <button id="spinButton" class="play-button" disabled>
+                <img src="https://img.icons8.com/color/48/play--v1.png" alt="Play Icon"> Quay Ngay
+            </button>
+            <button id="tryButton" class="play-button" onclick="showAlert('Chức năng này cần kết nối tài khoản.')">
+                <img src="https://img.icons8.com/color/48/retry.png" alt="Retry Icon"> Chơi Thử
+            </button>
+        </div>
     </div>
 
     <script>
@@ -193,9 +272,8 @@
             return true;
         }
         
-        // --- LOGIC VÒNG QUAY ---
+        // --- LOGIC VÒNG QUAY VÀ TÍNH XÁC SUẤT ---
 
-        const spinCost = 15000;
         const rewardWeights = [
             { value: 500, weight: 2 }, // 2%
             { value: 400, weight: 3 }, // 3%
@@ -204,17 +282,21 @@
             { value: 150, weight: 15 }, // 15%
             { value: 100, weight: 20 }, // 20%
             { value: 50, weight: 25 }, // 25%
-            { value: 10, value: 10, weight: 20 }  // 20%
-            // Total weight: 100
+            { value: 10, weight: 20 }  // 20%
         ];
         
         const wheel = document.getElementById('wheel');
         const spinButton = document.getElementById('spinButton');
         const balanceDisplay = document.getElementById('balanceDisplay');
         const loginPrompt = document.getElementById('loginPrompt');
+        const costDropdown = document.getElementById('costDropdown');
         
         let currentUserData = null;
         
+        function showAlert(message) {
+            alert(message);
+        }
+
         // Hàm tính toán phần thưởng dựa trên tỉ lệ (Weighted Random)
         function getWeightedReward() {
             let totalWeight = rewardWeights.reduce((sum, item) => sum + item.weight, 0);
@@ -227,24 +309,23 @@
                     return reward.value;
                 }
             }
-            return 10; // Fallback to lowest reward
+            return 10;
         }
 
         // Hàm xác định góc quay để nhắm trúng phần thưởng
         function calculateStopAngle(winningValue) {
-            const rewards = [500, 400, 300, 200, 150, 100, 50, 10]; // Sắp xếp theo thứ tự hiển thị trên bánh xe
-            const segmentAngle = 360 / rewards.length; // 45 degrees per segment
+            const rewards = [10, 50, 100, 150, 200, 300, 400, 500]; // Thứ tự giá trị theo index CSS
+            // Phải xác định lại index dựa trên thứ tự giá trị trong CSS, KHÔNG phải mảng weights
+            const displayRewards = [500, 400, 300, 200, 150, 100, 50, 10]; // Thứ tự hiển thị trên vòng quay
+            
+            let winningIndex = displayRewards.indexOf(winningValue);
 
-            // Vòng quay CSS bắt đầu từ 0 độ (segment 500), sau đó 45 độ (segment 400), v.v.
-            let winningIndex = rewards.indexOf(winningValue);
-
-            // Góc cần quay thêm (Base angle for the segment center)
+            const segmentAngle = 360 / displayRewards.length;
             let rotationOffset = (winningIndex * segmentAngle) + (segmentAngle / 2);
             
-            // Quay thêm 5-10 vòng (1800 - 3600 độ)
-            const extraSpins = 360 * 6; // 6 vòng quay
+            const extraSpins = 360 * 6; 
             
-            // Kết quả cuối cùng (đảo ngược góc vì wheel quay theo chiều ngược kim đồng hồ trong CSS)
+            // Góc cuối cùng (vì vòng quay CSS quay ngược chiều kim đồng hồ)
             let stopAngle = extraSpins + (360 - rotationOffset);
 
             // Thêm một chút ngẫu nhiên bên trong segment (ví dụ: +/- 10 độ)
@@ -260,12 +341,13 @@
                 return;
             }
             
+            const spinCost = parseInt(costDropdown.value);
+            
             if (currentUserData.balance < spinCost) {
-                alert("Lỗi: Số dư tài khoản không đủ 15,000 VND!");
+                alert(`Lỗi: Số dư tài khoản không đủ ${spinCost.toLocaleString('vi-VN')} VND!`);
                 return;
             }
 
-            // Tắt nút để ngăn double-click
             spinButton.disabled = true;
 
             // 1. Tính toán kết quả trúng thưởng (Robux)
@@ -284,14 +366,9 @@
 
             // 5. Kết thúc quay và thông báo kết quả
             setTimeout(async () => {
-                alert(`🎉 Chúc mừng! Bạn đã trúng ${winningRobux} Robux!\nSố dư đã bị trừ 15,000 VND.`);
-                
-                // --- THÊM ROBUX (LOGIC GIẢ LẬP) ---
-                // Đây là nơi code thực tế sẽ kích hoạt giao Robux.
-                // Chúng ta sẽ không thay đổi số dư VND vì đây là Robux.
-
+                alert(`🎉 Chúc mừng! Bạn đã trúng ${winningRobux} Robux!\nSố dư đã bị trừ ${spinCost.toLocaleString('vi-VN')} VND.`);
                 spinButton.disabled = false;
-            }, 5500); // 5.5 giây = thời gian animation + 0.5s buffer
+            }, 5500); 
         });
 
         // --- CÁC HÀM HỖ TRỢ TRẠNG THÁI ---
@@ -314,7 +391,6 @@
                 }
             }
             
-            // Nếu chưa đăng nhập hoặc lỗi
             currentUserData = null;
             balanceDisplay.style.display = 'none';
             loginPrompt.style.display = 'block';
