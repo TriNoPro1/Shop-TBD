@@ -436,6 +436,45 @@
             font-size: 0.9em;
             margin-right: 10px;
         }
+        /* Style cho Top Nạp */
+        .top-depositors {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .top-depositor-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .top-depositor-item:last-child {
+            border-bottom: none;
+        }
+        .top-depositor-rank {
+            font-size: 1.5em;
+            font-weight: bold;
+            width: 30px;
+            text-align: center;
+            margin-right: 10px;
+            color: #ff0077;
+        }
+        .top-depositor-rank.rank1 { color: #FFD700; } /* Vàng */
+        .top-depositor-rank.rank2 { color: #C0C0C0; } /* Bạc */
+        .top-depositor-rank.rank3 { color: #CD7F32; } /* Đồng */
+
+        .top-depositor-info {
+            flex-grow: 1;
+        }
+        .top-depositor-info .name {
+            font-weight: bold;
+            color: #333;
+        }
+        .top-depositor-info .amount {
+            font-size: 0.9em;
+            color: #888;
+        }
     </style>
 </head>
 <body>
@@ -500,6 +539,30 @@
 
                 <div id="napthe" class="tab-content active">
                     <h3>TOP NẠP HÀNG TUẦN</h3>
+
+                    <ul class="top-depositors">
+                        <li class="top-depositor-item">
+                            <span class="top-depositor-rank rank1">1</span>
+                            <div class="top-depositor-info">
+                                <div class="name">Kana</div>
+                                <div class="amount">Đã nạp: <strong>100,000,000 VND</strong></div>
+                            </div>
+                        </li>
+                        <li class="top-depositor-item">
+                            <span class="top-depositor-rank rank2">2</span>
+                            <div class="top-depositor-info">
+                                <div class="name">Mèo Béo Màu Xanh</div>
+                                <div class="amount">Đã nạp: <strong>36,000,000 VND</strong></div>
+                            </div>
+                        </li>
+                        <li class="top-depositor-item">
+                            <span class="top-depositor-rank rank3">3</span>
+                            <div class="top-depositor-info">
+                                <div class="name">Zasida</div>
+                                <div class="amount">Đã nạp: <strong>16,000,000 VND</strong></div>
+                            </div>
+                        </li>
+                    </ul>
                     <form id="topUpForm">
                         <div class="form-group">
                             <label for="provider">Chọn Nhà Mạng</label>
