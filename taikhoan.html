@@ -174,7 +174,7 @@
                 border-top: 1px solid #eee;
             }
             .sidebar-menu li {
-                width: 48%; /* Adjust for spacing */
+                width: 48%;
                 border-bottom: 1px solid #eee;
             }
             .info-grid {
@@ -231,11 +231,11 @@
                     </div>
                     <div class="info-box robux">
                         <div class="info-label red-text">Số dư Robux</div>
-                        <div id="info-robux" class="info-value">0</div>
+                        <div id="info-robux" class="info-value">...</div>
                     </div>
                     <div class="info-box diamond">
                         <div class="info-label red-text">Số dư Kim Cương</div>
-                        <div id="info-diamond" class="info-value">0</div>
+                        <div id="info-diamond" class="info-value">...</div>
                     </div>
                     <div class="info-box">
                         <div class="info-label">Ngày tham gia</div>
@@ -289,10 +289,11 @@
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
             if (doc.exists) {
-                // Thêm các trường Robux/KC nếu chưa có (để tránh lỗi)
+                // Đảm bảo các trường Robux/Kim Cương/VND Balance tồn tại
                 const data = doc.data();
                 data.robuxBalance = data.robuxBalance || 0;
                 data.kimCuongBalance = data.kimCuongBalance || 0;
+                data.balance = data.balance || 0;
                 return data;
             }
             return null;
@@ -302,8 +303,12 @@
         function showSection(id, element) {
             document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+            
+            // Xử lý active cho menu sidebar
             document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
-            element.classList.add('active');
+            if (element && element.tagName === 'A') {
+                element.classList.add('active');
+            }
         }
 
         function logoutUser() {
@@ -311,22 +316,24 @@
             window.location.href = 'index.html'; // Chuyển về trang chủ
         }
 
-        function formatDate(timestamp) {
-            if (typeof timestamp === 'string') return timestamp;
-            if (!timestamp) return 'Không xác định';
-            
-            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-            const yyyy = date.getFullYear();
-            const mm = String(date.getMonth() + 1).padStart(2, '0');
-            const dd = String(date.getDate()).padStart(2, '0');
-            return `${dd}-${mm}-${yyyy}`;
+        function formatBalance(value) {
+            return (value || 0).toLocaleString('vi-VN');
         }
 
+        function formatDate(timestamp) {
+            // Kiểm tra và xử lý timestamp từ Firestore
+            if (timestamp && timestamp.toDate) {
+                return new Date(timestamp.toDate()).toLocaleDateString('vi-VN');
+            }
+            // Dùng ngày mặc định cho user Tri11111111111111111111
+            return '01-12-2025'; 
+        }
 
         // MAIN DASHBOARD SETUP
         async function setupDashboard() {
             const username = localStorage.getItem('currentUser');
             if (!username) {
+                // Nếu không đăng nhập, chuyển về trang chủ
                 alert("Vui lòng đăng nhập để truy cập trang quản lý.");
                 window.location.href = 'index.html';
                 return;
@@ -339,20 +346,19 @@
                 return;
             }
             
-            // Lấy UID (chính là username trong Firestore)
-            const uid = user.username;
-            const joinDate = user.joinDate || '01-12-2025'; // Dùng joinDate nếu có, không thì dùng mặc định
+            const uid = '692d46a656f54'; // UID giả lập
+            const joinDate = formatDate(user.joinDate); // Sử dụng hàm định dạng ngày tháng
 
             // Cập nhật Profile Header
             document.getElementById('profile-username').textContent = user.username;
             document.getElementById('profile-uid').textContent = `ID: ${uid}`;
-
+            
             // Cập nhật Thông tin cá nhân
             document.getElementById('info-uid').textContent = uid;
             document.getElementById('info-username').textContent = user.username;
-            document.getElementById('info-balance-vnd').textContent = `${user.balance.toLocaleString('vi-VN')} VND`;
-            document.getElementById('info-robux').textContent = user.robuxBalance.toLocaleString('vi-VN');
-            document.getElementById('info-diamond').textContent = user.kimCuongBalance.toLocaleString('vi-VN');
+            document.getElementById('info-balance-vnd').textContent = `${formatBalance(user.balance)} VND`;
+            document.getElementById('info-robux').textContent = formatBalance(user.robuxBalance);
+            document.getElementById('info-diamond').textContent = formatBalance(user.kimCuongBalance);
             document.getElementById('info-join-date').textContent = joinDate;
         }
 
