@@ -569,15 +569,16 @@
             <span>Gamepass Blox Fruit</span>
         </div>
         <div class="category-item" onclick="showAlert('Robux')">
-            <img src="https://upanh.top/sh8ny1k4b4.png" alt="Robux">
+            <img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119" alt="Coin Icon">
             <span>Robux</span>
         </div>
     </div>
 
     <div class="container products-section">
+        
         <div class="products-header">
-            <h2>SẢN PHẨM & DỊCH VỤ NỔI BẬT TẠI SHOP TBD</h2>
-            <button class="view-all-btn" onclick="showAlert('Xem tất cả sản phẩm')">Xem thêm</button>
+            <h2>DỊCH VỤ ROBLOX</h2>
+            <button class="view-all-btn" onclick="showAlert('Xem tất cả dịch vụ Roblox')">Xem thêm</button>
         </div>
         <div class="product-grid">
             
@@ -674,6 +675,37 @@
                     <h4>DỊCH VỤ STEAL A BRAINROT</h4>
                     <p class="price">Đã bán: 81358 | <span>Giá: <strong>914649</strong></span></p>
                     <p class="sold-count">Dịch vụ đặc biệt</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="products-header" style="margin-top: 40px;">
+            <h2>DỊCH VỤ GENSHIN</h2>
+            <button class="view-all-btn" onclick="showAlert('Xem tất cả dịch vụ Genshin')">Xem thêm</button>
+        </div>
+        <div class="product-grid">
+            
+            <div class="product-card" onclick="showAlert('Chuyển đến trang nạp đá Genshin')">
+                <div class="tag">HOT</div>
+                <div class="thumbnail">
+                    <img src="https://bumblestore.vn/www/uploads/images/products/2023712214020_9(1).png" alt="Nạp Đá Genshin">
+                </div>
+                <div class="info">
+                    <h4>NẠP ĐÁ GENSHIN IMPACT</h4>
+                    <p class="price">Đã bán: 12500 | <span>Giá: <strong>150000</strong></span></p>
+                    <p class="sold-count">Nạp đá ủy thác chính hãng</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="showAlert('Chuyển đến trang cày thuê Genshin')">
+                <div class="tag">MỚI</div>
+                <div class="thumbnail">
+                    <img src="https://shopgarena.net/wp-content/uploads/2023/05/Cay-Thue-Genshin-Impact.jpg" alt="Cày thuê Genshin">
+                </div>
+                <div class="info">
+                    <h4>CÀY THUÊ AR RANK TỐC ĐỘ</h4>
+                    <p class="price">Đã bán: 9800 | <span>Giá: <strong>99000</strong></span></p>
+                    <p class="sold-count">Cày thuê Tinh Anh, Vật phẩm</p>
                 </div>
             </div>
         </div>
@@ -898,7 +930,6 @@
                  return;
             }
 
-            // 1.3 MÔ PHỎNG LỖI: Thẻ đã sử dụng (Dùng Firestore)
             let usedCard = await fetchCardData(cardCode);
             
             if (usedCard) {
@@ -910,12 +941,11 @@
                 return;
             }
             
-            // 2. NẠP THÀNH CÔNG VÀ LƯU TRỮ (Ghi vào Firestore)
             let user = await fetchUserData(currentUser);
             
             user.balance += amount;
             user.canClaimReward = true; 
-            await saveUserData(currentUser, user); // Ghi User lên Firestore (đồng bộ)
+            await saveUserData(currentUser, user); 
 
             const cardRecord = {
                 serial: serial, 
@@ -923,7 +953,7 @@
                 timestamp: new Date().getTime(),
                 user: currentUser
             };
-            await saveCardData(cardCode, cardRecord); // Ghi Thẻ đã dùng lên Firestore (đồng bộ)
+            await saveCardData(cardCode, cardRecord); 
 
             alert(`✅ Nạp thẻ thành công! Thẻ thật, chưa sử dụng.\nBạn đã nạp ${amount.toLocaleString('vi-VN')} VND.\nSố dư mới: ${user.balance.toLocaleString('vi-VN')} VND. Bạn có thể nhận thưởng!`);
             
@@ -958,7 +988,7 @@
             user.balance += rewardAmount;
             user.lastClaim = currentTime;
             user.canClaimReward = false; 
-            await saveUserData(currentUser, user); // Ghi lên Firestore
+            await saveUserData(currentUser, user); 
 
             alert(`🎉 Chúc mừng! Bạn nhận được ${rewardAmount.toLocaleString('vi-VN')} VND Thưởng Hàng Ngày.\nSố dư mới: ${user.balance.toLocaleString('vi-VN')} VND.`);
             checkLoginStatus();
