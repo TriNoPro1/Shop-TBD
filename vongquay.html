@@ -247,11 +247,15 @@
         
         const firebaseApp = firebase.initializeApp(firebaseConfig);
         const db = firebaseApp.firestore(); 
+        const historyDb = db.collection("spin_history"); // NEW COLLECTION FOR HISTORY
 
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
             if (doc.exists) {
-                return doc.data();
+                const data = doc.data();
+                // Khởi tạo Robux nếu chưa có (đảm bảo đồng bộ với index.html fix)
+                data.robuxBalance = data.robuxBalance || 0; 
+                return data;
             }
             return null;
         }
@@ -260,6 +264,8 @@
             await db.collection("users").doc(username).set(userData);
             return true;
         }
+        
+        // --- LOGIC VÒNG QUAY VÀ TÍNH XÁC SUẤT ---
         
         const rewardWeights = [
             { value: 8000, weight: 1 }, 
@@ -270,20 +276,17 @@
             { value: 70, weight: 20 }, 
             { value: 60, weight: 23 }, 
             { value: 50, weight: 20 }   
-            // Total weight: 100
         ];
 
-        // THỨ TỰ TRỰC QUAN TRÊN 8 SEGMENTS (Bắt đầu từ trên cùng, theo chiều kim đồng hồ)
-        // Dựa trên mô tả trước đó: 8000 (Top), 70, 300, 50, 500, 100, 200, 60
         const visualRewards = [
+            200, 
+            60,  
             8000, 
             70,   
             300,  
-            50,   
             500,  
             100,  
-            200,  
-            60    
+            50    
         ];
         
         const wheel = document.getElementById('wheel');
@@ -352,8 +355,18 @@
             const angle = calculateStopAngle(winningRobux);
 
             currentUserData.balance -= spinCost;
+            currentUserData.robuxBalance += winningRobux; // CỘNG ROBUX TRÚNG THƯỞNG
             await saveUserData(currentUserData.username, currentUserData);
             
+            // 3. LƯU LỊCH SỬ QUAY
+            const historyRecord = {
+                username: currentUserData.username,
+                costVND: spinCost,
+                prizeRobux: winningRobux,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp() 
+            };
+            await historyDb.add(historyRecord);
+
             updateBalanceDisplay(currentUserData);
 
             wheel.style.transform = `rotate(${angle}deg)`;
@@ -365,7 +378,8 @@
         });
 
         function updateBalanceDisplay(user) {
-            balanceDisplay.innerHTML = `Số dư: <strong>${user.balance.toLocaleString('vi-VN')} VND</strong>`;
+            // Hiển thị cả VND và Robux
+            balanceDisplay.innerHTML = `Số dư: <strong>${user.balance.toLocaleString('vi-VN')} VND</strong> / Robux: <strong>${user.robuxBalance.toLocaleString('vi-VN')}</strong>`;
             balanceDisplay.style.display = 'block';
             loginPrompt.style.display = 'none';
         }
