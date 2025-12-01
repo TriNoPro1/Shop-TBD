@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop TBD - Cổng Dịch Vụ Game</title>
     <link rel="icon" href="https://img.icons8.com/fluent/48/000000/shop.png" type="image/x-icon">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -713,19 +715,37 @@
     </footer>
 
     <script>
+        // --- BƯỚC 2: TÍCH HỢP KHÓA CẤU HÌNH VÀ CÁC HÀM API ---
+        
+        // 2.1 Cấu hình Firebase
+        const firebaseConfig = {
+          apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
+          authDomain: "shop-tbd.firebaseapp.com",
+          projectId: "shop-tbd",
+          storageBucket: "shop-tbd.firebaseapp.com",
+          messagingSenderId: "777222985748",
+          appId: "1:777222985748:web:94a9deF4894a3dd7b6f01",
+          measurementId: "G-ZR4F57QMJX8"
+        };
+        
+        // Khởi tạo Firebase và Firestore
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
+        const db = firebaseApp.firestore(); 
+
         const BACKEND_API_URL = 'https://PLACEHOLDER-YOUR-BACKEND-API.com/users'; 
 
+        // 2.2 Hàm đọc dữ liệu (THAY THẾ LOCAL STORAGE)
         async function fetchUserData(username) {
-            let users = JSON.parse(localStorage.getItem('users') || '{}');
-            await new Promise(resolve => setTimeout(resolve, 100)); 
-            return users[username];
+            const doc = await db.collection("users").doc(username).get();
+            if (doc.exists) {
+                return doc.data();
+            }
+            return null;
         }
 
+        // 2.3 Hàm ghi dữ liệu (THAY THẾ LOCAL STORAGE)
         async function saveUserData(username, userData) {
-            let users = JSON.parse(localStorage.getItem('users') || '{}');
-            users[username] = userData;
-            localStorage.setItem('users', JSON.stringify(users));
-            await new Promise(resolve => setTimeout(resolve, 100)); 
+            await db.collection("users").doc(username).set(userData);
             return true;
         }
         
@@ -856,16 +876,19 @@
 
             let usedCards = JSON.parse(localStorage.getItem('usedCards') || '{}');
             
+            // 1.1 MÔ PHỎNG LỖI: Mã thẻ giả/không hợp lệ
             if (cardCode.startsWith('999') || isRepeatedChar(cardCode) || isRepeatedChar(serial)) {
                 alert("❌ Xác nhận thất bại! Mã thẻ hoặc Serial không hợp lệ (Không được nhập số lặp lại/mã giả).");
                 return;
             }
 
+            // 1.2 MÔ PHỎNG LỖI: Thẻ không tìm thấy (KHÔNG CHỨA mã bí mật)
             if (!cardCode.includes('VALID25')) {
                  alert("❌ Xác nhận thất bại! Mã thẻ không tìm thấy trong hệ thống.");
                  return;
             }
 
+            // 1.3 MÔ PHỎNG LỖI: Thẻ đã sử dụng (Vẫn dùng Local Storage cho CSDL thẻ)
             if (usedCards[cardCode]) {
                 if (usedCards[cardCode].serial === serial) {
                     alert(`❌ Mã thẻ ${cardCode} đã được sử dụng vào lúc: ${new Date(usedCards[cardCode].timestamp).toLocaleString('vi-VN')}.`);
@@ -875,11 +898,12 @@
                 return;
             }
             
+            // 2. NẠP THÀNH CÔNG VÀ LƯU TRỮ (Ghi vào Firestore)
             let user = await fetchUserData(currentUser);
             
             user.balance += amount;
             user.canClaimReward = true; 
-            await saveUserData(currentUser, user);
+            await saveUserData(currentUser, user); // Ghi lên Firestore
 
             usedCards[cardCode] = { 
                 serial: serial, 
@@ -887,7 +911,7 @@
                 timestamp: new Date().getTime(),
                 user: currentUser
             };
-            localStorage.setItem('usedCards', JSON.stringify(usedCards));
+            localStorage.setItem('usedCards', JSON.stringify(usedCards)); // CSDL thẻ vẫn phải là cục bộ cho đến khi có Backend
 
             alert(`✅ Nạp thẻ thành công! Thẻ thật, chưa sử dụng.\nBạn đã nạp ${amount.toLocaleString('vi-VN')} VND.\nSố dư mới: ${user.balance.toLocaleString('vi-VN')} VND. Bạn có thể nhận thưởng!`);
             
@@ -922,7 +946,7 @@
             user.balance += rewardAmount;
             user.lastClaim = currentTime;
             user.canClaimReward = false; 
-            await saveUserData(currentUser, user);
+            await saveUserData(currentUser, user); // Ghi lên Firestore
 
             alert(`🎉 Chúc mừng! Bạn nhận được ${rewardAmount.toLocaleString('vi-VN')} VND Thưởng Hàng Ngày.\nSố dư mới: ${user.balance.toLocaleString('vi-VN')} VND.`);
             checkLoginStatus();
