@@ -193,6 +193,56 @@
                 box-sizing: border-box;
             }
         }
+        /* MODAL LỊCH SỬ */
+        #historyModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .history-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: #333;
+            position: relative;
+        }
+        .history-content h2 {
+            margin-top: 0;
+            color: #cc0000;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        .history-table th, .history-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .history-table th {
+            background-color: #f2f2f2;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -205,7 +255,7 @@
             <h1>VÒNG QUAY ROBUX</h1>
             <div class="meta-buttons">
                 <button onclick="showAlert('Đang hiển thị các quy tắc quay thưởng...')">Thẻ lệ</button>
-                <button onclick="showAlert('Đang hiển thị lịch sử quay...')">Lịch sử chơi</button>
+                <button onclick="showSpinHistory()">Lịch sử chơi</button>
             </div>
         </div>
 
@@ -234,6 +284,15 @@
         </div>
     </div>
 
+    <div id="historyModal" style="display: none;">
+        <div class="history-content">
+            <span class="close-btn" onclick="document.getElementById('historyModal').style.display='none'">&times;</span>
+            <h2>Lịch sử Quay thưởng</h2>
+            <div id="historyTableContainer">Đang tải lịch sử...</div>
+            <p style="margin-top: 20px; font-size: 0.8em; color: #888;">Chỉ hiển thị 10 lượt quay gần nhất của bạn.</p>
+        </div>
+    </div>
+
     <script>
         const firebaseConfig = {
           apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
@@ -254,6 +313,7 @@
             if (doc.exists) {
                 const data = doc.data();
                 data.robuxBalance = data.robuxBalance || 0; 
+                data.kimCuongBalance = data.kimCuongBalance || 0;
                 return data;
             }
             return null;
@@ -332,6 +392,46 @@
 
             return stopAngle + randomJitter;
         }
+
+        // HÀM HIỂN THỊ LỊCH SỬ QUAY
+        async function showSpinHistory() {
+            const username = localStorage.getItem('currentUser');
+            if (!username) {
+                alert("Vui lòng đăng nhập để xem lịch sử.");
+                return;
+            }
+
+            const historyModal = document.getElementById('historyModal');
+            const container = document.getElementById('historyTableContainer');
+            container.innerHTML = 'Đang tải...';
+            historyModal.style.display = 'flex';
+
+            try {
+                const snapshot = await historyDb
+                    .where('username', '==', username)
+                    .orderBy('timestamp', 'desc')
+                    .limit(10)
+                    .get();
+
+                if (snapshot.empty) {
+                    container.innerHTML = '<p>Bạn chưa có lượt quay nào.</p>';
+                    return;
+                }
+
+                let html = '<table class="history-table"><tr><th>Robux Trúng</th><th>Giá Quay</th><th>Thời gian</th></tr>';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const date = data.timestamp ? data.timestamp.toDate().toLocaleTimeString('vi-VN') + ' ' + data.timestamp.toDate().toLocaleDateString('vi-VN') : '---';
+                    html += `<tr><td><strong>${data.prizeRobux.toLocaleString('vi-VN')} R</strong></td><td>${data.costVND.toLocaleString('vi-VN')} VND</td><td>${date}</td></tr>`;
+                });
+                html += '</table>';
+                container.innerHTML = html;
+
+            } catch (error) {
+                console.error("Lỗi tải lịch sử quay:", error);
+                container.innerHTML = '<p style="color: red;">Không thể tải lịch sử quay. Vui lòng kiểm tra kết nối Database.</p>';
+            }
+        }
         
         spinButton.addEventListener('click', async () => {
             if (!currentUserData) {
@@ -374,7 +474,7 @@
         });
 
         function updateBalanceDisplay(user) {
-            balanceDisplay.innerHTML = `Số dư: <strong>${user.balance.toLocaleString('vi-VN')} VND</strong> / Robux: <strong>${user.robuxBalance.toLocaleString('vi-VN')}</strong>`;
+            balanceDisplay.innerHTML = `Số dư: <strong>${user.balance.toLocaleString('vi-VN')} VND</strong> / Robux: <strong>${(user.robuxBalance || 0).toLocaleString('vi-VN')}</strong>`;
             balanceDisplay.style.display = 'block';
             loginPrompt.style.display = 'none';
         }
