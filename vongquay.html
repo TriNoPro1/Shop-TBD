@@ -247,13 +247,12 @@
         
         const firebaseApp = firebase.initializeApp(firebaseConfig);
         const db = firebaseApp.firestore(); 
-        const historyDb = db.collection("spin_history"); // NEW COLLECTION FOR HISTORY
+        const historyDb = db.collection("spin_history");
 
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
             if (doc.exists) {
                 const data = doc.data();
-                // Khởi tạo Robux nếu chưa có (đảm bảo đồng bộ với index.html fix)
                 data.robuxBalance = data.robuxBalance || 0; 
                 return data;
             }
@@ -264,8 +263,6 @@
             await db.collection("users").doc(username).set(userData);
             return true;
         }
-        
-        // --- LOGIC VÒNG QUAY VÀ TÍNH XÁC SUẤT ---
         
         const rewardWeights = [
             { value: 8000, weight: 1 }, 
@@ -355,10 +352,9 @@
             const angle = calculateStopAngle(winningRobux);
 
             currentUserData.balance -= spinCost;
-            currentUserData.robuxBalance += winningRobux; // CỘNG ROBUX TRÚNG THƯỞNG
+            currentUserData.robuxBalance += winningRobux; 
             await saveUserData(currentUserData.username, currentUserData);
             
-            // 3. LƯU LỊCH SỬ QUAY
             const historyRecord = {
                 username: currentUserData.username,
                 costVND: spinCost,
@@ -378,7 +374,6 @@
         });
 
         function updateBalanceDisplay(user) {
-            // Hiển thị cả VND và Robux
             balanceDisplay.innerHTML = `Số dư: <strong>${user.balance.toLocaleString('vi-VN')} VND</strong> / Robux: <strong>${user.robuxBalance.toLocaleString('vi-VN')}</strong>`;
             balanceDisplay.style.display = 'block';
             loginPrompt.style.display = 'none';
