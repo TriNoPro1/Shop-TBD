@@ -15,112 +15,90 @@
             color: #333;
             margin: 0;
             padding: 0;
+            min-height: 100vh;
+        }
+        .header-main {
+            width: 100%;
+            background-color: #2c3e50;
+            padding: 10px 0;
+        }
+        .header-main a {
+            color: #ff5722;
+            font-size: 1.8em;
+            font-weight: 900;
+            text-decoration: none;
+            margin-left: 20px;
         }
         .app-container {
             max-width: 800px;
             margin: 30px auto;
-            padding: 20px;
+            padding: 30px;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
+
+        /* HEADER & STATS */
         .top-bar-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             padding-bottom: 10px;
             border-bottom: 1px solid #ddd;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         .top-bar-nav h1 {
-            color: #e74c3c;
+            color: #cc0000;
             font-size: 1.8em;
-            margin: 0;
+            margin: 0 0 10px 0;
+            text-align: center;
         }
-        .top-bar-nav button {
-            background-color: #ecf0f1;
-            color: #2c3e50;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-left: 10px;
-            transition: background-color 0.2s;
-        }
-        .top-bar-nav button:hover {
-            background-color: #bdc3c7;
-        }
-
-        /* STATS AND BALANCE */
-        .status-header {
+        .stats-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding: 10px;
-            background-color: #f8f8f8;
-            border-radius: 8px;
+        }
+        .stats-row span {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
         }
         #playersOnline {
-            font-size: 1.1em;
             color: #27ae60;
-            font-weight: bold;
         }
         #balanceDisplay {
-            font-size: 1.1em;
             color: #e74c3c;
-            font-weight: bold;
+            display: none;
         }
         #loginPrompt {
             color: #f39c12;
-            font-size: 1em;
+        }
+        .meta-buttons button {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            cursor: pointer;
+            margin-left: 5px;
         }
 
         /* WHEEL UI */
         .wheel-container {
             position: relative;
-            width: 450px;
-            height: 450px;
-            margin: 20px auto;
+            width: 400px; 
+            height: 400px;
+            margin: 30px auto;
         }
         #wheel {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            overflow: hidden;
-            background: #2980b9;
             position: relative;
             transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1);
-            border: 10px solid #f1c40f;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-        .segment {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            transform-origin: 100% 100%;
-            clip-path: polygon(0 0, 50% 100%, 0 100%);
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            font-weight: bold;
-            font-size: 0.9em;
-            color: white;
-            border-left: 2px solid #2c3e50;
-        }
-        .segment-content {
-            transform: rotate(45deg);
-            margin-bottom: 30px;
-            text-align: center;
-            line-height: 1.1;
-        }
-        .segment-content img {
-            width: 25px;
-            height: 25px;
-            vertical-align: middle;
-            margin-right: 5px;
-            display: block;
-            margin: 0 auto 3px;
+            
+            /* TÍCH HỢP ẢNH AK RỒNG XANH */
+            background-image: url('https://i.imgur.com/vHq1M4L.jpg'); /* Using a static host for the provided image */
+            background-size: cover;
+            background-position: center;
+            border: 5px solid #2c3e50;
         }
         #indicator {
             width: 0;
@@ -134,17 +112,6 @@
             transform: translateX(-50%);
             z-index: 10;
         }
-
-        /* Segment Colors (Adjusted for blue/diamond aesthetic) */
-        .segment:nth-child(1) { background: #3498db; transform: rotate(0deg); }
-        .segment:nth-child(2) { background: #2ecc71; transform: rotate(45deg); }
-        .segment:nth-child(3) { background: #9b59b6; transform: rotate(90deg); }
-        .segment:nth-child(4) { background: #3498db; transform: rotate(135deg); }
-        .segment:nth-child(5) { background: #2ecc71; transform: rotate(180deg); }
-        .segment:nth-child(6) { background: #9b59b6; transform: rotate(225deg); }
-        .segment:nth-child(7) { background: #3498db; transform: rotate(270deg); }
-        .segment:nth-child(8) { background: #2ecc71; transform: rotate(315deg); }
-
 
         /* ACTION BUTTONS & DROPDOWN */
         .action-row {
@@ -175,10 +142,6 @@
             opacity: 0.6;
             cursor: not-allowed;
         }
-        .play-button img {
-            width: 20px;
-            margin-right: 5px;
-        }
         #spinButton {
             background-color: #e74c3c; /* Quay Ngay - Red */
         }
@@ -201,30 +164,22 @@
     <div class="app-container">
         <div class="top-bar-nav">
             <h1>VÒNG QUAY ROBUX</h1>
-            <div>
+            <div class="meta-buttons">
                 <button onclick="showAlert('Đang hiển thị các quy tắc quay thưởng...')">Thẻ lệ</button>
                 <button onclick="showAlert('Đang hiển thị lịch sử quay...')">Lịch sử chơi</button>
             </div>
         </div>
 
-        <div class="status-header">
-            <div id="playersOnline">Đang chơi: 244 🧑‍🤝‍🧑</div>
-            <div id="loginPrompt">Vui lòng đăng nhập để chơi.</div>
-            <div id="balanceDisplay" style="display: none;">Số dư: <strong>0 VND</strong></div>
+        <div class="stats-row">
+            <span id="playersOnline">Đang chơi: 244 🧑‍🤝‍🧑</span>
+            <span id="loginPrompt">Vui lòng đăng nhập để chơi.</span>
+            <span id="balanceDisplay">Số dư: <strong>0 VND</strong></span>
         </div>
 
         <div class="wheel-container">
             <div id="indicator"></div>
             <div id="wheel">
-                <div class="segment" data-value="10"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 10 R</div></div>
-                <div class="segment" data-value="50"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 50 R</div></div>
-                <div class="segment" data-value="100"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 100 R</div></div>
-                <div class="segment" data-value="150"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 150 R</div></div>
-                <div class="segment" data-value="200"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 200 R</div></div>
-                <div class="segment" data-value="300"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 300 R</div></div>
-                <div class="segment" data-value="400"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 400 R</div></div>
-                <div class="segment" data-value="500"><div class="segment-content"><img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119"> 500 R</div></div>
-            </div>
+                </div>
         </div>
 
         <div class="action-row">
@@ -273,16 +228,18 @@
         }
         
         // --- LOGIC VÒNG QUAY VÀ TÍNH XÁC SUẤT ---
-
+        // Prizes and weights based on the AK Rồng Xanh visual (8 segments)
+        // Values are in Kim Cương (KC), using a fixed 15000 VND cost for 1 spin.
         const rewardWeights = [
-            { value: 500, weight: 2 }, // 2%
-            { value: 400, weight: 3 }, // 3%
-            { value: 300, weight: 5 }, // 5%
-            { value: 200, weight: 10 }, // 10%
-            { value: 150, weight: 15 }, // 15%
-            { value: 100, weight: 20 }, // 20%
-            { value: 50, weight: 25 }, // 25%
-            { value: 10, weight: 20 }  // 20%
+            { value: 9999, weight: 3 },  // Jackpot
+            { value: 7000, weight: 2 }, 
+            { value: 3000, weight: 5 }, 
+            { value: 1000, weight: 10 }, 
+            { value: 500, weight: 15 }, 
+            { value: 250, weight: 25 }, 
+            { value: 100, weight: 25 }, 
+            { value: 50, weight: 15 } // Lowest prize (Mảnh ghép/Low prize)
+            // Total weight: 100
         ];
         
         const wheel = document.getElementById('wheel');
@@ -309,23 +266,35 @@
                     return reward.value;
                 }
             }
-            return 10;
+            return 50; // Fallback to lowest prize in the list
         }
 
         // Hàm xác định góc quay để nhắm trúng phần thưởng
         function calculateStopAngle(winningValue) {
-            const rewards = [10, 50, 100, 150, 200, 300, 400, 500]; // Thứ tự giá trị theo index CSS
-            // Phải xác định lại index dựa trên thứ tự giá trị trong CSS, KHÔNG phải mảng weights
-            const displayRewards = [500, 400, 300, 200, 150, 100, 50, 10]; // Thứ tự hiển thị trên vòng quay
+            // Thứ tự GIÁ TRỊ trên vòng quay AK Rồng Xanh (Bắt đầu từ trên cùng và đi theo chiều kim đồng hồ)
+            const visualRewards = [
+                9999, // 1. Mảnh ghép (đã thay bằng 9999 theo logic)
+                100,  // 2. 100 KC
+                250,  // 3. 250 KC
+                500,  // 4. 500 KC
+                1000, // 5. 1000 KC
+                3000, // 6. 3000 KC
+                7000, // 7. 7000 KC
+                50    // 8. 9999 KC (đã thay bằng 50 theo logic)
+            ];
             
-            let winningIndex = displayRewards.indexOf(winningValue);
+            // NOTE: Chúng ta sẽ giả định prize 500 KC trúng vào segment thứ 4 (500), 9999 KC trúng vào segment 1.
+            const segmentAngle = 360 / visualRewards.length; // 45 degrees per segment
 
-            const segmentAngle = 360 / displayRewards.length;
+            // Xác định vị trí (index) của giá trị trúng thưởng trên vòng quay VẼ
+            let winningIndex = visualRewards.indexOf(winningValue);
+
+            // Góc cần quay thêm (Base angle for the segment center)
             let rotationOffset = (winningIndex * segmentAngle) + (segmentAngle / 2);
             
-            const extraSpins = 360 * 6; 
+            const extraSpins = 360 * 6; // 6 vòng quay
             
-            // Góc cuối cùng (vì vòng quay CSS quay ngược chiều kim đồng hồ)
+            // Góc cuối cùng (vì vòng quay CSS quay ngược chiều kim đồng hồ trong CSS)
             let stopAngle = extraSpins + (360 - rotationOffset);
 
             // Thêm một chút ngẫu nhiên bên trong segment (ví dụ: +/- 10 độ)
@@ -350,9 +319,9 @@
 
             spinButton.disabled = true;
 
-            // 1. Tính toán kết quả trúng thưởng (Robux)
-            const winningRobux = getWeightedReward();
-            const angle = calculateStopAngle(winningRobux);
+            // 1. Tính toán kết quả trúng thưởng (Kim Cương)
+            const winningKC = getWeightedReward();
+            const angle = calculateStopAngle(winningKC);
 
             // 2. Trừ tiền khỏi số dư trong Database
             currentUserData.balance -= spinCost;
@@ -366,7 +335,7 @@
 
             // 5. Kết thúc quay và thông báo kết quả
             setTimeout(async () => {
-                alert(`🎉 Chúc mừng! Bạn đã trúng ${winningRobux} Robux!\nSố dư đã bị trừ ${spinCost.toLocaleString('vi-VN')} VND.`);
+                alert(`🎉 Chúc mừng! Bạn đã trúng ${winningKC} Kim Cương!\nSố dư đã bị trừ ${spinCost.toLocaleString('vi-VN')} VND.`);
                 spinButton.disabled = false;
             }, 5500); 
         });
