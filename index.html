@@ -594,6 +594,18 @@
                 </div>
             </div>
             
+            <div class="product-card" onclick="window.location.href='vongquay.html'">
+                <div class="tag">SUMMER</div>
+                <div class="thumbnail">
+                    <img src="https://upanh.top/jegyw18gr3.jpg" alt="Vòng Quay Robux">
+                </div>
+                <div class="info">
+                    <h4>VÒNG QUAY ROBUX CHÍNH HÃNG</h4>
+                    <p class="price">Mỗi lượt: 20,000 VND</p>
+                    <p class="sold-count">Trúng từ 50 - 8000 Robux</p>
+                </div>
+            </div>
+
             <div class="product-card" onclick="window.location.href='shoprobux.html'">
                 <div class="tag">MỚI</div>
                 <div class="thumbnail">
@@ -615,18 +627,6 @@
                     <h4>MUA TRÁI ÁC QUỶ RƯƠNG</h4>
                     <p class="price">Đã bán: 89094 | <span>Giá: <strong>955381</strong></span></p>
                     <p class="sold-count">Giảm Giá 15% Code: TBDVIP</p>
-                </div>
-            </div>
-            
-            <div class="product-card" onclick="window.location.href='vongquay.html'">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://upanh.top/jegyw18gr3.jpg" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>VÒNG QUAY ROBUX CHÍNH HÃNG</h4>
-                    <p class="price">Mỗi lượt: 15,000 VND</p>
-                    <p class="sold-count">Trúng từ 10 - 500 Robux</p>
                 </div>
             </div>
             
@@ -791,7 +791,7 @@
         }
 
         async function saveCardData(cardCode, cardData) {
-            await cardsDb.doc(cardCode).set(cardData);
+            await db.collection("users").doc(cardCode).set(cardData);
             return true;
         }
         
@@ -1040,8 +1040,8 @@
             if (username) {
                 let user = await fetchUserData(username);
                 if (user) {
-                     renderAuthStatus(user);
-                     return;
+                    renderAuthStatus(user);
+                    return;
                 }
             }
             renderAuthStatus(null);
