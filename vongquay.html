@@ -8,7 +8,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <style>
-        /* BASE STYLES */
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f2f5; 
@@ -37,23 +36,40 @@
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
-
-        /* HEADER & STATS */
         .top-bar-nav {
             padding-bottom: 10px;
             border-bottom: 1px solid #ddd;
             margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .top-bar-nav h1 {
             color: #cc0000;
             font-size: 1.8em;
-            margin: 0 0 10px 0;
+            margin: 0;
+            flex-grow: 1;
             text-align: center;
+        }
+        .meta-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .meta-buttons button {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            cursor: pointer;
+            border: none;
+            outline: none;
         }
         .stats-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 20px;
         }
         .stats-row span {
             font-weight: bold;
@@ -70,17 +86,7 @@
         #loginPrompt {
             color: #f39c12;
         }
-        .meta-buttons button {
-            background-color: #ecf0f1;
-            color: #2c3e50;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9em;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-
-        /* WHEEL UI */
+       
         .wheel-container {
             position: relative;
             width: 400px; 
@@ -93,12 +99,8 @@
             border-radius: 50%;
             position: relative;
             transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1);
-            
-            /* TÍCH HỢP ẢNH AK RỒNG XANH */
-            background-image: url('https://i.imgur.com/vHq1M4L.jpg'); /* Using a static host for the provided image */
-            background-size: cover;
-            background-position: center;
             border: 5px solid #2c3e50;
+            object-fit: cover;
         }
         #indicator {
             width: 0;
@@ -112,8 +114,6 @@
             transform: translateX(-50%);
             z-index: 10;
         }
-
-        /* ACTION BUTTONS & DROPDOWN */
         .action-row {
             display: flex;
             justify-content: center;
@@ -137,22 +137,61 @@
             transition: opacity 0.2s;
             display: flex;
             align-items: center;
+            border: none;
+            outline: none;
         }
         .play-button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
         #spinButton {
-            background-color: #e74c3c; /* Quay Ngay - Red */
+            background-color: #e74c3c;
         }
         #spinButton:hover:not(:disabled) {
             background-color: #c0392b;
         }
         #tryButton {
-            background-color: #f39c12; /* Chơi Thử - Orange */
+            background-color: #f39c12;
+            display: flex;
+            align-items: center;
+        }
+        #tryButton img {
+            margin-right: 5px;
         }
         #tryButton:hover:not(:disabled) {
             background-color: #e67e22;
+        }
+        @media (max-width: 600px) {
+            .app-container {
+                margin: 15px auto;
+                padding: 15px;
+            }
+            .top-bar-nav {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .top-bar-nav h1 {
+                text-align: left;
+                width: 100%;
+            }
+            .stats-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .wheel-container {
+                width: 300px;
+                height: 300px;
+            }
+            .action-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+            #costDropdown, .play-button {
+                width: 100%;
+                box-sizing: border-box;
+            }
         }
     </style>
 </head>
@@ -178,14 +217,13 @@
 
         <div class="wheel-container">
             <div id="indicator"></div>
-            <div id="wheel">
-                </div>
+            <img id="wheel" src="https://zenoroblox.com/images/minigames/images_background202212311016VQ-N%E1%BB%95-h%C5%A9-Game.png" alt="Vòng Quay Robux">
         </div>
 
         <div class="action-row">
             <select id="costDropdown">
-                <option value="15000">15,000 VND / 1 Lượt Quay</option>
-                <option value="70000">70,000 VND / 5 Lượt Quay</option>
+                <option value="20000">20,000 VND / 1 Lượt Quay</option>
+                <option value="90000">90,000 VND / 5 Lượt Quay</option> 
             </select>
             <button id="spinButton" class="play-button" disabled>
                 <img src="https://img.icons8.com/color/48/play--v1.png" alt="Play Icon"> Quay Ngay
@@ -197,9 +235,6 @@
     </div>
 
     <script>
-        // --- CHUẨN BỊ FIREBASE VÀ LOGIC QUAY THƯỞNG ---
-
-        // 1. Cấu hình Firebase (Lấy từ index.html)
         const firebaseConfig = {
           apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
           authDomain: "shop-tbd.firebaseapp.com",
@@ -213,7 +248,6 @@
         const firebaseApp = firebase.initializeApp(firebaseConfig);
         const db = firebaseApp.firestore(); 
 
-        // 2. Hàm đọc/ghi dữ liệu User (Đã đồng bộ)
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
             if (doc.exists) {
@@ -227,19 +261,29 @@
             return true;
         }
         
-        // --- LOGIC VÒNG QUAY VÀ TÍNH XÁC SUẤT ---
-        // Prizes and weights based on the AK Rồng Xanh visual (8 segments)
-        // Values are in Kim Cương (KC), using a fixed 15000 VND cost for 1 spin.
         const rewardWeights = [
-            { value: 9999, weight: 3 },  // Jackpot
-            { value: 7000, weight: 2 }, 
-            { value: 3000, weight: 5 }, 
-            { value: 1000, weight: 10 }, 
-            { value: 500, weight: 15 }, 
-            { value: 250, weight: 25 }, 
-            { value: 100, weight: 25 }, 
-            { value: 50, weight: 15 } // Lowest prize (Mảnh ghép/Low prize)
+            { value: 8000, weight: 1 }, 
+            { value: 500, weight: 6 }, 
+            { value: 300, weight: 5 }, 
+            { value: 200, weight: 10 }, 
+            { value: 100, weight: 15 }, 
+            { value: 70, weight: 20 }, 
+            { value: 60, weight: 23 }, 
+            { value: 50, weight: 20 }   
             // Total weight: 100
+        ];
+
+        // THỨ TỰ TRỰC QUAN TRÊN 8 SEGMENTS (Bắt đầu từ trên cùng, theo chiều kim đồng hồ)
+        // Dựa trên mô tả trước đó: 8000 (Top), 70, 300, 50, 500, 100, 200, 60
+        const visualRewards = [
+            8000, 
+            70,   
+            300,  
+            50,   
+            500,  
+            100,  
+            200,  
+            60    
         ];
         
         const wheel = document.getElementById('wheel');
@@ -254,7 +298,6 @@
             alert(message);
         }
 
-        // Hàm tính toán phần thưởng dựa trên tỉ lệ (Weighted Random)
         function getWeightedReward() {
             let totalWeight = rewardWeights.reduce((sum, item) => sum + item.weight, 0);
             let random = Math.random() * totalWeight;
@@ -266,44 +309,30 @@
                     return reward.value;
                 }
             }
-            return 50; // Fallback to lowest prize in the list
+            return 50; 
         }
 
-        // Hàm xác định góc quay để nhắm trúng phần thưởng
         function calculateStopAngle(winningValue) {
-            // Thứ tự GIÁ TRỊ trên vòng quay AK Rồng Xanh (Bắt đầu từ trên cùng và đi theo chiều kim đồng hồ)
-            const visualRewards = [
-                9999, // 1. Mảnh ghép (đã thay bằng 9999 theo logic)
-                100,  // 2. 100 KC
-                250,  // 3. 250 KC
-                500,  // 4. 500 KC
-                1000, // 5. 1000 KC
-                3000, // 6. 3000 KC
-                7000, // 7. 7000 KC
-                50    // 8. 9999 KC (đã thay bằng 50 theo logic)
-            ];
+            const segmentAngle = 360 / visualRewards.length;
             
-            // NOTE: Chúng ta sẽ giả định prize 500 KC trúng vào segment thứ 4 (500), 9999 KC trúng vào segment 1.
-            const segmentAngle = 360 / visualRewards.length; // 45 degrees per segment
+            let winningIndices = visualRewards.map((val, index) => val === winningValue ? index : -1).filter(index => index !== -1);
+            
+            if (winningIndices.length === 0) {
+                 winningIndices = [0]; 
+            }
+            
+            const randomIndex = Math.floor(Math.random() * winningIndices.length);
+            const winningIndex = winningIndices[randomIndex];
 
-            // Xác định vị trí (index) của giá trị trúng thưởng trên vòng quay VẼ
-            let winningIndex = visualRewards.indexOf(winningValue);
-
-            // Góc cần quay thêm (Base angle for the segment center)
             let rotationOffset = (winningIndex * segmentAngle) + (segmentAngle / 2);
+            const extraSpins = 360 * 6;
             
-            const extraSpins = 360 * 6; // 6 vòng quay
-            
-            // Góc cuối cùng (vì vòng quay CSS quay ngược chiều kim đồng hồ trong CSS)
             let stopAngle = extraSpins + (360 - rotationOffset);
-
-            // Thêm một chút ngẫu nhiên bên trong segment (ví dụ: +/- 10 độ)
             const randomJitter = Math.floor(Math.random() * 20) - 10; 
 
             return stopAngle + randomJitter;
         }
         
-        // --- HÀM QUAY CHÍNH ---
         spinButton.addEventListener('click', async () => {
             if (!currentUserData) {
                 alert("Vui lòng đăng nhập trước khi quay.");
@@ -319,28 +348,21 @@
 
             spinButton.disabled = true;
 
-            // 1. Tính toán kết quả trúng thưởng (Kim Cương)
-            const winningKC = getWeightedReward();
-            const angle = calculateStopAngle(winningKC);
+            const winningRobux = getWeightedReward();
+            const angle = calculateStopAngle(winningRobux);
 
-            // 2. Trừ tiền khỏi số dư trong Database
             currentUserData.balance -= spinCost;
             await saveUserData(currentUserData.username, currentUserData);
             
-            // 3. Cập nhật giao diện số dư
             updateBalanceDisplay(currentUserData);
 
-            // 4. Bắt đầu Animation quay
             wheel.style.transform = `rotate(${angle}deg)`;
 
-            // 5. Kết thúc quay và thông báo kết quả
             setTimeout(async () => {
-                alert(`🎉 Chúc mừng! Bạn đã trúng ${winningKC} Kim Cương!\nSố dư đã bị trừ ${spinCost.toLocaleString('vi-VN')} VND.`);
+                alert(`🎉 Chúc mừng! Bạn đã trúng ${winningRobux} Robux!\nSố dư đã bị trừ ${spinCost.toLocaleString('vi-VN')} VND.`);
                 spinButton.disabled = false;
             }, 5500); 
         });
-
-        // --- CÁC HÀM HỖ TRỢ TRẠNG THÁI ---
 
         function updateBalanceDisplay(user) {
             balanceDisplay.innerHTML = `Số dư: <strong>${user.balance.toLocaleString('vi-VN')} VND</strong>`;
