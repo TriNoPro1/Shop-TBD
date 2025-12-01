@@ -460,20 +460,73 @@
             margin-right: 10px;
             color: #ff0077;
         }
-        .top-depositor-rank.rank1 { color: #FFD700; } /* Vàng */
-        .top-depositor-rank.rank2 { color: #C0C0C0; } /* Bạc */
-        .top-depositor-rank.rank3 { color: #CD7F32; } /* Đồng */
-
-        .top-depositor-info {
-            flex-grow: 1;
+        .top-depositor-rank.rank1 { color: #FFD700; } 
+        .top-depositor-rank.rank2 { color: #C0C0C0; } 
+        .top-depositor-rank.rank3 { color: #CD7F32; } 
+        /* Profile Dropdown Styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
         }
-        .top-depositor-info .name {
-            font-weight: bold;
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
             color: #333;
         }
-        .top-depositor-info .amount {
-            font-size: 0.9em;
-            color: #888;
+        .profile-btn:hover {
+            opacity: 0.8;
+        }
+        .profile-btn img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 8px;
+            border: 1px solid #ddd;
+        }
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            z-index: 10;
+            border-radius: 8px;
+            overflow: hidden;
+            display: none;
+            text-align: left;
+            margin-top: 5px;
+        }
+        .dropdown-content.show {
+            display: block;
+        }
+        .dropdown-content a {
+            padding: 10px 15px;
+            display: block;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+            font-size: 0.95em;
+        }
+        .dropdown-content a:hover {
+            background-color: #f0f0f0;
+        }
+        .dropdown-header {
+            padding: 10px 15px;
+            font-weight: bold;
+            color: #ff0077;
+            background-color: #f8e1e7;
+            font-size: 0.85em;
+        }
+        .dropdown-separator {
+            height: 1px;
+            background-color: #ddd;
+            margin: 5px 0;
         }
     </style>
 </head>
@@ -563,6 +616,7 @@
                             </div>
                         </li>
                     </ul>
+
                     <form id="topUpForm">
                         <div class="form-group">
                             <label for="provider">Chọn Nhà Mạng</label>
@@ -601,41 +655,6 @@
             </div>
         </div>
     </main>
-
-    <div class="container category-icons">
-        <div class="category-item" onclick="showAlert('Fish It')">
-            <img src="https://upanh.top/j1hckwz2s6.jpg" alt="Fish It">
-            <span>Fish It</span>
-        </div>
-        <div class="category-item" onclick="showAlert('Plants Vs Brainrots')">
-            <img src="https://upanh.top/7dp4f1h6di.jpg" alt="Plants Vs Brainrots">
-            <span>Plants Vs Brainrots</span>
-        </div>
-        <div class="category-item" onclick="showAlert('99 Nights in the Forest')">
-            <img src="https://upanh.top/2j6hg6097z.jpg" alt="99 Nights">
-            <span>99 Nights in the Forest</span>
-        </div>
-        <div class="category-item" onclick="showAlert('Steal A Brainrot')">
-            <img src="https://upanh.top/q3n3do09mm.jpg" alt="Steal A Brainrot">
-            <span>Steal A Brainrot</span>
-        </div>
-        <div class="category-item" onclick="showAlert('Trái Ác Quỷ Rừng')">
-            <img src="https://upanh.top/eseilqhop1.jpg" alt="Trái Ác Quỷ">
-            <span>Trái Ác Quỷ Rừng</span>
-        </div>
-        <div class="category-item" onclick="showAlert('Robux VNG')">
-            <img src="https://upanh.top/zkuxfw1ke0.jpg" alt="Robux VNG">
-            <span>Robux VNG</span>
-        </div>
-        <div class="category-item" onclick="showAlert('Gamepass Blox Fruit')">
-            <img src="https://upanh.top/54tj0lalue.jpg" alt="Gamepass">
-            <span>Gamepass Blox Fruit</span>
-        </div>
-        <div class="category-item" onclick="showAlert('Robux')">
-            <img src="https://up.yimg.com/ib/th/id/OIP.6NBus5jqvstSixtjUunzfwHaHa?pid=Api&rs=1&c=1&qlt=95&w=119&h=119" alt="Coin Icon">
-            <span>Robux</span>
-        </div>
-    </div>
 
     <div class="container products-section">
         
@@ -793,7 +812,7 @@
                 <h2>TẠO TÀI KHOẢN MỚI</h2>
                 <form id="registerForm">
                     <input type="text" id="regUsername" class="modal-input" placeholder="Tên Tài Khoản..." required>
-                    <input type="password" id="regPassword" class="modal-input" placeholder="Mật Khẩu..." required>
+                    <input type="password" id="regPassword" class="modal-input" placeholder="Nhập Mật Khẩu..." required>
                     <input type="password" id="regConfirmPassword" class="modal-input" placeholder="Xác Nhận Mật Khẩu..." required>
 
                     <button type="submit" class="modal-login-btn">ĐĂNG KÝ NGAY</button>
@@ -810,9 +829,6 @@
     </footer>
 
     <script>
-        // --- CẤU HÌNH FIREBASE VÀ CÁC HÀM API ---
-        
-        // 1. Cấu hình Firebase
         const firebaseConfig = {
           apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
           authDomain: "shop-tbd.firebaseapp.com",
@@ -823,14 +839,11 @@
           measurementId: "G-ZR4F57QMJX8"
         };
         
-        // Khởi tạo Firebase và Firestore
         const firebaseApp = firebase.initializeApp(firebaseConfig);
         const db = firebaseApp.firestore(); 
 
-        // TẠO COLLECTION MỚI: card_records để lưu trữ thẻ đã sử dụng
         const cardsDb = db.collection("card_records"); 
 
-        // 2. Hàm đọc/ghi dữ liệu User
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
             if (doc.exists) {
@@ -844,7 +857,6 @@
             return true;
         }
 
-        // 3. Hàm đọc/ghi dữ liệu Thẻ đã dùng (Đồng bộ hóa)
         async function fetchCardData(cardCode) {
             const doc = await cardsDb.doc(cardCode).get();
             if (doc.exists) {
@@ -854,7 +866,7 @@
         }
 
         async function saveCardData(cardCode, cardData) {
-            await db.collection("users").doc(cardCode).set(cardData);
+            await cardsDb.doc(cardCode).set(cardData);
             return true;
         }
         
