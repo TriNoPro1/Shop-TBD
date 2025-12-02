@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MUA GAMEPASS VĨNH VIỄN - Shop TBD</title>
+    <title>MUA ROBUX GIÁ TỐT - Shop TBD</title>
     <link rel="icon" href="https://img.icons8.com/fluent/48/000000/shop.png" type="image/x-icon">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -202,15 +202,15 @@
     <main class="product-detail-content">
         
         <div class="product-image-section">
-            <img src="https://upanh.top/gu0u5ngywn.jpg" alt="MUA GAMEPASS VĨNH VIỄN">
+            <img src="https://upanh.top/hwlgcryxkz.jpg" alt="MUA ROBUX GIÁ TỐT">
             
             <div class="product-description">
                 <h3>GIỚI THIỆU SẢN PHẨM</h3>
-                <p>Mua ngay Gamepass Vĩnh Viễn với giá ưu đãi tại Shop TBD. Đảm bảo an toàn tuyệt đối cho tài khoản của bạn.</p>
+                <p>Mua Robux chính hãng với tỷ lệ 1 Robux = 100 VND. Dịch vụ nhanh chóng, an toàn tuyệt đối cho tài khoản của bạn.</p>
                 <ul>
-                    <li>✨ **Loại Gamepass:** Tùy chọn theo gói.</li>
+                    <li>✨ **Tỷ lệ:** 1 Robux = 100 VND (Cực tốt).</li>
                     <li>🛡️ **Bảo mật:** 100% an toàn, giao dịch uy tín.</li>
-                    <li>⏱️ **Thời gian giao:** 1-3 giờ.</li>
+                    <li>⏱️ **Thời gian giao:** 120 giờ (5 ngày) sau khi đặt hàng.</li>
                     <li>✅ **Hỗ trợ:** Hỗ trợ 24/7 qua Discord/Zalo.</li>
                 </ul>
                 
@@ -220,19 +220,20 @@
         </div>
 
         <div class="product-info-section">
-            <h1>MUA GAMEPASS VĨNH VIỄN</h1>
+            <h1>MUA ROBUX GIÁ TỐT</h1>
             
             <div class="price-box">
-                <span>Giá Thị Trường: <span class="old-price">400,000 VND</span></span>
-                <span>Giá Shop TBD: <span class="new-price">300,096 VND</span></span>
+                <span>Tỷ lệ hiện tại: <span class="old-price">1 Robux = 200 VND</span></span>
+                <span>Tỷ lệ Shop TBD: <span class="new-price">1 Robux = 100 VND</span></span>
             </div>
 
             <form class="purchase-form" id="purchaseForm">
-                <label for="robux-package">Chọn Gói Gamepass:</label>
+                <label for="robux-package">Chọn Gói Robux:</label>
                 <select id="robux-package" required>
-                    <option value="300096">Gamepass 1 (300,096 VND)</option>
-                    <option value="450000">Gamepass 2 (450,000 VND)</option>
-                    <option value="600000">Gamepass VIP (600,000 VND)</option>
+                    <option value="40000">400 Robux (40,000 VND)</option>
+                    <option value="70000">700 Robux (70,000 VND)</option>
+                    <option value="100000">1000 Robux (100,000 VND)</option>
+                    <option value="150000">1500 Robux (150,000 VND)</option>
                 </select>
 
                 <label for="roblox-username">Tên Tài Khoản Roblox:</label>
@@ -242,7 +243,7 @@
                 <input type="password" id="roblox-password" placeholder="Mật khẩu của bạn">
                 
                 <label for="contact-phone">Số Điện Thoại/Zalo:</label>
-                <input type="text" id="contact-phone" placeholder="Để tiện liên hệ giao hàng">
+                <input type="text" id="contact-phone" placeholder="Để tiện liên hệ giao Robux">
 
                 <button type="submit">THANH TOÁN & ĐẶT HÀNG</button>
             </form>
@@ -293,7 +294,7 @@
 
             const currentUser = localStorage.getItem('currentUser');
             if (!currentUser) {
-                alert("Vui lòng đăng nhập để thực hiện giao dịch!");
+                alert("Vui lòng đăng nhập để thực hiện giao dịch! Bạn sẽ được chuyển hướng về trang chủ.");
                 window.location.href = 'index.html'; 
                 return;
             }
@@ -320,7 +321,7 @@
                 user.balance = currentBalance - price;
                 await saveUserData(currentUser, user);
 
-                // 3. TẠO VÀ LƯU ĐƠN HÀNG MỚI VÀO FIRESTORE (Lưu cả các trường trống)
+                // 3. TẠO VÀ LƯU ĐƠN HÀNG MỚI VÀO FIRESTORE (Lưu cả các trường trống/không bắt buộc)
                 const orderRecord = {
                     customerUsername: currentUser,
                     robloxUsername: robloxUsername,
@@ -330,7 +331,7 @@
                     packageDescription: selectedText,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     status: 'PENDING',
-                    type: 'GAMEPASS_PURCHASE'
+                    type: 'ROBUX_PURCHASE'
                 };
                 await ordersDb.add(orderRecord); 
 
