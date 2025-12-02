@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mua Robux 120H - Shop TBD</title>
     <link rel="icon" href="https://img.icons8.com/fluent/48/000000/shop.png" type="image/x-icon">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,32 +15,18 @@
             background-color: #f0f2f5;
             color: #333;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        button {
-            cursor: pointer;
-            border: none;
-            outline: none;
-        }
         .header-main {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
+            width: 100%;
             background-color: #2c3e50;
+            padding: 10px 0;
+            margin-bottom: 20px;
         }
-        .header-main .logo-text {
+        .header-main a {
+            color: #ff5722;
             font-size: 1.8em;
             font-weight: 900;
-            color: #ff5722;
-            letter-spacing: 1px;
+            text-decoration: none;
+            margin-left: 20px;
         }
         .top-bar {
             background-color: #f8f8f8;
@@ -93,10 +81,13 @@
             margin-right: 5px;
         }
         .product-detail-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 15px;
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 30px;
-            padding: 30px 0;
+            align-items: start;
         }
         .product-image-section {
             background-color: #fff;
@@ -151,7 +142,8 @@
             color: #555;
         }
         .purchase-form select,
-        .purchase-form input[type="text"] {
+        .purchase-form input[type="text"],
+        .purchase-form input[type="password"] {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
@@ -198,193 +190,64 @@
                 justify-content: center;
             }
         }
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 450px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            position: relative;
-            text-align: center;
-        }
-        .modal-content h2 {
-            color: #333;
-            margin-top: 0;
-            margin-bottom: 25px;
-        }
-        .modal-input {
-            width: calc(100% - 20px);
-            padding: 15px 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 1em;
-        }
-        .modal-login-btn {
-            width: 100%;
-            padding: 15px;
-            background-color: #ff0000;
-            color: white;
-            font-size: 1.1em;
-            font-weight: bold;
-            border-radius: 6px;
-            margin-bottom: 15px;
-        }
-        .modal-register-btn {
-            width: 100%;
-            padding: 15px;
-            background-color: white;
-            color: #ff0000;
-            font-size: 1.1em;
-            font-weight: bold;
-            border: 1px solid #ff0000;
-            border-radius: 6px;
-        }
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.5em;
-            cursor: pointer;
-            color: #999;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .modal-step {
-            display: none;
-        }
-        .modal-step.active {
-            display: block;
-        }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-main">
-            <div class="container">
-                <a href="index.html" class="logo-text">Shop TBD</a>
-            </div>
-        </div>
-        <div class="top-bar">
-            <div class="container">
-                <div class="top-bar-left">
-                    <input type="text" placeholder="Tìm kiếm dịch vụ...">
-                    <button>Tìm kiếm</button>
-                </div>
-                <div class="top-bar-right">
-                    <button class="top-up-btn" onclick="showAlert('Chức năng Nạp Tiền')">
-                        <img src="https://img.icons8.com/plasticine/100/000000/money--v2.png" alt="Nạp Tiền Icon"> Nạp tiền
-                    </button>
-                    <div class="icon-text" onclick="showAlert('Thông báo')">
-                        <img src="https://img.icons8.com/ios-filled/50/000000/bell.png" alt="Notification Icon">
-                    </div>
-                    <div id="auth-status-area">
-                        <div class="icon-text" onclick="showAuthPrompt()">
-                            <img src="https://img.icons8.com/ios-filled/50/000000/user--v1.png" alt="User Icon"> Đăng nhập
-                        </div>
-                        <div class="icon-text" onclick="showAuthPrompt()">
-                            <img src="https://img.icons8.com/ios-filled/50/000000/add-user-male--v1.png" alt="Register Icon"> Đăng ký
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <header class="header-main">
+        <div class="container">
+            <a href="index.html" class="logo-text">Shop TBD</a>
         </div>
     </header>
 
-    <main class="container">
-        <div class="product-detail-content">
+    <main class="product-detail-content">
+        
+        <div class="product-image-section">
+            <img src="https://i.imgur.com/vHq1M4L.jpg" alt="MUA ROBUX 120H">
             
-            <div class="product-image-section">
-                <img src="https://tse4.mm.bing.net/th/id/OIP.4MnlC1lbGMUyY85FTaw-gAHaC9?pid=Api&P=0&h=180" alt="MUA ROBUX 120H - SUMMER TIME"> 
+            <div class="product-description">
+                <h3>GIỚI THIỆU SẢN PHẨM</h3>
+                <p>Sản phẩm **Robux 120H** là gói dịch vụ Robux chính hãng, đảm bảo an toàn tuyệt đối cho tài khoản của bạn. Robux sẽ được chuyển vào tài khoản sau 120 giờ (5 ngày) kể từ khi đặt hàng.</p>
+                <ul>
+                    <li>✨ **Số lượng Robux:** Tùy chọn theo gói.</li>
+                    <li>🛡️ **Bảo mật:** 100% an toàn, không khóa tài khoản.</li>
+                    <li>⏱️ **Thời gian chờ:** 120 giờ (5 ngày).</li>
+                    <li>✅ **Hỗ trợ:** Hỗ trợ 24/7 qua Discord/Zalo.</li>
+                </ul>
                 
-                <div class="product-description">
-                    <h3>GIỚI THIỆU SẢN PHẨM</h3>
-                    <p>Sản phẩm **Robux 120H** là gói dịch vụ Robux chính hãng, đảm bảo an toàn tuyệt đối cho tài khoản của bạn. Robux sẽ được chuyển vào tài khoản sau 120 giờ (5 ngày) kể từ khi đặt hàng.</p>
-                    <ul>
-                        <li>✨ **Số lượng Robux:** Tùy chọn theo gói.</li>
-                        <li>🛡️ **Bảo mật:** 100% an toàn, không khóa tài khoản.</li>
-                        <li>⏱️ **Thời gian chờ:** 120 giờ (5 ngày).</li>
-                        <li>✅ **Hỗ trợ:** Hỗ trợ 24/7 qua Discord/Zalo.</li>
-                    </ul>
-                    
-                    <h3>LƯU Ý QUAN TRỌNG</h3>
-                    <p style="color: red; font-weight: bold;">Vui lòng kiểm tra kỹ thông tin tài khoản và Robux cần mua trước khi xác nhận thanh toán.</p>
-                </div>
+                <h3>LƯU Ý QUAN TRỌNG</h3>
+                <p style="color: red; font-weight: bold;">Vui lòng kiểm tra kỹ thông tin tài khoản và Robux cần mua trước khi xác nhận thanh toán.</p>
+            </div>
+        </div>
+
+        <div class="product-info-section">
+            <h1>MUA ROBUX 120H (Gói VIP)</h1>
+            
+            <div class="price-box">
+                <span>Giá Thị Trường: <span class="old-price">999,000 VND</span></span>
+                <span>Giá Shop TBD: <span class="new-price">790,895 VND</span></span>
             </div>
 
-            <div class="product-info-section">
-                <h1>MUA ROBUX 120H (Gói VIP)</h1>
+            <form class="purchase-form" id="purchaseForm">
+                <label for="robux-package">Chọn Gói Robux:</label>
+                <select id="robux-package" required>
+                    <option value="790895">400 Robux (790,895 VND)</option>
+                    <option value="1500000">800 Robux (1,500,000 VND)</option>
+                    <option value="3000000">1700 Robux (3,000,000 VND)</option>
+                </select>
+
+                <label for="roblox-username">Tên Tài Khoản Roblox:</label>
+                <input type="text" id="roblox-username" placeholder="Nhập tên tài khoản của bạn" required>
+
+                <label for="roblox-password">Mật khẩu (Tạm thời):</label>
+                <input type="password" id="roblox-password" placeholder="Mật khẩu của bạn" required>
                 
-                <div class="price-box">
-                    <span>Giá Thị Trường: <span class="old-price">999,000 VND</span></span>
-                    <span>Giá Shop TBD: <span class="new-price">790,895 VND</span></span>
-                </div>
+                <label for="contact-phone">Số Điện Thoại/Zalo:</label>
+                <input type="text" id="contact-phone" placeholder="Để tiện liên hệ giao Robux" required>
 
-                <form class="purchase-form" id="purchaseForm">
-                    <label for="robux-package">Chọn Gói Robux:</label>
-                    <select id="robux-package" required>
-                        <option value="790895">400 Robux (790,895 VND)</option>
-                        <option value="1500000">800 Robux (1,500,000 VND)</option>
-                        <option value="3000000">1700 Robux (3,000,000 VND)</option>
-                    </select>
-
-                    <label for="username">Tên Tài Khoản Roblox:</label>
-                    <input type="text" id="username" placeholder="Nhập tên tài khoản của bạn" required>
-
-                    <label for="password">Mật khẩu (Tạm thời):</label>
-                    <input type="text" id="password" placeholder="Mật khẩu của bạn" required>
-                    
-                    <label for="sodt">Số Điện Thoại/Zalo:</label>
-                    <input type="text" id="sodt" placeholder="Để tiện liên hệ giao Robux" required>
-
-                    <button type="submit">THANH TOÁN & ĐẶT HÀNG</button>
-                </form>
-            </div>
+                <button type="submit">THANH TOÁN & ĐẶT HÀNG</button>
+            </form>
         </div>
     </main>
-
-    <div id="authModal" class="modal-overlay" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
-            
-            <div id="loginStep" class="modal-step active">
-                <h2>ĐĂNG NHẬP TÀI KHOẢN</h2>
-                <form id="loginForm">
-                    <input type="text" id="modalUsername" class="modal-input" placeholder="Nhập Tài Khoản..." required>
-                    <input type="password" id="modalPassword" class="modal-input" placeholder="Nhập Mật Khẩu..." required>
-                    
-                    <button type="submit" class="modal-login-btn">ĐĂNG NHẬP</button>
-                    <button type="button" class="modal-register-btn" onclick="showRegisterStep()">TẠO TÀI KHOẢN</button>
-                </form>
-            </div>
-
-            <div id="registerStep" class="modal-step">
-                <h2>TẠO TÀI KHOẢN MỚI</h2>
-                <form id="registerForm">
-                    <input type="text" id="regUsername" class="modal-input" placeholder="Tên Tài Khoản..." required>
-                    <input type="password" id="regPassword" class="modal-input" placeholder="Mật Khẩu..." required>
-                    <input type="password" id="regConfirmPassword" class="modal-input" placeholder="Xác Nhận Mật Khẩu..." required>
-
-                    <button type="submit" class="modal-login-btn">ĐĂNG KÝ NGAY</button>
-                    <button type="button" class="modal-register-btn" onclick="showLoginStep()">QUAY LẠI ĐĂNG NHẬP</button>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <footer class="footer">
         <div class="container">
@@ -393,157 +256,94 @@
     </footer>
 
     <script>
-        function showAlert(message) {
-            alert(message);
-            return false;
+        // CẤU HÌNH FIREBASE
+        const firebaseConfig = {
+          apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
+          authDomain: "shop-tbd.firebaseapp.com",
+          projectId: "shop-tbd",
+          storageBucket: "shop-tbd.firebaseapp.com",
+          messagingSenderId: "777222985748",
+          appId: "1:777222985748:web:94a9deF4894a3dd7b6f01",
+          measurementId: "G-ZR4F57QMJX8"
+        };
+        
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
+        const db = firebaseApp.firestore(); 
+        const ordersDb = db.collection("orders"); // COLLECTION LƯU ĐƠN HÀNG
+
+        async function fetchUserData(username) {
+            const doc = await db.collection("users").doc(username).get();
+            if (doc.exists) {
+                const data = doc.data();
+                data.robuxBalance = data.robuxBalance || 0; 
+                return data;
+            }
+            return null;
         }
 
-        const authModal = document.getElementById('authModal');
-        const loginStep = document.getElementById('loginStep');
-        const registerStep = document.getElementById('registerStep');
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
+        async function saveUserData(username, userData) {
+            await db.collection("users").doc(username).set(userData);
+            return true;
+        }
+
         const purchaseForm = document.getElementById('purchaseForm');
 
-        function showAuthPrompt() {
-            showLoginStep();
-            authModal.classList.add('active');
-        }
-
-        function closeModal() {
-            authModal.classList.remove('active');
-            loginForm.reset();
-            registerForm.reset();
-        }
-
-        function showLoginStep() {
-            loginStep.classList.add('active');
-            registerStep.classList.remove('active');
-        }
-
-        function showRegisterStep() {
-            registerStep.classList.add('active');
-            loginStep.classList.remove('active');
-        }
-        
-        registerForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const username = document.getElementById('regUsername').value;
-            const password = document.getElementById('regPassword').value;
-            const confirmPassword = document.getElementById('regConfirmPassword').value;
-
-            if (password !== confirmPassword) {
-                alert("Lỗi: Mật khẩu xác nhận không khớp!");
-                return;
-            }
-
-            let users = JSON.parse(localStorage.getItem('users') || '{}');
-            if (users[username]) {
-                alert("Lỗi: Tên người dùng đã tồn tại!");
-                return;
-            }
-
-            users[username] = { username, password, balance: 50000 };
-            localStorage.setItem('users', JSON.stringify(users));
-            
-            alert("Đăng ký thành công! Bạn có 50,000 VND. Vui lòng đăng nhập.");
-            
-            showLoginStep();
-            registerForm.reset();
-        });
-
-        loginForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const username = document.getElementById('modalUsername').value;
-            const password = document.getElementById('modalPassword').value;
-
-            let users = JSON.parse(localStorage.getItem('users') || '{}');
-
-            if (users[username] && users[username].password === password) {
-                localStorage.setItem('currentUser', username);
-                closeModal();
-                alert("Đăng nhập thành công!");
-                checkLoginStatus();
-            } else {
-                alert("Sai tên người dùng hoặc mật khẩu!");
-            }
-        });
-        
-        purchaseForm.addEventListener('submit', function(event) {
+        purchaseForm.addEventListener('submit', async function(event) {
             event.preventDefault();
 
             const currentUser = localStorage.getItem('currentUser');
             if (!currentUser) {
-                alert("Vui lòng đăng nhập để thực hiện giao dịch!");
-                showAuthPrompt();
+                alert("Vui lòng đăng nhập để thực hiện giao dịch! Bạn sẽ được chuyển hướng về trang chủ.");
+                window.location.href = 'index.html'; // Chuyển về trang chủ để đăng nhập
                 return;
             }
 
+            // Lấy dữ liệu form
             const packageSelect = document.getElementById('robux-package');
             const price = parseInt(packageSelect.value);
             const selectedText = packageSelect.options[packageSelect.selectedIndex].text;
-            
-            let users = JSON.parse(localStorage.getItem('users'));
-            let user = users[currentUser];
+            const robloxUsername = document.getElementById('roblox-username').value;
+            const robloxPassword = document.getElementById('roblox-password').value;
+            const contactPhone = document.getElementById('contact-phone').value;
+
+            // Lấy số dư hiện tại từ Database
+            let user = await fetchUserData(currentUser);
+            if (!user) {
+                 alert("Lỗi truy cập dữ liệu người dùng.");
+                 return;
+            }
             let currentBalance = user.balance;
 
+            // 1. KIỂM TRA SỐ DƯ
             if (currentBalance >= price) {
+                
+                // 2. TRỪ TIỀN VÀ CẬP NHẬT USER
                 user.balance = currentBalance - price;
-                users[currentUser] = user;
-                localStorage.setItem('users', JSON.stringify(users));
+                await saveUserData(currentUser, user);
+
+                // 3. TẠO VÀ LƯU ĐƠN HÀNG MỚI VÀO FIRESTORE
+                const orderRecord = {
+                    customerUsername: currentUser,
+                    robloxUsername: robloxUsername,
+                    robloxPassword: robloxPassword, 
+                    contactPhone: contactPhone,
+                    packageValueVND: price,
+                    packageDescription: selectedText,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'PENDING',
+                    type: 'ROBUX_120H'
+                };
+                await ordersDb.add(orderRecord); // Ghi đơn hàng vào Collection "orders"
+
+                alert(`✅ ĐẶT HÀNG THÀNH CÔNG!\nBạn đã mua: ${selectedText}.\nSố dư mới: ${user.balance.toLocaleString('vi-VN')} VND.\nThông tin đơn hàng đã được gửi đến bạn.`);
                 
-                alert(`✅ Đặt hàng thành công! Bạn đã mua: ${selectedText}.\nSố dư mới: ${user.balance.toLocaleString('vi-VN')} VND.\nRobux sẽ được giao sau 120h.`);
-                
-                checkLoginStatus();
+                // Xóa form sau khi đặt hàng thành công
+                purchaseForm.reset();
             } else {
-                alert(`❌ Lỗi: Số dư không đủ! (Cần ${price.toLocaleString('vi-VN')} VND, Hiện có ${currentBalance.toLocaleString('vi-VN')} VND)`);
+                // SỐ DƯ KHÔNG ĐỦ
+                alert(`❌ Lỗi: Số dư không đủ! (Cần ${price.toLocaleString('vi-VN')} VND, Hiện có ${currentBalance.toLocaleString('vi-VN')} VND).`);
             }
         });
-
-        function renderAuthStatus(user) {
-            const area = document.getElementById('auth-status-area');
-            if (user) {
-                area.innerHTML = `
-                    <div class="icon-text" style="color: #ff0077; margin-left: 15px;">
-                        <img src="https://img.icons8.com/ios-filled/50/ff0077/coin.png" alt="Coin Icon" style="width: 18px; height: 18px;">
-                        Số dư: <strong>${user.balance.toLocaleString('vi-VN')} VND</strong>
-                    </div>
-                    <div class="icon-text" onclick="logout()">
-                        <img src="https://img.icons8.com/ios-filled/50/000000/exit.png" alt="Logout Icon" style="width: 18px; height: 18px;">
-                        Đăng xuất (${user.username})
-                    </div>
-                `;
-            } else {
-                area.innerHTML = `
-                    <div class="icon-text" onclick="showAuthPrompt()">
-                        <img src="https://img.icons8.com/ios-filled/50/000000/user--v1.png" alt="User Icon"> Đăng nhập
-                    </div>
-                    <div class="icon-text" onclick="showAuthPrompt()">
-                        <img src="https://img.icons8.com/ios-filled/50/000000/add-user-male--v1.png" alt="Register Icon"> Đăng ký
-                    </div>
-                `;
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('currentUser');
-            alert("Đăng xuất thành công!");
-            checkLoginStatus();
-        }
-
-        function checkLoginStatus() {
-            const username = localStorage.getItem('currentUser');
-            if (username) {
-                let users = JSON.parse(localStorage.getItem('users') || '{}');
-                renderAuthStatus(users[username]);
-            } else {
-                renderAuthStatus(null);
-            }
-        }
-        
-        document.addEventListener('DOMContentLoaded', checkLoginStatus);
     </script>
 </body>
 </html>
