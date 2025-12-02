@@ -193,7 +193,54 @@
                 box-sizing: border-box;
             }
         }
-        /* MODAL LỊCH SỬ */
+        /* CUSTOM ALERT MODAL STYLES */
+        #customAlert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .alert-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            border-top: 5px solid #ff5722;
+        }
+        .alert-content h3 {
+            color: #28a745; 
+            margin-top: 0;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .alert-content p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+        .alert-content .error-text {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .alert-content button {
+            background-color: #ff5722;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+        /* HISTORY MODAL */
         #historyModal {
             position: fixed;
             top: 0;
@@ -254,7 +301,7 @@
         <div class="top-bar-nav">
             <h1>VÒNG QUAY ROBUX</h1>
             <div class="meta-buttons">
-                <button onclick="showAlert('Đang hiển thị các quy tắc quay thưởng...')">Thẻ lệ</button>
+                <button onclick="showCustomAlert('Thẻ Lệ', 'Vòng quay có tổng 8 ô thưởng, với tỷ lệ jackpot 8000 Robux là 1%.')">Thẻ lệ</button>
                 <button onclick="showSpinHistory()">Lịch sử chơi</button>
             </div>
         </div>
@@ -278,13 +325,13 @@
             <button id="spinButton" class="play-button" disabled>
                 <img src="https://img.icons8.com/color/48/play--v1.png" alt="Play Icon"> Quay Ngay
             </button>
-            <button id="tryButton" class="play-button" onclick="showAlert('Chức năng này cần kết nối tài khoản.')">
+            <button id="tryButton" class="play-button" onclick="showCustomAlert('Chơi Thử', 'Tính năng chơi thử bị khóa khi đã đăng nhập.')">
                 <img src="https://img.icons8.com/color/48/retry.png" alt="Retry Icon"> Chơi Thử
             </button>
         </div>
     </div>
 
-    <div id="historyModal" style="display: none;">
+    <div id="historyModal">
         <div class="history-content">
             <span class="close-btn" onclick="document.getElementById('historyModal').style.display='none'">&times;</span>
             <h2>Lịch sử Quay thưởng</h2>
@@ -351,11 +398,21 @@
         const balanceDisplay = document.getElementById('balanceDisplay');
         const loginPrompt = document.getElementById('loginPrompt');
         const costDropdown = document.getElementById('costDropdown');
+        const historyModal = document.getElementById('historyModal');
         
         let currentUserData = null;
         
-        function showAlert(message) {
-            alert(message);
+        function showCustomAlert(title, message, isError = false) {
+            const alertModal = document.getElementById('customAlert');
+            document.getElementById('alertTitle').textContent = title;
+            document.getElementById('alertMessage').innerHTML = message;
+            
+            if (isError) {
+                document.getElementById('alertTitle').style.color = '#e74c3c'; // Red for error
+            } else {
+                document.getElementById('alertTitle').style.color = '#28a745'; // Green for success
+            }
+            alertModal.style.display = 'flex';
         }
 
         function getWeightedReward() {
@@ -393,18 +450,16 @@
             return stopAngle + randomJitter;
         }
 
-        // HÀM HIỂN THỊ LỊCH SỬ QUAY
         async function showSpinHistory() {
             const username = localStorage.getItem('currentUser');
             if (!username) {
-                alert("Vui lòng đăng nhập để xem lịch sử.");
+                showCustomAlert("Lỗi", "Vui lòng đăng nhập để xem lịch sử.", true);
                 return;
             }
 
-            const historyModal = document.getElementById('historyModal');
             const container = document.getElementById('historyTableContainer');
-            container.innerHTML = 'Đang tải...';
             historyModal.style.display = 'flex';
+            container.innerHTML = 'Đang tải...';
 
             try {
                 const snapshot = await historyDb
@@ -435,14 +490,14 @@
         
         spinButton.addEventListener('click', async () => {
             if (!currentUserData) {
-                alert("Vui lòng đăng nhập trước khi quay.");
+                showCustomAlert("Lỗi", "Vui lòng đăng nhập trước khi quay.", true);
                 return;
             }
             
             const spinCost = parseInt(costDropdown.value);
             
             if (currentUserData.balance < spinCost) {
-                alert(`Lỗi: Số dư tài khoản không đủ ${spinCost.toLocaleString('vi-VN')} VND!`);
+                showCustomAlert("Lỗi", `Số dư tài khoản không đủ ${spinCost.toLocaleString('vi-VN')} VND!`, true);
                 return;
             }
 
@@ -468,7 +523,7 @@
             wheel.style.transform = `rotate(${angle}deg)`;
 
             setTimeout(async () => {
-                alert(`🎉 Chúc mừng! Bạn đã trúng ${winningRobux} Robux!\nSố dư đã bị trừ ${spinCost.toLocaleString('vi-VN')} VND.`);
+                showCustomAlert("Chúc mừng!", `Bạn đã trúng ${winningRobux} Robux!<br>Số dư đã bị trừ ${spinCost.toLocaleString('vi-VN')} VND.`);
                 spinButton.disabled = false;
             }, 5500); 
         });
