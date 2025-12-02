@@ -28,58 +28,6 @@
             text-decoration: none;
             margin-left: 20px;
         }
-        .top-bar {
-            background-color: #f8f8f8;
-            padding: 8px 0;
-            font-size: 0.9em;
-            border-bottom: 1px solid #eee;
-        }
-        .top-bar .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .top-bar-left input[type="text"] {
-            padding: 5px 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-right: 5px;
-        }
-        .top-bar-left button {
-            background-color: #007bff;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-        }
-        .top-bar-right {
-            display: flex;
-            align-items: center;
-        }
-        .top-bar-right .icon-text {
-            display: flex;
-            align-items: center;
-            margin-left: 15px;
-            color: #555;
-        }
-        .top-bar-right .icon-text img {
-            width: 18px;
-            height: 18px;
-            margin-right: 5px;
-        }
-        .top-bar-right .top-up-btn {
-            background-color: #ff0077;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            margin-right: 15px;
-            display: flex;
-            align-items: center;
-        }
-        .top-bar-right .top-up-btn img {
-            width: 18px;
-            height: 18px;
-            margin-right: 5px;
-        }
         .product-detail-content {
             max-width: 1200px;
             margin: 0 auto;
@@ -181,14 +129,53 @@
             .product-detail-content {
                 grid-template-columns: 1fr;
             }
-            .top-bar .container {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .top-bar-right {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
+        }
+        /* CUSTOM ALERT MODAL STYLES */
+        #customAlert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .alert-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            border-top: 5px solid #ff5722;
+        }
+        .alert-content h3 {
+            color: #28a745; 
+            margin-top: 0;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .alert-content p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+        .alert-content .error-text {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .alert-content button {
+            background-color: #ff5722;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            outline: none;
         }
     </style>
 </head>
@@ -202,7 +189,7 @@
     <main class="product-detail-content">
         
         <div class="product-image-section">
-            <img src="https://upanh.top/hwlgcryxkz.jpg" alt="MUA ROBUX GIÁ TỐT">
+            <img src="https://tse4.mm.bing.net/th/id/OIP.qnOlLmKFryBP8U-l5TlstQHaE7?pid=Api&P=0&h=180" alt="MUA ROBUX GIÁ TỐT">
             
             <div class="product-description">
                 <h3>GIỚI THIỆU SẢN PHẨM</h3>
@@ -250,6 +237,14 @@
         </div>
     </main>
 
+    <div id="customAlert">
+        <div class="alert-content">
+            <h3 id="alertTitle"></h3>
+            <p id="alertMessage"></p>
+            <button onclick="document.getElementById('customAlert').style.display='none'">OK</button>
+        </div>
+    </div>
+
     <footer class="footer">
         <div class="container">
             <p>&copy; 2025 Shop TBD. Bảo lưu mọi quyền.</p>
@@ -286,6 +281,21 @@
             await db.collection("users").doc(username).set(userData);
             return true;
         }
+        
+        // HÀM HIỂN THỊ ALERT TÙY CHỈNH
+        function showCustomAlert(title, message, isError = false) {
+            document.getElementById('alertTitle').textContent = title;
+            document.getElementById('alertMessage').innerHTML = message;
+            
+            if (isError) {
+                document.getElementById('alertTitle').classList.remove('green-text');
+                document.getElementById('alertTitle').classList.add('error-text');
+            } else {
+                document.getElementById('alertTitle').classList.remove('error-text');
+                document.getElementById('alertTitle').classList.add('green-text');
+            }
+            document.getElementById('customAlert').style.display = 'flex';
+        }
 
         const purchaseForm = document.getElementById('purchaseForm');
 
@@ -294,8 +304,7 @@
 
             const currentUser = localStorage.getItem('currentUser');
             if (!currentUser) {
-                alert("Vui lòng đăng nhập để thực hiện giao dịch! Bạn sẽ được chuyển hướng về trang chủ.");
-                window.location.href = 'index.html'; 
+                showCustomAlert("Lỗi Đăng nhập", "Vui lòng đăng nhập để thực hiện giao dịch!", true);
                 return;
             }
 
@@ -309,7 +318,7 @@
 
             let user = await fetchUserData(currentUser);
             if (!user) {
-                 alert("Lỗi truy cập dữ liệu người dùng.");
+                 showCustomAlert("Lỗi Truy cập", "Không tìm thấy dữ liệu người dùng.", true);
                  return;
             }
             let currentBalance = user.balance;
@@ -321,7 +330,7 @@
                 user.balance = currentBalance - price;
                 await saveUserData(currentUser, user);
 
-                // 3. TẠO VÀ LƯU ĐƠN HÀNG MỚI VÀO FIRESTORE (Lưu cả các trường trống/không bắt buộc)
+                // 3. TẠO VÀ LƯU ĐƠN HÀNG MỚI VÀO FIRESTORE
                 const orderRecord = {
                     customerUsername: currentUser,
                     robloxUsername: robloxUsername,
@@ -335,12 +344,12 @@
                 };
                 await ordersDb.add(orderRecord); 
 
-                alert(`✅ ĐẶT HÀNG THÀNH CÔNG!\nBạn đã mua: ${selectedText}.\nSố dư mới: ${user.balance.toLocaleString('vi-VN')} VND.\nThông tin đơn hàng đã được gửi đến bạn.`);
+                showCustomAlert("Đặt hàng thành công!", `Bạn đã mua: <strong>${selectedText}</strong>.<br>Số dư mới: ${user.balance.toLocaleString('vi-VN')} VND.`);
                 
                 purchaseForm.reset();
             } else {
                 // SỐ DƯ KHÔNG ĐỦ
-                alert(`❌ Lỗi: Số dư không đủ! (Cần ${price.toLocaleString('vi-VN')} VND, Hiện có ${currentBalance.toLocaleString('vi-VN')} VND).`);
+                showCustomAlert("Lỗi giao dịch", `Số dư không đủ! Cần ${price.toLocaleString('vi-VN')} VND.`, true);
             }
         });
     </script>
