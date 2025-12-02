@@ -614,56 +614,231 @@
         </div>
     </header>
 
-    <main class="product-detail-content">
-        
-        <div class="product-image-section">
-            <img src="https://tse4.mm.bing.net/th/id/OIP.qnOlLmKFryBP8U-l5TlstQHaE7?pid=Api&P=0&h=180" alt="MUA ROBUX GIÁ TỐT">
-            
-            <div class="product-description">
-                <h3>GIỚI THIỆU SẢN PHẨM</h3>
-                <p>Mua Robux chính hãng với tỷ lệ 1 Robux = 100 VND. Dịch vụ nhanh chóng, an toàn tuyệt đối cho tài khoản của bạn.</p>
-                <ul>
-                    <li>✨ **Tỷ lệ:** 1 Robux = 100 VND (Cực tốt).</li>
-                    <li>🛡️ **Bảo mật:** 100% an toàn, giao dịch uy tín.</li>
-                    <li>⏱️ **Thời gian giao:** 120 giờ (5 ngày) sau khi đặt hàng.</li>
-                    <li>✅ **Hỗ trợ:** Hỗ trợ 24/7 qua Discord/Zalo.</li>
-                </ul>
-                
-                <h3>LƯU Ý QUAN TRỌNG</h3>
-                <p style="color: red; font-weight: bold;">Thông tin tài khoản Roblox là không bắt buộc, nhưng cần thiết nếu bạn muốn chúng tôi giao hàng ngay lập tức.</p>
+    <main class="container main-content">
+        <div class="main-left">
+            <div class="main-banner">
+                <img src="https://staticg.sportskeeda.com/editor/2023/09/da5e0-16958857892879-1920.jpg" alt="Honkai Star Rail Banner">
+            </div>
+
+            <div class="small-banners">
+                <div class="small-banner-item">
+                    <img src="https://upanh.top/b0otqmchs5.jpg" alt="Fish IT Banner">
+                </div>
+                <div class="small-banner-item">
+                    <img src="https://upanh.top/mro60465uz.jpg" alt="Plant vs Brainrot Banner">
+                </div>
             </div>
         </div>
 
-        <div class="product-info-section">
-            <h1>MUA ROBUX GIÁ TỐT</h1>
-            
-            <div class="price-box">
-                <span>Tỷ lệ hiện tại: <span class="old-price">1 Robux = 200 VND</span></span>
-                <span>Tỷ lệ Shop TBD: <span class="new-price">1 Robux = 100 VND</span></span>
-            </div>
+        <div class="main-right">
+            <div class="top-up-form">
+                <div class="tab-buttons">
+                    <button class="active" onclick="changeTab(this, 'napthe')">Nạp thẻ</button>
+                    <button onclick="changeTab(this, 'phanthuong')">Phần thưởng</button>
+                </div>
 
-            <form class="purchase-form" id="purchaseForm">
-                <label for="robux-package">Chọn Gói Robux:</label>
-                <select id="robux-package" required>
-                    <option value="40000">400 Robux (40,000 VND)</option>
-                    <option value="70000">700 Robux (70,000 VND)</option>
-                    <option value="100000">1000 Robux (100,000 VND)</option>
-                    <option value="150000">1500 Robux (150,000 VND)</option>
-                </select>
+                <div id="napthe" class="tab-content active">
+                    <h3>TOP NẠP HÀNG TUẦN</h3>
 
-                <label for="roblox-username">Tên Tài Khoản Roblox:</label>
-                <input type="text" id="roblox-username" placeholder="Nhập tên tài khoản của bạn">
+                    <ul class="top-depositors">
+                        <li class="top-depositor-item">
+                            <span class="top-depositor-rank rank1">1</span>
+                            <div class="top-depositor-info">
+                                <div class="name">Kana</div>
+                                <div class="amount">Đã nạp: <strong>100,000,000 VND</strong></div>
+                            </div>
+                        </li>
+                        <li class="top-depositor-item">
+                            <span class="top-depositor-rank rank2">2</span>
+                            <div class="top-depositor-info">
+                                <div class="name">Mèo Béo Màu Xanh</div>
+                                <div class="amount">Đã nạp: <strong>36,000,000 VND</strong></div>
+                            </div>
+                        </li>
+                        <li class="top-depositor-item">
+                            <span class="top-depositor-rank rank3">3</span>
+                            <div class="top-depositor-info">
+                                <div class="name">Zasida</div>
+                                <div class="amount">Đã nạp: <strong>16,000,000 VND</strong></div>
+                            </div>
+                        </li>
+                    </ul>
 
-                <label for="roblox-password">Mật khẩu (Tạm thời):</label>
-                <input type="password" id="roblox-password" placeholder="Mật khẩu của bạn">
+                    <form id="topUpForm">
+                        <div class="form-group">
+                            <label for="provider">Chọn Nhà Mạng</label>
+                            <select id="provider" required>
+                                <option value="viettel">Viettel</option>
+                                <option value="mobifone">Mobifone</option>
+                                <option value="vinaphone">Vinaphone</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">-- Chọn mệnh giá. Vui lòng kiểm tra kỹ</label>
+                            <select id="amount" required>
+                                <option value="10000">10,000 VND</option>
+                                <option value="20000">20,000 VND</option>
+                                <option value="50000">50,000 VND</option>
+                                <option value="100000">100,000 VND</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="card-code">Nhập mã thẻ</label>
+                            <input type="text" id="card-code" placeholder="Mã thẻ" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="serial">Nhập số serial</label>
+                            <input type="text" id="serial" placeholder="Số serial" required>
+                        </div>
+                        <button type="submit">NẠP THẺ NGAY</button>
+                    </form>
+                </div>
                 
-                <label for="contact-phone">Số Điện Thoại/Zalo:</label>
-                <input type="text" id="contact-phone" placeholder="Để tiện liên hệ giao Robux">
-
-                <button type="submit">THANH TOÁN & ĐẶT HÀNG</button>
-            </form>
+                <div id="phanthuong" class="tab-content">
+                    <h3>THƯỞNG HÀNG NGÀY</h3>
+                    <p>Nhận ngay 5,000 VND vào số dư tài khoản của bạn sau mỗi lần nạp thẻ thành công, giới hạn 1 lần mỗi 24 giờ!</p>
+                    <button id="claimRewardBtn">NHẬN PHẦN THƯỞNG</button>
+                </div>
+            </div>
         </div>
     </main>
+
+    <div class="container products-section">
+        
+        <div class="products-header">
+            <h2>DỊCH VỤ ROBLOX</h2>
+            <button class="view-all-btn" onclick="showCustomAlert('Xem thêm', 'Đang chuyển đến trang danh sách dịch vụ.')">Xem thêm</button>
+        </div>
+        <div class="product-grid">
+            
+            <div class="product-card" onclick="window.location.href='shoprobux.html'">
+                <div class="tag">HOT DEAL</div>
+                <div class="thumbnail">
+                    <img src="https://upanh.top/hwlgcryxkz.jpg" alt="ROBUX 120H">
+                </div>
+                <div class="info">
+                    <h4>MUA ROBUX 120H</h4>
+                    <p class="price">Đã bán: 75846 | <span>Giá: <strong>790895</strong></span></p>
+                    <p class="sold-count">Ưu đãi mùa hè</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='vongquay.html'">
+                <div class="tag">SUMMER</div>
+                <div class="thumbnail">
+                    <img src="https://upanh.top/jegyw18gr3.jpg" alt="Vòng Quay Robux">
+                </div>
+                <div class="info">
+                    <h4>VÒNG QUAY ROBUX CHÍNH HÃNG</h4>
+                    <p class="price">Mỗi lượt: 20,000 VND</p>
+                    <p class="sold-count">Trúng từ 50 - 8000 Robux</p>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="window.location.href='shoprobux.html'">
+                <div class="tag">MỚI</div>
+                <div class="thumbnail">
+                    <img src="https://upanh.top/gu0u5ngywn.jpg" alt="TRÁI ÁC QUỶ VĨNH VIỄN">
+                </div>
+                <div class="info">
+                    <h4>MUA TRÁI ÁC QUỶ VĨNH VIỄN</h4>
+                    <p class="price">Đã bán: 49771 | <span>Giá: <strong>300096</strong></span></p>
+                    <p class="sold-count">Giảm 50% hôm nay</p>
+                </div>
+            </div>
+             
+            <div class="product-card" onclick="window.location.href='shoprobux.html'">
+                <div class="tag">HOT</div>
+                <div class="thumbnail">
+                    <img src="https://upanh.top/3jdjk2jx1k.jpg" alt="TRÁI ÁC QUỶ RƯƠNG">
+                </div>
+                <div class="info">
+                    <h4>MUA TRÁI ÁC QUỶ RƯƠNG</h4>
+                    <p class="price">Đã bán: 89094 | <span>Giá: <strong>955381</strong></span></p>
+                    <p class="sold-count">Giảm Giá 15% Code: TBDVIP</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='shoprobux.html'">
+                <div class="tag">BEST</div>
+                <div class="thumbnail">
+                    <img src="https://discord.com/assets/411d8a698dd15ddf.png" alt="DỊCH VỤ KANA">
+                </div>
+                <div class="info">
+                    <h4>DỊCH VỤ KANA</h4>
+                    <p class="price">Đã bán: 87917 | <span>Giá: <strong>178094</strong></span></p>
+                    <p class="sold-count">DỊCH VỤ UY TÍN 100%</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='shoprobux.html'">
+                <div class="tag">SALE</div>
+                <div class="thumbnail">
+                    <img src="https://upanh.top/mro60465uz.jpg" alt="PLANT VS BRAINROT">
+                </div>
+                <div class="info">
+                    <h4>DỊCH VỤ PLANT VS BRAINROT</h4>
+                    <p class="price">Đã bán: 64648 | <span>Giá: <strong>198953</strong></span></p>
+                    <p class="sold-count">Giá tốt nhất</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='shoprobux.html'">
+                <div class="tag">ƯU ĐÃI</div>
+                <div class="thumbnail">
+                    <img src="https://upanh.top/b0otqmchs5.jpg" alt="DỊCH VỤ FISH IT">
+                </div>
+                <div class="info">
+                    <h4>DỊCH VỤ FISH IT</h4>
+                    <p class="price">Đã bán: 42579 | <span>Giá: <strong>993578</strong></span></p>
+                    <p class="sold-count">Siêu hiếm</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='shoprobux.html'">
+                <div class="tag">MỚI</div>
+                <div class="thumbnail">
+                    <img src="https://upanh.top/lhmnohq0ke.jpg" alt="DỊCH VỤ STEAL A BRAINROT">
+                </div>
+                <div class="info">
+                    <h4>DỊCH VỤ STEAL A BRAINROT</h4>
+                    <p class="price">Đã bán: 81358 | <span>Giá: <strong>914649</strong></span></p>
+                    <p class="sold-count">Dịch vụ đặc biệt</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="products-header" style="margin-top: 40px;">
+            <h2>DỊCH VỤ GENSHIN</h2>
+            <button class="view-all-btn" onclick="showCustomAlert('Xem thêm', 'Đang chuyển đến trang danh sách dịch vụ Genshin.')">Xem thêm</button>
+        </div>
+        <div class="product-grid">
+            
+            <div class="product-card" onclick="showCustomAlert('Chuyển đến', 'Trang nạp đá Genshin đang được phát triển.')">
+                <div class="tag">HOT</div>
+                <div class="thumbnail">
+                    <img src="https://bumblestore.vn/www/uploads/images/products/2023712214020_9(1).png" alt="Nạp Đá Genshin">
+                </div>
+                <div class="info">
+                    <h4>NẠP ĐÁ GENSHIN IMPACT</h4>
+                    <p class="price">Đã bán: 12500 | <span>Giá: <strong>150000</strong></span></p>
+                    <p class="sold-count">Nạp đá ủy thác chính hãng</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="showCustomAlert('Chuyển đến', 'Trang cày thuê Genshin đang được phát triển.')">
+                <div class="tag">MỚI</div>
+                <div class="thumbnail">
+                    <img src="https://shopgarena.net/wp-content/uploads/2023/05/Cay-Thue-Genshin-Impact.jpg" alt="Cày thuê Genshin">
+                </div>
+                <div class="info">
+                    <h4>CÀY THUÊ AR RANK TỐC ĐỘ</h4>
+                    <p class="price">Đã bán: 9800 | <span>Giá: <strong>99000</strong></span></p>
+                    <p class="sold-count">Cày thuê Tinh Anh, Vật phẩm</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="customAlert">
         <div class="alert-content">
@@ -673,14 +848,44 @@
         </div>
     </div>
 
+    <div id="authModal" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            
+            <div id="loginStep" class="modal-step active">
+                <h2>ĐĂNG NHẬP TÀI KHOẢN</h2>
+                <form id="loginForm">
+                    <input type="text" id="modalUsername" class="modal-input" placeholder="Nhập Tài Khoản..." required>
+                    <input type="password" id="modalPassword" class="modal-input" placeholder="Nhập Mật Khẩu..." required>
+                    
+                    <button type="submit" class="modal-login-btn">ĐĂNG NHẬP</button>
+                    <button type="button" class="modal-register-btn" onclick="showRegisterStep()">TẠO TÀI KHOẢN</button>
+                </form>
+            </div>
+
+            <div id="registerStep" class="modal-step">
+                <h2>TẠO TÀI KHOẢN MỚI</h2>
+                <form id="registerForm">
+                    <input type="text" id="regUsername" class="modal-input" placeholder="Tên Tài Khoản..." required>
+                    <input type="password" id="regPassword" class="modal-input" placeholder="Mật Khẩu..." required>
+                    <input type="password" id="regConfirmPassword" class="modal-input" placeholder="Xác Nhận Mật Khẩu..." required>
+
+                    <button type="submit" class="modal-login-btn">ĐĂNG KÝ NGAY</button>
+                    <button type="button" class="modal-register-btn" onclick="showLoginStep()">QUAY LẠI ĐĂNG NHẬP</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Shop TBD. Bảo lưu mọi quyền.</p>
+            <p>&copy; 2024 Shop TBD. Bảo lưu mọi quyền.</p>
         </div>
     </footer>
 
     <script>
-        // CẤU HÌNH FIREBASE
+        // CẤU HÌNH FIREBASE VÀ CÁC HÀM API
+        
         const firebaseConfig = {
           apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
           authDomain: "shop-tbd.firebaseapp.com",
@@ -693,7 +898,7 @@
         
         const firebaseApp = firebase.initializeApp(firebaseConfig);
         const db = firebaseApp.firestore(); 
-        const ordersDb = db.collection("orders"); 
+        const cardsDb = db.collection("card_records"); 
 
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
@@ -709,72 +914,320 @@
             await db.collection("users").doc(username).set(userData);
             return true;
         }
+
+        async function fetchCardData(cardCode) {
+            const doc = await cardsDb.doc(cardCode).get();
+            if (doc.exists) {
+                return doc.data();
+            }
+            return null;
+        }
+
+        async function saveCardData(cardCode, cardData) {
+            await db.collection("card_records").doc(cardCode).set(cardData);
+            return true;
+        }
         
-        // HÀM HIỂN THỊ ALERT TÙY CHỈNH
+        // HÀM HIỂN THỊ ALERT TÙY CHỈNH (THAY THẾ alert())
         function showCustomAlert(title, message, isError = false) {
             document.getElementById('alertTitle').textContent = title;
             document.getElementById('alertMessage').innerHTML = message;
             
             if (isError) {
-                document.getElementById('alertTitle').style.color = '#e74c3c'; // Red for error
+                document.getElementById('alertTitle').style.color = '#e74c3c';
             } else {
-                document.getElementById('alertTitle').style.color = '#28a745'; // Green for success
+                document.getElementById('alertTitle').style.color = '#28a745';
             }
             document.getElementById('customAlert').style.display = 'flex';
         }
 
-        const purchaseForm = document.getElementById('purchaseForm');
+        function changeTab(element, tabId) {
+            const buttons = document.querySelectorAll('.tab-buttons button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
 
-        purchaseForm.addEventListener('submit', async function(event) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.style.display = 'none');
+            document.getElementById(tabId).style.display = 'block';
+        }
+
+        const authModal = document.getElementById('authModal');
+        const loginStep = document.getElementById('loginStep');
+        const registerStep = document.getElementById('registerStep');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const topUpForm = document.getElementById('topUpForm');
+        const claimRewardBtn = document.getElementById('claimRewardBtn');
+
+        function showAuthPrompt() {
+            showLoginStep();
+            authModal.classList.add('active');
+        }
+
+        function closeModal() {
+            authModal.classList.remove('active');
+            loginForm.reset();
+            registerForm.reset();
+        }
+
+        function showLoginStep() {
+            loginStep.classList.add('active');
+            registerStep.classList.remove('active');
+        }
+
+        function showRegisterStep() {
+            registerStep.classList.add('active');
+            loginStep.classList.remove('active');
+        }
+
+        function isRepeatedChar(str) {
+            if (str.length === 0) return false;
+            return /^([0-9a-zA-Z])\1*$/.test(str);
+        }
+
+        async function addAdminBalance() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser !== 'Tri') {
+                showCustomAlert("Lỗi", "Bạn không có quyền truy cập Admin!", true);
+                return;
+            }
+
+            let user = await fetchUserData(currentUser);
+            const amount = 100000;
+
+            user.balance += amount;
+            await saveUserData(currentUser, user);
+
+            showCustomAlert("ADMIN", `Cộng thành công ${amount.toLocaleString('vi-VN')} VND vào tài khoản Tri!`);
+            checkLoginStatus(); 
+        }
+        
+        registerForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+            if (password !== confirmPassword) {
+                showCustomAlert("Lỗi Đăng ký", "Mật khẩu xác nhận không khớp!", true);
+                return;
+            }
+
+            let existingUser = await fetchUserData(username);
+            if (existingUser) {
+                showCustomAlert("Lỗi Đăng ký", "Tên người dùng đã tồn tại!", true);
+                return;
+            }
+
+            const newUser = { username, password, balance: 50000, robuxBalance: 0, lastClaim: 0, canClaimReward: false };
+            await saveUserData(username, newUser);
+            
+            showCustomAlert("Đăng ký thành công", "Bạn có 50,000 VND. Vui lòng đăng nhập.");
+            
+            showLoginStep();
+            registerForm.reset();
+        });
+
+        loginForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('modalUsername').value;
+            const password = document.getElementById('modalPassword').value;
+
+            let user = await fetchUserData(username);
+
+            if (user && user.password === password) {
+                localStorage.setItem('currentUser', username);
+                closeModal();
+                showCustomAlert("Thành công", "Đăng nhập thành công!");
+                checkLoginStatus();
+            } else {
+                showCustomAlert("Lỗi Đăng nhập", "Sai tên người dùng hoặc mật khẩu!", true);
+            }
+        });
+
+        topUpForm.addEventListener('submit', async function(event) {
             event.preventDefault();
 
             const currentUser = localStorage.getItem('currentUser');
             if (!currentUser) {
-                showCustomAlert("Lỗi Đăng nhập", "Vui lòng đăng nhập để thực hiện giao dịch!", true);
+                showCustomAlert("Lỗi Đăng nhập", "Vui lòng đăng nhập để nạp thẻ!", true);
+                showAuthPrompt();
                 return;
             }
 
-            const packageSelect = document.getElementById('robux-package');
-            const price = parseInt(packageSelect.value);
-            const selectedText = packageSelect.options[packageSelect.selectedIndex].text;
-            const robloxUsername = document.getElementById('roblox-username').value;
-            const robloxPassword = document.getElementById('roblox-password').value;
-            const contactPhone = document.getElementById('contact-phone').value;
+            const amount = parseInt(document.getElementById('amount').value);
+            const cardCode = document.getElementById('card-code').value.trim();
+            const serial = document.getElementById('serial').value.trim();
+            
+            if (cardCode.startsWith('999') || isRepeatedChar(cardCode) || isRepeatedChar(serial)) {
+                showCustomAlert("Lỗi Xác nhận", "Mã thẻ hoặc Serial không hợp lệ (Không được nhập số lặp lại/mã giả).", true);
+                return;
+            }
 
-            let user = await fetchUserData(currentUser);
-            if (!user) {
-                 showCustomAlert("Lỗi Truy cập", "Không tìm thấy dữ liệu người dùng.", true);
+            if (!cardCode.includes('VALID25')) {
+                 showCustomAlert("Lỗi Xác nhận", "Mã thẻ không tìm thấy trong hệ thống.", true);
                  return;
             }
-            let currentBalance = user.balance;
 
-            // 1. KIỂM TRA SỐ DƯ
-            if (currentBalance >= price) {
-                
-                // 2. TRỪ TIỀN VÀ CẬP NHẬT USER
-                user.balance = currentBalance - price;
-                await saveUserData(currentUser, user);
+            let usedCard = await fetchCardData(cardCode);
+            
+            if (usedCard) {
+                if (usedCard.serial === serial) {
+                    showCustomAlert("Lỗi Thẻ", `Mã thẻ ${cardCode} đã được sử dụng vào lúc: ${new Date(usedCard.timestamp).toLocaleString('vi-VN')}.`, true);
+                } else {
+                    showCustomAlert("Lỗi Thẻ", `Mã thẻ ${cardCode} đã được sử dụng. (Lỗi Serial)`, true);
+                }
+                return;
+            }
+            
+            let user = await fetchUserData(currentUser);
+            
+            user.balance += amount;
+            user.canClaimReward = true; 
+            await saveUserData(currentUser, user); 
 
-                // 3. TẠO VÀ LƯU ĐƠN HÀNG MỚI VÀO FIRESTORE
-                const orderRecord = {
-                    customerUsername: currentUser,
-                    robloxUsername: robloxUsername,
-                    robloxPassword: robloxPassword, 
-                    contactPhone: contactPhone,
-                    packageValueVND: price,
-                    packageDescription: selectedText,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    status: 'PENDING',
-                    type: 'ROBUX_PURCHASE'
-                };
-                await ordersDb.add(orderRecord); 
+            const cardRecord = {
+                serial: serial, 
+                amount: amount,
+                timestamp: new Date().getTime(),
+                user: currentUser
+            };
+            await saveCardData(cardCode, cardRecord); 
 
-                showCustomAlert("Đặt hàng thành công!", `Bạn đã mua: <strong>${selectedText}</strong>.<br>Số dư mới: ${user.balance.toLocaleString('vi-VN')} VND.`);
-                
-                purchaseForm.reset();
+            showCustomAlert("Nạp thẻ thành công", `Thẻ thật, chưa sử dụng.<br>Bạn đã nạp ${amount.toLocaleString('vi-VN')} VND.<br>Số dư mới: ${user.balance.toLocaleString('vi-VN')} VND. Bạn có thể nhận thưởng!`);
+            
+            topUpForm.reset();
+            checkLoginStatus();
+        });
+
+        claimRewardBtn.addEventListener('click', async function() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                showCustomAlert("Lỗi Đăng nhập", "Vui lòng đăng nhập để nhận thưởng!", true);
+                showAuthPrompt();
+                return;
+            }
+
+            let user = await fetchUserData(currentUser);
+            const rewardAmount = 5000;
+            const hours24 = 24 * 60 * 60 * 1000;
+            const currentTime = new Date().getTime();
+
+            if (!user.canClaimReward) {
+                showCustomAlert("Lỗi", "Phần thưởng này đã được nhận sau lần nạp thẻ gần nhất. Hãy nạp thẻ để làm mới quyền nhận thưởng!", true);
+                return;
+            }
+
+            if (currentTime - user.lastClaim < hours24) {
+                const nextClaimTime = new Date(user.lastClaim + hours24);
+                showCustomAlert("Lỗi Thời gian", `Bạn chỉ có thể nhận thưởng sau 24 giờ.<br>Vui lòng quay lại sau: ${nextClaimTime.toLocaleTimeString('vi-VN')} ngày ${nextClaimTime.toLocaleDateString('vi-VN')}`, true);
+                return;
+            }
+
+            user.balance += rewardAmount;
+            user.lastClaim = currentTime;
+            user.canClaimReward = false; 
+            await saveUserData(currentUser, user); 
+
+            showCustomAlert("Thành công", `Chúc mừng! Bạn nhận được ${rewardAmount.toLocaleString('vi-VN')} VND Thưởng Hàng Ngày.<br>Số dư mới: ${user.balance.toLocaleString('vi-VN')} VND.`);
+            checkLoginStatus();
+        });
+        
+        async function renderAuthStatus(user) {
+            const area = document.getElementById('auth-status-area');
+            let adminButtonHtml = '';
+            const avatarUrl = "https://tse2.mm.bing.net/th/id/OIP.vg41yG82qw84ziz5nS-CWQHaHa?pid=Api&P=0&h=180";
+
+            if (user && user.username === 'Tri') {
+                 adminButtonHtml = `
+                    <button class="admin-btn" onclick="addAdminBalance()">
+                        ADMIN: +100K 💰
+                    </button>`;
+            }
+
+            if (user) {
+                area.innerHTML = `
+                    ${adminButtonHtml}
+                    <div class="dropdown" onclick="toggleDropdown()">
+                        <button class="profile-btn">
+                            <img src="${avatarUrl}" alt="Avatar">
+                            ${user.username}
+                            <span class="dropdown-arrow">&#9660;</span>
+                        </button>
+                        <div class="dropdown-content" id="profileDropdown">
+                            <div class="dropdown-header">
+                                Số dư: ${user.balance.toLocaleString('vi-VN')} VND 
+                                <br>
+                                Robux: ${(user.robuxBalance || 0).toLocaleString('vi-VN')} 💎
+                            </div>
+                            <a href="taikhoan.html" class="red-text">Quản lý tài khoản</a>
+                            <a href="taikhoan.html#lichsunap">Lịch sử nạp tiền</a>
+                            <a href="taikhoan.html#lichsumua">Lịch sử mua nick</a>
+                            <a href="taikhoan.html#lichsudv">Lịch sử dịch vụ</a>
+                            <a href="taikhoan.html#lichsuquay">Lịch sử quay</a>
+                            <div class="dropdown-separator"></div>
+                            <a href="#" onclick="logout()">Đăng xuất</a>
+                        </div>
+                    </div>
+                `;
             } else {
-                // SỐ DƯ KHÔNG ĐỦ
-                showCustomAlert("Lỗi giao dịch", `Số dư không đủ! Cần ${price.toLocaleString('vi-VN')} VND.`, true);
+                area.innerHTML = `
+                    <div class="icon-text" onclick="showAuthPrompt()">
+                        <img src="https://img.icons8.com/ios-filled/50/000000/user--v1.png" alt="User Icon"> Đăng nhập
+                    </div>
+                    <div class="icon-text" onclick="showAuthPrompt()">
+                        <img src="https://img.icons8.com/ios-filled/50/000000/add-user-male--v1.png" alt="Register Icon"> Đăng ký
+                    </div>
+                `;
+            }
+        }
+
+        function toggleDropdown() {
+            document.getElementById("profileDropdown").classList.toggle("show");
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.profile-btn') && !event.target.closest('.profile-btn')) {
+                const dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    const openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            showCustomAlert("Đăng xuất", "Bạn đã đăng xuất thành công.");
+            window.location.reload(); 
+        }
+
+        async function checkLoginStatus() {
+            const username = localStorage.getItem('currentUser');
+            if (username) {
+                let user = await fetchUserData(username);
+                if (user) {
+                    renderAuthStatus(user);
+                    return;
+                }
+            }
+            renderAuthStatus(null);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus(); 
+            document.querySelectorAll('.top-up-form .tab-content').forEach(content => content.style.display = 'none');
+            const firstTabContent = document.querySelector('.top-up-form .tab-content');
+            if (firstTabContent) {
+                firstTabContent.style.display = 'block';
+                const firstButton = document.querySelector('.tab-buttons button');
+                if (firstButton) {
+                    firstButton.classList.add('active');
+                }
             }
         });
     </script>
