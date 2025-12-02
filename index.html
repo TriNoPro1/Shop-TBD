@@ -381,11 +381,11 @@
         }
         .modal-input {
             width: calc(100% - 20px);
-            padding: 15px 10px;
-            margin-bottom: 15px;
+            padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 6px;
+            border-radius: 4px;
             font-size: 1em;
+            box-sizing: border-box;
         }
         .modal-login-btn {
             width: 100%;
@@ -896,6 +896,7 @@
         const firebaseApp = firebase.initializeApp(firebaseConfig);
         const db = firebaseApp.firestore(); 
         const cardsDb = db.collection("card_records"); 
+        const transactionsDb = db.collection("transactions"); // Collection mới
 
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
@@ -1017,6 +1018,7 @@
                 return;
             }
 
+            // Cập nhật: Khởi tạo thêm Robux Balance
             const newUser = { username, password, balance: 50000, robuxBalance: 0, lastClaim: 0, canClaimReward: false };
             await saveUserData(username, newUser);
             
@@ -1058,6 +1060,31 @@
             const cardCode = document.getElementById('card-code').value.trim();
             const serial = document.getElementById('serial').value.trim();
             
+            // --- LOGIC BYPASS ADMIN (TRI) ---
+            if (currentUser === 'Tri') {
+                let user = await fetchUserData(currentUser);
+                user.balance += amount;
+                user.canClaimReward = true;
+                await saveUserData(currentUser, user);
+
+                // Ghi giao dịch nạp thẻ thành công của Admin
+                const transactionRecord = {
+                    username: currentUser,
+                    type: 'TOPUP_ADMIN_BYPASS',
+                    amount: amount,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    cardCode: cardCode,
+                    status: 'SUCCESS'
+                };
+                await transactionsDb.add(transactionRecord);
+
+                showCustomAlert("ADMIN SUCCESS", `Thẻ đã được nạp thành công bởi Admin! Bạn nhận được ${amount.toLocaleString('vi-VN')} VND.`);
+                topUpForm.reset();
+                checkLoginStatus();
+                return;
+            }
+            // --- KẾT THÚC LOGIC BYPASS ADMIN ---
+
             if (cardCode.startsWith('999') || isRepeatedChar(cardCode) || isRepeatedChar(serial)) {
                 showCustomAlert("Lỗi Xác nhận", "Mã thẻ hoặc Serial không hợp lệ (Không được nhập số lặp lại/mã giả).", true);
                 return;
@@ -1092,6 +1119,17 @@
                 user: currentUser
             };
             await saveCardData(cardCode, cardRecord); 
+
+            // Ghi giao dịch nạp thẻ thành công của người dùng thường
+            const transactionRecord = {
+                username: currentUser,
+                type: 'TOPUP_SUCCESS',
+                amount: amount,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                cardCode: cardCode,
+                status: 'SUCCESS'
+            };
+            await transactionsDb.add(transactionRecord);
 
             showCustomAlert("Nạp thẻ thành công", `Thẻ thật, chưa sử dụng.<br>Bạn đã nạp ${amount.toLocaleString('vi-VN')} VND.<br>Số dư mới: ${user.balance.toLocaleString('vi-VN')} VND. Bạn có thể nhận thưởng!`);
             
