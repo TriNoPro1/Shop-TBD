@@ -340,6 +340,14 @@
         </div>
     </div>
 
+    <div id="customAlert">
+        <div class="alert-content">
+            <h3 id="alertTitle"></h3>
+            <p id="alertMessage"></p>
+            <button onclick="document.getElementById('customAlert').style.display='none'">OK</button>
+        </div>
+    </div>
+
     <script>
         const firebaseConfig = {
           apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
@@ -408,9 +416,9 @@
             document.getElementById('alertMessage').innerHTML = message;
             
             if (isError) {
-                document.getElementById('alertTitle').style.color = '#e74c3c'; // Red for error
+                document.getElementById('alertTitle').style.color = '#e74c3c';
             } else {
-                document.getElementById('alertTitle').style.color = '#28a745'; // Green for success
+                document.getElementById('alertTitle').style.color = '#28a745';
             }
             alertModal.style.display = 'flex';
         }
