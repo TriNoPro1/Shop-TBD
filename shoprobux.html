@@ -252,7 +252,6 @@
     </footer>
 
     <script>
-        // CẤU HÌNH FIREBASE
         const firebaseConfig = {
           apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
           authDomain: "shop-tbd.firebaseapp.com",
@@ -272,6 +271,7 @@
             if (doc.exists) {
                 const data = doc.data();
                 data.robuxBalance = data.robuxBalance || 0; 
+                data.kimCuongBalance = data.kimCuongBalance || 0;
                 return data;
             }
             return null;
@@ -284,15 +284,14 @@
         
         // HÀM HIỂN THỊ ALERT TÙY CHỈNH
         function showCustomAlert(title, message, isError = false) {
+            const alertModal = document.getElementById('customAlert');
             document.getElementById('alertTitle').textContent = title;
             document.getElementById('alertMessage').innerHTML = message;
             
             if (isError) {
-                document.getElementById('alertTitle').classList.remove('green-text');
-                document.getElementById('alertTitle').classList.add('error-text');
+                document.getElementById('alertTitle').style.color = '#e74c3c'; // Red for error
             } else {
-                document.getElementById('alertTitle').classList.remove('error-text');
-                document.getElementById('alertTitle').classList.add('green-text');
+                document.getElementById('alertTitle').style.color = '#28a745'; // Green for success
             }
             document.getElementById('customAlert').style.display = 'flex';
         }
@@ -308,7 +307,6 @@
                 return;
             }
 
-            // Lấy dữ liệu form
             const packageSelect = document.getElementById('robux-package');
             const price = parseInt(packageSelect.value);
             const selectedText = packageSelect.options[packageSelect.selectedIndex].text;
