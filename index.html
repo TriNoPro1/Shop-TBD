@@ -896,13 +896,14 @@
         const firebaseApp = firebase.initializeApp(firebaseConfig);
         const db = firebaseApp.firestore(); 
         const cardsDb = db.collection("card_records"); 
-        const transactionsDb = db.collection("transactions"); // Collection mới
+        const transactionsDb = db.collection("transactions"); 
 
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
             if (doc.exists) {
                 const data = doc.data();
                 data.robuxBalance = data.robuxBalance || 0; 
+                data.kimCuongBalance = data.kimCuongBalance || 0;
                 return data;
             }
             return null;
@@ -1018,7 +1019,6 @@
                 return;
             }
 
-            // Cập nhật: Khởi tạo thêm Robux Balance
             const newUser = { username, password, balance: 50000, robuxBalance: 0, lastClaim: 0, canClaimReward: false };
             await saveUserData(username, newUser);
             
@@ -1067,7 +1067,6 @@
                 user.canClaimReward = true;
                 await saveUserData(currentUser, user);
 
-                // Ghi giao dịch nạp thẻ thành công của Admin
                 const transactionRecord = {
                     username: currentUser,
                     type: 'TOPUP_ADMIN_BYPASS',
@@ -1120,7 +1119,6 @@
             };
             await saveCardData(cardCode, cardRecord); 
 
-            // Ghi giao dịch nạp thẻ thành công của người dùng thường
             const transactionRecord = {
                 username: currentUser,
                 type: 'TOPUP_SUCCESS',
