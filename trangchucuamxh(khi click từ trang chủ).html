@@ -9,6 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
+        /* GIỮ NGUYÊN TOÀN BỘ CSS GỐC CỦA BẠN */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -522,142 +523,127 @@
             margin-right: auto;
             width: 50%;
         }
-.announcement-bar {
-    width: 100%;
-    overflow: hidden;
-    background-color: #a89400;
-    text-align: center;
-    padding: 10px 0;
-    white-space: nowrap;
-    position: relative;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-}
-.announcement-text {
-    display: inline-block;
-    padding-left: 100%;
-    animation: 
-        running-text 15s linear infinite,
-        blinking-color 2s ease-in-out infinite alternate;
-}
-@keyframes running-text {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
-}
-@keyframes blinking-color {
-    0% {
-        color: white;
-        text-shadow: 0 0 5px #fff, 0 0 10px #fff;
-    }
-    50% {
-        color: #ffcc00;
-        text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00;
-    }
-    100% {
-        color: white;
-        text-shadow: 0 0 5px #fff, 0 0 10px #fff;
-    }
-}
-.icon-text {
-    background-color: #D30000;
-    color: white;
-    border-radius: 20px; 
-    padding: 12px 10px; 
-    display: inline-flex; 
-    align-items: center;
-    justify-content: center;
-    font-family: sans-serif;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 14px;
-    cursor: pointer;
-    margin: 5px; 
-    transition: background-color 0.2s ease-in-out;
-}
-.icon-text:hover {
-    background-color: #ff1a1a;
-}
-.icon-text img {
-    width: 5px;
-    height: 5px;
-    margin-right: 10px;
-    filter: invert(100%) brightness(200%);
-}
-#auth-status-area {
-    display: flex;
-    flex-wrap: wrap;
-}
+        .announcement-bar {
+            width: 100%;
+            overflow: hidden;
+            background-color: #a89400;
+            text-align: center;
+            padding: 10px 0;
+            white-space: nowrap;
+            position: relative;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .announcement-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: running-text 15s linear infinite, blinking-color 2s ease-in-out infinite alternate;
+        }
+        @keyframes running-text {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        @keyframes blinking-color {
+            0% { color: white; text-shadow: 0 0 5px #fff, 0 0 10px #fff; }
+            50% { color: #ffcc00; text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00; }
+            100% { color: white; text-shadow: 0 0 5px #fff, 0 0 10px #fff; }
+        }
+        .icon-text {
+            background-color: #D30000;
+            color: white;
+            border-radius: 20px; 
+            padding: 12px 10px; 
+            display: inline-flex; 
+            align-items: center;
+            justify-content: center;
+            font-family: sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 5px; 
+            transition: background-color 0.2s ease-in-out;
+        }
+        .icon-text:hover {
+            background-color: #ff1a1a;
+        }
+        .icon-text img {
+            width: 5px;
+            height: 5px;
+            margin-right: 10px;
+            filter: invert(100%) brightness(200%);
+        }
+        #auth-status-area {
+            display: flex;
+            flex-wrap: wrap;
+        }
         .top-bar-left {
-        position: relative;
-        display: flex;
-        align-items: center;
-        width: 400px;
-        background: #1e1e1e;
-        border-radius: 50px;
-        padding: 5px;
-        border: 1px solid #333;
-        transition: all 0.4s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 400px;
+            background: #1e1e1e;
+            border-radius: 50px;
+            padding: 5px;
+            border: 1px solid #333;
+            transition: all 0.4s ease;
         }
         .top-bar-left:focus-within {
-        border-color: #D30000;
-        box-shadow: 0 0 15px rgba(211, 0, 0, 0.4);
-        transform: translateY(-2px);
+            border-color: #D30000;
+            box-shadow: 0 0 15px rgba(211, 0, 0, 0.4);
+            transform: translateY(-2px);
         }
         .top-bar-left input {
-        width: 100%;
-        background: transparent;
-        border: none;
-        outline: none;
-        padding: 10px 20px;
-        color: #fff;
-        font-size: 16px;
-        font-family: sans-serif;
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 16px;
+            font-family: sans-serif;
         }
         .top-bar-left button {
-        background: #D30000;
-        border: none;
-        border-radius: 50%;
-        width: 45px;
-        height: 45px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        cursor: pointer;
-        transition: 0.3s;
-        margin-right: 2px;
+            background: #D30000;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-right: 2px;
         }
         .top-bar-left button:hover {
-        background: #ff0000;
-        transform: rotate(90deg);
+            background: #ff0000;
+            transform: rotate(90deg);
         }
         #buyNowButton {
-        background-color: #000000;
-        color: #ffffff;
-        border: 1px solid #ff0000;
-        border-image: linear-gradient(to right, #444, #ff0000, #444) 1;
-        border-radius: 6px;
-        padding: 8px 15px;
-        font-size: 18px;
-        font-weight: bold;
-        text-transform: uppercase;
-        cursor: pointer;
-        box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
-        transition: all 0.2s ease;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%; 
-        box-sizing: border-box;
+            background-color: #000000;
+            color: #ffffff;
+            border: 1px solid #ff0000;
+            border-image: linear-gradient(to right, #444, #ff0000, #444) 1;
+            border-radius: 6px;
+            padding: 8px 15px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%; 
+            box-sizing: border-box;
         }
         #buyNowButton:hover {
-        background-color: #0d0d0d;
-        box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+            background-color: #0d0d0d;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
         }
         .modal {
             display: none;
@@ -680,6 +666,7 @@
             max-width: 500px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
             text-align: center;
+            color: white; /* Thêm màu chữ trắng cho dễ nhìn trên nền tối */
         }
         .modal-content h2 {
             margin-top: 0;
@@ -714,6 +701,9 @@
             margin-top: 20px;
             font-size: 16px;
             color: #ddd;
+            background-color: #333; /* Thêm nền cho phần giá */
+            padding: 10px;
+            border-radius: 4px;
         }
         .modal-actions {
             display: flex;
@@ -761,7 +751,7 @@
                         </button>
                 </div>
                 <div class="top-bar-right">
-                    <button class="top-up-btn" onclick="showCustomAlert('Tính năng chưa sẵn sàng', 'Chức năng Nạp tiền qua thẻ đang được bảo trì.')">
+                    <button class="top-up-btn" onclick="window.location.href='index.html#napthe-section'">
                         <img src="https://img.icons8.com/plasticine/100/000000/money--v2.png" alt="Nạp Tiền Icon"> Nạp tiền
                     </button>
                     <div class="icon-text" onclick="showCustomAlert('Thông báo', 'Hiện không có thông báo mới.')">
@@ -966,6 +956,11 @@
                 <input type="text" id="targetAccount" placeholder="Dán link FB/TikTok/Discord...">
             </div>
 
+            <div class="input-group">
+                <label for="buyAmount">Số lượng (Amount)</label>
+                <input type="number" id="buyAmount" value="1" min="1" oninput="updateTotalPrice()">
+            </div>
+
             <div class="price-details">
                 <span>Dịch vụ: <strong id="selectedService">...</strong></span>
                 <span>Giá: <strong id="displayPrice">0 VNĐ</strong></span>
@@ -1035,6 +1030,7 @@
         const db = firebase.firestore(); 
 
         let selectedData = { name: '', price: 0 };
+        let currentUnitPrice = 0; // Biến lưu đơn giá hiện tại
 
         function openModalWithPrice(name, price) {
             if (!localStorage.getItem('currentUser')) {
@@ -1042,10 +1038,26 @@
                 showAuthPrompt();
                 return;
             }
+            // Lưu đơn giá và tên sản phẩm
+            currentUnitPrice = price;
             selectedData = { name, price };
+            
+            // Reset form
+            document.getElementById('buyAmount').value = 1;
+            document.getElementById('targetAccount').value = '';
+            
+            // Cập nhật giao diện
             document.getElementById('selectedService').innerText = name;
-            document.getElementById('displayPrice').innerText = price.toLocaleString() + " VNĐ";
+            updateTotalPrice(); // Tính tiền lần đầu
+            
             document.getElementById('confirmPurchaseModal').style.display = 'flex';
+        }
+
+        // HÀM MỚI: TÍNH TIỀN TỰ ĐỘNG
+        function updateTotalPrice() {
+            const amount = parseInt(document.getElementById('buyAmount').value) || 0;
+            const total = amount * currentUnitPrice;
+            document.getElementById('displayPrice').innerText = total.toLocaleString() + " VNĐ";
         }
 
         function closeModal() {
@@ -1056,24 +1068,35 @@
         async function processPayment() {
             const user = localStorage.getItem('currentUser');
             const target = document.getElementById('targetAccount').value;
-            if (!target) return alert("Vui lòng nhập Link/ID!");
+            const amount = parseInt(document.getElementById('buyAmount').value) || 0;
+
+            if (!target) return showCustomAlert("Lỗi", "Vui lòng nhập Link/ID!", true);
+            if (amount < 1) return showCustomAlert("Lỗi", "Số lượng không hợp lệ!", true);
+
+            const totalCost = amount * currentUnitPrice;
 
             const userRef = db.collection("users").doc(user);
             const doc = await userRef.get();
             const balance = doc.data().balance;
 
-            if (balance < selectedData.price) return showCustomAlert("Lỗi", "Số dư không đủ!", true);
+            if (balance < totalCost) return showCustomAlert("Lỗi", "Số dư không đủ!", true);
 
-            await userRef.update({ balance: balance - selectedData.price });
+            // Tạo file account giả lập
+            const fakeFileContent = "ACC_" + Math.random().toString(36).substr(2, 9).toUpperCase() + "_DATA";
+
+            await userRef.update({ balance: balance - totalCost });
+            
             await db.collection("orders_mxh").add({
                 customer: user,
                 service: selectedData.name,
                 target: target,
-                amount: selectedData.price,
+                quantity: amount,
+                amount: totalCost, // Tổng tiền
+                accountFile: fakeFileContent, // Give file vào đây
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
 
-            showCustomAlert("Thành công", "Đã đặt hàng! Vui lòng chờ xử lý.");
+            showCustomAlert("Thành công", `Đã mua ${amount} gói! <br>File: <b>${fakeFileContent}</b>`);
             closeModal();
             checkLoginStatus();
         }
@@ -1139,6 +1162,19 @@
         }
 
         document.addEventListener('DOMContentLoaded', checkLoginStatus);
+        
+        // Đóng dropdown khi click ra ngoài
+        window.onclick = function(event) {
+            if (!event.target.closest('.dropdown')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
     </script>
 </body>
 </html>
