@@ -8,89 +8,550 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; color: #333; margin: 0; padding: 0; }
-        .header-main { width: 100%; background-color: #2c3e50; padding: 10px 0; }
-        .header-main a { color: #ff5722; font-size: 1.8em; font-weight: 900; text-decoration: none; margin-left: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-        .top-bar { background-color: #f8f8f8; padding: 8px 0; font-size: 0.9em; border-bottom: 1px solid #eee; }
-        .top-bar-right { display: flex; align-items: center; margin-left: auto; }
-        .app-container { max-width: 800px; margin: 30px auto; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); text-align: center; }
-        .wheel-container { position: relative; width: 350px; height: 350px; margin: 20px auto; }
-        #wheel { width: 100%; height: 100%; border-radius: 50%; transition: transform 5s cubic-bezier(0.1, 0, 0.1, 1); border: 5px solid #2c3e50; }
-        #indicator { width: 0; height: 0; border-style: solid; border-width: 25px 15px 0 15px; border-color: #e74c3c transparent transparent transparent; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); z-index: 10; }
-        .action-row { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px; }
-        select, .btn-spin { padding: 12px; border-radius: 5px; font-weight: bold; border: 1px solid #ddd; }
-        .btn-spin { background: #e74c3c; color: white; cursor: pointer; border: none; padding: 12px 30px; }
-        .btn-spin:disabled { background: #95a5a6; cursor: not-allowed; }
-        .dropdown { position: relative; display: inline-block; }
-        .profile-btn { display: flex; align-items: center; padding: 5px 12px; background: #fff; border: 1px solid #ddd; border-radius: 20px; font-weight: bold; }
-        .profile-btn img { width: 25px; height: 25px; border-radius: 50%; margin-right: 8px; }
-        .dropdown-content { position: absolute; top: 100%; right: 0; background: white; min-width: 220px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10; border-radius: 8px; display: none; text-align: left; }
-        .dropdown-content.show { display: block; }
-        .dropdown-content a { padding: 12px 15px; display: block; border-bottom: 1px solid #eee; }
-        #customAlert { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; display: none; justify-content: center; align-items: center; }
-        .alert-content { background: white; padding: 25px; border-radius: 10px; width: 320px; text-align: center; border-top: 5px solid #ff5722; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5; 
+            color: #333;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .header-main {
+            width: 100%;
+            background-color: #2c3e50;
+            padding: 10px 0;
+        }
+        .header-main a {
+            color: #ff5722;
+            font-size: 1.8em;
+            font-weight: 900;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        .app-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .top-bar-nav {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .top-bar-nav h1 {
+            color: #cc0000;
+            font-size: 1.8em;
+            margin: 0;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .meta-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .meta-buttons button {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .stats-row span {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        #playersOnline {
+            color: #27ae60;
+        }
+        #balanceDisplay {
+            color: #e74c3c;
+            display: none;
+        }
+        #loginPrompt {
+            color: #f39c12;
+        }
+       
+        .wheel-container {
+            position: relative;
+            width: 400px; 
+            height: 400px;
+            margin: 30px auto;
+        }
+        #wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1);
+            border: 5px solid #2c3e50;
+            object-fit: cover;
+        }
+        #indicator {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 25px 15px 0 15px;
+            border-color: #e74c3c transparent transparent transparent;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        .action-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        #costDropdown {
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1em;
+            border: 1px solid #bdc3c7;
+        }
+        .play-button {
+            padding: 15px 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            border: none;
+            outline: none;
+        }
+        .play-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        #spinButton {
+            background-color: #e74c3c;
+        }
+        #spinButton:hover:not(:disabled) {
+            background-color: #c0392b;
+        }
+        #tryButton {
+            background-color: #f39c12;
+            display: flex;
+            align-items: center;
+        }
+        #tryButton img {
+            margin-right: 5px;
+        }
+        #tryButton:hover:not(:disabled) {
+            background-color: #e67e22;
+        }
+        @media (max-width: 600px) {
+            .app-container {
+                margin: 15px auto;
+                padding: 15px;
+            }
+            .top-bar-nav {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .top-bar-nav h1 {
+                text-align: left;
+                width: 100%;
+            }
+            .stats-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .wheel-container {
+                width: 300px;
+                height: 300px;
+            }
+            .action-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+            #costDropdown, .play-button {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+        /* CUSTOM ALERT MODAL STYLES */
+        #customAlert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .alert-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            border-top: 5px solid #ff5722;
+        }
+        .alert-content h3 {
+            color: #28a745; 
+            margin-top: 0;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .alert-content p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+        .alert-content .error-text {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .alert-content button {
+            background-color: #ff5722;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+        /* HISTORY MODAL */
+        #historyModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .history-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: #333;
+            position: relative;
+        }
+        .history-content h2 {
+            margin-top: 0;
+            color: #cc0000;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        .history-table th, .history-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .history-table th {
+            background-color: #f2f2f2;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-main"><div class="container"><a href="index.html">Shop TBD</a></div></div>
-        <div class="top-bar"><div class="container"><div class="top-bar-right" id="auth-status-area"><span style="color:red;font-weight:bold">Vui lòng đăng nhập tại Trang chủ</span></div></div></div>
+    <header class="header-main">
+        <a href="index.html">Shop TBD</a>
     </header>
+
     <div class="app-container">
-        <h1>VÒNG QUAY ROBUX MAY MẮN</h1>
+        <div class="top-bar-nav">
+            <h1>VÒNG QUAY ROBUX</h1>
+            <div class="meta-buttons">
+                <button onclick="showCustomAlert('Thẻ Lệ', 'Vòng quay có tổng 8 ô thưởng, với tỷ lệ jackpot 8000 Robux là 1%.')">Thẻ lệ</button>
+                <button onclick="showSpinHistory()">Lịch sử chơi</button>
+            </div>
+        </div>
+
+        <div class="stats-row">
+            <span id="playersOnline">Đang chơi: 244 🧑‍🤝‍🧑</span>
+            <span id="loginPrompt">Vui lòng đăng nhập để chơi.</span>
+            <span id="balanceDisplay">Số dư: <strong>0 VND</strong></span>
+        </div>
+
         <div class="wheel-container">
             <div id="indicator"></div>
-            <img id="wheel" src="https://zenoroblox.com/images/minigames/images_background202212311016VQ-N%E1%BB%95-h%C5%A9-Game.png">
+            <img id="wheel" src="https://zenoroblox.com/images/minigames/images_background202212311016VQ-N%E1%BB%95-h%C5%A9-Game.png" alt="Vòng Quay Robux">
         </div>
+
         <div class="action-row">
-            <select id="spin-cost"><option value="20000">20,000đ / 1 Lượt</option><option value="100000">100,000đ / 5 Lượt</option></select>
-            <button id="spinBtn" class="btn-spin">QUAY NGAY</button>
+            <select id="costDropdown">
+                <option value="20000">20,000 VND / 1 Lượt Quay</option>
+                <option value="90000">90,000 VND / 5 Lượt Quay</option> 
+            </select>
+            <button id="spinButton" class="play-button" disabled>
+                <img src="https://img.icons8.com/color/48/play--v1.png" alt="Play Icon"> Quay Ngay
+            </button>
+            <button id="tryButton" class="play-button" onclick="showCustomAlert('Chơi Thử', 'Tính năng chơi thử bị khóa khi đã đăng nhập.')">
+                <img src="https://img.icons8.com/color/48/retry.png" alt="Retry Icon"> Chơi Thử
+            </button>
         </div>
     </div>
-    <div id="customAlert"><div class="alert-content"><h3 id="alertTitle"></h3><p id="alertMessage"></p><button onclick="document.getElementById('customAlert').style.display='none'" style="background:#ff5722;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;font-weight:bold">OK</button></div></div>
+
+    <div id="historyModal">
+        <div class="history-content">
+            <span class="close-btn" onclick="document.getElementById('historyModal').style.display='none'">&times;</span>
+            <h2>Lịch sử Quay thưởng</h2>
+            <div id="historyTableContainer">Đang tải lịch sử...</div>
+            <p style="margin-top: 20px; font-size: 0.8em; color: #888;">Chỉ hiển thị 10 lượt quay gần nhất của bạn.</p>
+        </div>
+    </div>
+
     <script>
-        const firebaseConfig = { apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ", authDomain: "shop-tbd.firebaseapp.com", projectId: "shop-tbd", storageBucket: "shop-tbd.appspot.com", messagingSenderId: "777222985748", appId: "1:777222985748:web:94a9deF4894a3dd7b6f01" };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        let isSpinning = false;
-        const rewards = [200, 60, 8000, 70, 300, 500, 100, 50];
-        function showCustomAlert(t, m, e = false) { document.getElementById('alertTitle').textContent = t; document.getElementById('alertTitle').style.color = e ? 'red' : 'green'; document.getElementById('alertMessage').innerHTML = m; document.getElementById('customAlert').style.display = 'flex'; }
-        async function checkLoginStatus() {
-            const u = localStorage.getItem('currentUser');
-            if(!u) return;
-            const doc = await db.collection("users").doc(u).get();
-            if(doc.exists) {
-                const d = doc.data();
-                document.getElementById('auth-status-area').innerHTML = `<div class="dropdown"><button class="profile-btn" onclick="document.getElementById('pDrop').classList.toggle('show')"><img src="https://tse2.mm.bing.net/th/id/OIP.vg41yG82qw84ziz5nS-CWQHaHa?pid=Api&P=0&h=180">${u} ▼</button><div class="dropdown-content" id="pDrop"><div style="padding:12px;background:#fff0f3;color:#ff0077;font-weight:bold">Tiền: ${d.balance.toLocaleString()}đ<br>Robux: ${d.robuxBalance}</div><a href="taikhoan.html">Tài khoản</a><a href="#" onclick="localStorage.removeItem('currentUser');location.reload()">Đăng xuất</a></div></div>`;
+        const firebaseConfig = {
+          apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
+          authDomain: "shop-tbd.firebaseapp.com",
+          projectId: "shop-tbd",
+          storageBucket: "shop-tbd.firebaseapp.com",
+          messagingSenderId: "777222985748",
+          appId: "1:777222985748:web:94a9deF4894a3dd7b6f01",
+          measurementId: "G-ZR4F57QMJX8"
+        };
+        
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
+        const db = firebaseApp.firestore(); 
+        const historyDb = db.collection("spin_history");
+
+        async function fetchUserData(username) {
+            const doc = await db.collection("users").doc(username).get();
+            if (doc.exists) {
+                const data = doc.data();
+                data.robuxBalance = data.robuxBalance || 0; 
+                data.kimCuongBalance = data.kimCuongBalance || 0;
+                return data;
+            }
+            return null;
+        }
+
+        async function saveUserData(username, userData) {
+            await db.collection("users").doc(username).set(userData);
+            return true;
+        }
+        
+        const rewardWeights = [
+            { value: 8000, weight: 1 }, 
+            { value: 500, weight: 6 }, 
+            { value: 300, weight: 5 }, 
+            { value: 200, weight: 10 }, 
+            { value: 100, weight: 15 }, 
+            { value: 70, weight: 20 }, 
+            { value: 60, weight: 23 }, 
+            { value: 50, weight: 20 }   
+        ];
+
+        const visualRewards = [
+            200, 
+            60,  
+            8000, 
+            70,   
+            300,  
+            500,  
+            100,  
+            50    
+        ];
+        
+        const wheel = document.getElementById('wheel');
+        const spinButton = document.getElementById('spinButton');
+        const balanceDisplay = document.getElementById('balanceDisplay');
+        const loginPrompt = document.getElementById('loginPrompt');
+        const costDropdown = document.getElementById('costDropdown');
+        const historyModal = document.getElementById('historyModal');
+        
+        let currentUserData = null;
+        
+        function showCustomAlert(title, message, isError = false) {
+            const alertModal = document.getElementById('customAlert');
+            document.getElementById('alertTitle').textContent = title;
+            document.getElementById('alertMessage').innerHTML = message;
+            
+            if (isError) {
+                document.getElementById('alertTitle').style.color = '#e74c3c'; // Red for error
+            } else {
+                document.getElementById('alertTitle').style.color = '#28a745'; // Green for success
+            }
+            alertModal.style.display = 'flex';
+        }
+
+        function getWeightedReward() {
+            let totalWeight = rewardWeights.reduce((sum, item) => sum + item.weight, 0);
+            let random = Math.random() * totalWeight;
+            let current = 0;
+            
+            for (const reward of rewardWeights) {
+                current += reward.weight;
+                if (random < current) {
+                    return reward.value;
+                }
+            }
+            return 50; 
+        }
+
+        function calculateStopAngle(winningValue) {
+            const segmentAngle = 360 / visualRewards.length;
+            
+            let winningIndices = visualRewards.map((val, index) => val === winningValue ? index : -1).filter(index => index !== -1);
+            
+            if (winningIndices.length === 0) {
+                 winningIndices = [0]; 
+            }
+            
+            const randomIndex = Math.floor(Math.random() * winningIndices.length);
+            const winningIndex = winningIndices[randomIndex];
+
+            let rotationOffset = (winningIndex * segmentAngle) + (segmentAngle / 2);
+            const extraSpins = 360 * 6;
+            
+            let stopAngle = extraSpins + (360 - rotationOffset);
+            const randomJitter = Math.floor(Math.random() * 20) - 10; 
+
+            return stopAngle + randomJitter;
+        }
+
+        async function showSpinHistory() {
+            const username = localStorage.getItem('currentUser');
+            if (!username) {
+                showCustomAlert("Lỗi", "Vui lòng đăng nhập để xem lịch sử.", true);
+                return;
+            }
+
+            const container = document.getElementById('historyTableContainer');
+            historyModal.style.display = 'flex';
+            container.innerHTML = 'Đang tải...';
+
+            try {
+                const snapshot = await historyDb
+                    .where('username', '==', username)
+                    .orderBy('timestamp', 'desc')
+                    .limit(10)
+                    .get();
+
+                if (snapshot.empty) {
+                    container.innerHTML = '<p>Bạn chưa có lượt quay nào.</p>';
+                    return;
+                }
+
+                let html = '<table class="history-table"><tr><th>Robux Trúng</th><th>Giá Quay</th><th>Thời gian</th></tr>';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const date = data.timestamp ? data.timestamp.toDate().toLocaleTimeString('vi-VN') + ' ' + data.timestamp.toDate().toLocaleDateString('vi-VN') : '---';
+                    html += `<tr><td><strong>${data.prizeRobux.toLocaleString('vi-VN')} R</strong></td><td>${data.costVND.toLocaleString('vi-VN')} VND</td><td>${date}</td></tr>`;
+                });
+                html += '</table>';
+                container.innerHTML = html;
+
+            } catch (error) {
+                console.error("Lỗi tải lịch sử quay:", error);
+                container.innerHTML = '<p style="color: red;">Không thể tải lịch sử quay. Vui lòng kiểm tra kết nối Database.</p>';
             }
         }
-        document.getElementById('spinBtn').onclick = async () => {
-            if(isSpinning) return;
-            const u = localStorage.getItem('currentUser');
-            if(!u) return showCustomAlert('Lỗi','Vui lòng đăng nhập!',true);
-            const cost = parseInt(document.getElementById('spin-cost').value);
-            const userRef = db.collection("users").doc(u);
-            const userDoc = await userRef.get();
-            const userData = userDoc.data();
-            if(userData.balance < cost) return showCustomAlert('Lỗi','Số dư không đủ!',true);
-            isSpinning = true;
-            document.getElementById('spinBtn').disabled = true;
-            const winIdx = Math.floor(Math.random() * rewards.length);
-            const winRobux = rewards[winIdx];
-            const extraDegree = 360 * 5;
-            const stopAngle = extraDegree + (360 - (winIdx * (360/rewards.length)));
-            document.getElementById('wheel').style.transform = `rotate(${stopAngle}deg)`;
+        
+        spinButton.addEventListener('click', async () => {
+            if (!currentUserData) {
+                showCustomAlert("Lỗi", "Vui lòng đăng nhập trước khi quay.", true);
+                return;
+            }
+            
+            const spinCost = parseInt(costDropdown.value);
+            
+            if (currentUserData.balance < spinCost) {
+                showCustomAlert("Lỗi", `Số dư tài khoản không đủ ${spinCost.toLocaleString('vi-VN')} VND!`, true);
+                return;
+            }
+
+            spinButton.disabled = true;
+
+            const winningRobux = getWeightedReward();
+            const angle = calculateStopAngle(winningRobux);
+
+            currentUserData.balance -= spinCost;
+            currentUserData.robuxBalance += winningRobux; 
+            await saveUserData(currentUserData.username, currentUserData);
+            
+            const historyRecord = {
+                username: currentUserData.username,
+                costVND: spinCost,
+                prizeRobux: winningRobux,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp() 
+            };
+            await historyDb.add(historyRecord);
+
+            updateBalanceDisplay(currentUserData);
+
+            wheel.style.transform = `rotate(${angle}deg)`;
+
             setTimeout(async () => {
-                await userRef.update({ balance: userData.balance - cost, robuxBalance: (userData.robuxBalance || 0) + winRobux });
-                await db.collection("spin_history").add({ username: u, cost: cost, prize: winRobux, time: new Date() });
-                showCustomAlert('Chúc mừng', `Bạn đã trúng ${winRobux} Robux!`);
-                isSpinning = false;
-                document.getElementById('spinBtn').disabled = false;
-                checkLoginStatus();
-            }, 5500);
-        };
-        window.onclick = (e) => { if(!e.target.closest('.dropdown')) document.getElementById('pDrop')?.classList.remove('show'); };
+                showCustomAlert("Chúc mừng!", `Bạn đã trúng ${winningRobux} Robux!<br>Số dư đã bị trừ ${spinCost.toLocaleString('vi-VN')} VND.`);
+                spinButton.disabled = false;
+            }, 5500); 
+        });
+
+        function updateBalanceDisplay(user) {
+            balanceDisplay.innerHTML = `Số dư: <strong>${user.balance.toLocaleString('vi-VN')} VND</strong> / Robux: <strong>${(user.robuxBalance || 0).toLocaleString('vi-VN')}</strong>`;
+            balanceDisplay.style.display = 'block';
+            loginPrompt.style.display = 'none';
+        }
+
+        async function checkLoginStatus() {
+            const username = localStorage.getItem('currentUser');
+            if (username) {
+                const user = await fetchUserData(username);
+                if (user) {
+                    currentUserData = user;
+                    updateBalanceDisplay(user);
+                    spinButton.disabled = false;
+                    return;
+                }
+            }
+            
+            currentUserData = null;
+            balanceDisplay.style.display = 'none';
+            loginPrompt.style.display = 'block';
+            spinButton.disabled = true;
+        }
+
         document.addEventListener('DOMContentLoaded', checkLoginStatus);
     </script>
 </body>

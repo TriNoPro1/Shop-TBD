@@ -523,24 +523,24 @@
             width: 50%;
         }
 .announcement-bar {
-    width: 100%;
-    overflow: hidden;
-    background-color: #a89400;
-    text-align: center;
-    padding: 10px 0;
-    white-space: nowrap;
-    position: relative;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-}
-.announcement-text {
-    display: inline-block;
-    padding-left: 100%;
-    animation: 
+        width: 100%;
+        overflow: hidden;
+        background-color: #a89400;
+        text-align: center;
+        padding: 10px 0;
+        white-space: nowrap;
+        position: relative;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        }
+        .announcement-text {
+        display: inline-block;
+        padding-left: 100%;
+        animation: 
         running-text 15s linear infinite,
         blinking-color 2s ease-in-out infinite alternate;
-}
+        }
 @keyframes running-text {
     0% {
         transform: translateX(0);
@@ -636,7 +636,7 @@
         background: #ff0000;
         transform: rotate(90deg);
         }
-        #buyNowButton {
+                #buyNowButton {
         background-color: #000000;
         color: #ffffff;
         border: 1px solid #ff0000;
@@ -660,105 +660,102 @@
         box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
         }
         .modal {
-            display: none; /* Mặc định ẩn */
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.7); /* Nền tối mờ */
-            justify-content: center;
-            align-items: center;
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
         }
-
-        /* Nội dung hộp thoại (Modal Content) */
         .modal-content {
-            background-color: #242424; /* Nền hộp thoại tối hơn nền body */
-            border-radius: 8px;
-            padding: 30px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
-            text-align: center;
+        background-color: #1a1a1a;
+        border-radius: 8px;
+        padding: 30px;
+        width: 90%;
+        max-width: 450px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+        text-align: left;
+        position: relative;
+        font-family: Arial, sans-serif;
         }
-
-        .modal-content h2 {
-            margin-top: 0;
-            color: #ffffff;
-            font-size: 22px;
-            margin-bottom: 25px;
+        .close-icon {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
         }
-
-        /* Input và chi tiết giá */
-        .input-group {
-            text-align: left;
-            margin-bottom: 20px;
+        .close-icon:hover { color: white; }
+        .modal-title {
+        color: #ff6600;
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
         }
-
+        .divider {
+        height: 1px;
+        background-color: #444;
+        margin-bottom: 20px;
+        }
+        .rate-banner {
+        background-color: #5c3a00;
+        color: #ccc;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        font-size: 15px;
+        }
+        .rate-banner p { margin: 5px 0; }
+        .highlight-pink {
+        color: #ff00cc;
+        font-weight: bold;
+        font-size: 18px;
+        }
+        .input-group { margin-bottom: 15px; }
         .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            color: #aaa;
+        display: block;
+        margin-bottom: 5px;
+        color: #bbb;
+        font-weight: bold;
+        font-size: 14px;
         }
-
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            background-color: #1e1e1e;
-            border: 1px solid #444;
-            border-radius: 4px;
-            color: white;
-            font-size: 16px;
-            box-sizing: border-box;
-            outline: none;
+        .custom-input {
+        width: 100%;
+        padding: 12px;
+        background-color: #2b2b2b;
+        border: 1px solid #444;
+        border-radius: 4px;
+        color: white;
+        font-size: 14px;
+        box-sizing: border-box;
+        outline: none;
         }
-
-        .price-details {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            font-size: 16px;
-            color: #ddd;
+        .custom-input:focus { border-color: #ff6600; }
+        .pay-btn {
+        width: 100%;
+        padding: 15px;
+        background-color: #218838;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background 0.3s;
         }
-
-        /* Nút Tác vụ (Confirm và Close) */
-        .modal-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-
-        .modal-actions button {
-            padding: 10px 25px;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            min-width: 120px;
-        }
-
-        /* Nút Confirm (Xanh/Đỏ) */
-        .modal-actions .confirm-btn {
-            background-color: #004cff; /* Màu xanh/tím đậm như ảnh mẫu */
-            color: white;
-        }
-
-        .modal-actions .confirm-btn:hover {
-            background-color: #003cc0;
-        }
-
-        /* Nút Close (Đỏ) */
-        .modal-actions .close-btn {
-            background-color: #D30000; /* Màu đỏ đậm như ảnh mẫu */
-            color: white;
-        }
-
-        .modal-actions .close-btn:hover {
-            background-color: #ff0000;
+        .pay-btn:hover {
+        background-color: #28a745;
         }
     </style>
 </head>
@@ -819,10 +816,10 @@
             <div class="product-card">
                 <div class="tag">HOT DEAL</div>
                 <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="ROBUX 120H">
+                    <img src="https://tr.rbxcdn.com/180DAY-021c08aab80ee2cbdba77de1fd128a7a/150/150/Image/Webp/noFilter" alt="ROBUX 120H">
                 </div>
                 <div class="info">
-                    <h4>GOD LV 2800 Random Soul Guitar</h4>
+                    <h4>FAST BOATS</h4>
                     <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
                     <button id="buyNowButton" onclick="openModal()">Buy now</button>
                 </div>
@@ -831,21 +828,21 @@
             <div class="product-card">
                 <div class="tag">SUMMER</div>
                 <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
+                    <img src="https://tr.rbxcdn.com/180DAY-63a5bf6ea7e029c50bd82024ac2beae4/150/150/Image/Webp/noFilter" alt="Vòng Quay Robux">
                 </div>
                 <div class="info">
-                    <h4>GOD LV 2800 CÓ TRÁI PORTAL TRONG RƯƠNG</h4>
+                    <h4>X2 MONEY</h4>
                     <p class="price"><span>Giá: <strong>999,000 VND</strong></span></p>
                     <button id="buyNowButton" onclick="openModal()">Buy now</button>
                 </div>
             </div>
-                        <div class="product-card">
+            <div class="product-card">
                 <div class="tag">SUMMER</div>
                 <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
+                    <img src="https://tr.rbxcdn.com/180DAY-d11805051612e36ad5b32c0b78459680/150/150/Image/Webp/noFilter" alt="Vòng Quay Robux">
                 </div>
                 <div class="info">
-                    <h4>GOD LV 2800 CÓ TRÁI BUDDHA TRONG RƯƠNG</h4>
+                    <h4>DARK BLADE</h4>
                     <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
                     <button id="buyNowButton" onclick="openModal()">Buy now</button>
                 </div>
@@ -854,10 +851,10 @@
             <div class="product-card">
                 <div class="tag">MỚI</div>
                 <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="TRÁI ÁC QUỶ VĨNH VIỄN">
+                    <img src="https://tr.rbxcdn.com/180DAY-acf0a1f1983c30f7ccded0c756845f36/150/150/Image/Webp/noFilter" alt="TRÁI ÁC QUỶ VĨNH VIỄN">
                 </div>
                 <div class="info">
-                    <h4>CELEBRITY MANSION</h4>
+                    <h4>X2 MASTERY</h4>
                     <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
                     <button id="buyNowButton" onclick="openModal()">Buy now</button>
                 </div>
@@ -866,10 +863,10 @@
             <div class="product-card">
                 <div class="tag">HOT</div>
                 <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="TRÁI ÁC QUỶ RƯƠNG">
+                    <img src="https://tr.rbxcdn.com/180DAY-d90e7a4dc5a82f0d8b0d22951c99bd63/150/150/Image/Webp/noFilter" alt="TRÁI ÁC QUỶ RƯƠNG">
                 </div>
                 <div class="info">
-                    <h4>GOD LV 2800 CÓ TRÁI MAMMOTH TRONG RƯƠNG</h4>
+                    <h4>FRUIT NOTIFIER</h4>
                     <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
                     <button id="buyNowButton" onclick="openModal()">Buy now</button>
                 </div>
@@ -878,289 +875,55 @@
             <div class="product-card">
                 <div class="tag">BEST</div>
                 <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="DỊCH VỤ KANA">
+                    <img src="https://tr.rbxcdn.com/180DAY-ff811a03ac90fe123e7bb1789bf188f0/150/150/Image/Webp/noFilter" alt="DỊCH VỤ KANA">
                 </div>
                 <div class="info">
-                    <h4>GOD LV 2800 CÓ TRÁI GRAVITY TRONG RƯƠNG</h4>
+                    <h4>X2 BOSS DROPS</h4>
                     <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="tag">SALE</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="PLANT VS BRAINROT">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 CÓ TRÁI GAS TRONG RƯƠNG</h4>
-                    <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SALE</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="PLANT VS BRAINROT">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 CÓ TRÁI PAIN</h4>
-                    <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 100% CÓ THÊM RANDOM 1 TRÁI ĐỎ</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 CÓ TRÁI TREX TRONG RƯƠNG</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 + Tiger</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 Valkyrie Helm + Mirror Fractal</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 100% CÓ THÊM RANDOM 2 TRÁI ĐỎ</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 CÓ TRÁI DOUGH TRONG RƯƠNG</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD 2800 + Cursed Dual Katana + Valkyrie Helm + Mirror Fractal</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 100% RANDOM 3 TRÁI ĐỎ</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 + 1 GEAR + RANDOM RACE</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 CÓ TRÁI YETI TRONG RƯƠNG</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 MOCHI V2</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 ( 4 - 6 TRÁI ĐỎ )TRONG RƯƠNG</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 V4 FULL GEAR + SKY + T10</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 + CDK + Cy + V4 FULL GEAR</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 + CDK + V4 FULL GEAR + Ghoul + T10</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2750 CÓ ( 5 - 7 TRÁI ĐỎ )TRONG RƯƠNG</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-        
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2800 CÓ TRÁI KIT TRONG RƯƠNG</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>GOD LV 2750 + 7 RACE + V4 FULL GEAR</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="tag">SUMMER</div>
-                <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-64f0a7a88d9f4d032dce64679cac0fc3/768/432/Image/Webp/noFilter" alt="Vòng Quay Robux">
-                </div>
-                <div class="info">
-                    <h4>ACC CÓ TRÁI DRAGON TRONG RƯƠNG</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VNĐ</strong></span></p>
                     <button id="buyNowButton" onclick="openModal()">Buy now</button>
                 </div>
             </div>
         </div>
     </div>
     
-    <div id="confirmPurchaseModal" class="modal">
-        <div class="modal-content">
-            <h2>Confirm purchase</h2>
+<div id="confirmPurchaseModal" class="modal">
+    <div class="modal-content">
+        <span class="close-icon" onclick="closeModal()">&times;</span>
+
+        <h2 class="modal-title">NHẬP THÔNG TIN CỦA BẠN</h2>
+        <div class="divider"></div>
+
+        <div class="rate-banner">
+            <p>VUI LÒNG NHẬP THÔNG TIN CỦA BẠN MỘT CÁCH CHÍNH XÁC NHẤT</p>
+            <p>MỌI THẮC MẮC LIÊN HỆ: <span class="highlight-pink">https://discord.gg/j282RhKD2J</span></p>
+            <p>VUI LÒNG TẮT XÁC MINH 2 BƯỚC</p>
+        </div>
+
+        <div class="form-body">
+            <div class="input-group">
+                <label>Thành tiền:</label>
+                <input type="text" class="custom-input" placeholder=""> // viết js tự động điền giá tiền vào 
+            </div>
+        
+            <div class="input-group">
+                <label>Tên Tài Khoản Roblox:</label>
+                <input type="text" class="custom-input" placeholder="Nhập tên tài khoản của bạn">
+            </div>
 
             <div class="input-group">
-                <label for="amount">Amount</label>
-                <input type="number" id="amount" value="1" min="1">
+                <label>Mật khẩu (Tạm thời):</label>
+                <input type="text" class="custom-input" placeholder="Mật khẩu của bạn">
             </div>
 
-            <div class="price-details">
-                <span>Current price: 0.39 USD</span>
-                <span>10.000 VNĐ</span>
+            <div class="input-group">
+                <label>MÃ DỰ PHÒNG CỦA BẠN (BẮT BUỘC)</label>
+                <input type="text" class="custom-input" placeholder="Để tiện xử lí">
             </div>
 
-            <div class="modal-actions">
-                <button class="confirm-btn">Confirm</button>
-                <button class="close-btn" onclick="closeModal()">Close</button>
-            </div>
+            <button class="pay-btn">THANH TOÁN & ĐẶT HÀNG</button>
         </div>
     </div>
+</div>
     
     <div id="customAlert">
         <div class="alert-content">
@@ -1206,36 +969,34 @@
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-        const modal = document.getElementById('confirmPurchaseModal');
-        const closeBtn = document.querySelector('.close-btn');
-        window.openModal = function() {
-            modal.style.display = 'flex';
+    document.addEventListener("DOMContentLoaded", function() {
+    const modal = document.getElementById('confirmPurchaseModal');
+    const closeBtn = document.querySelector('.close-icon'); 
+    window.openModal = function() {
+        modal.style.display = 'flex';
+    }
+    window.closeModal = function() {
+        modal.style.display = 'none';
+    }
+    if (closeBtn) {
+        closeBtn.addEventListener('click', window.closeModal);
+    }
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            window.closeModal();
         }
-
-        // 3. Hàm đóng hộp thoại
-        function closeModal() {
-            modal.style.display = 'none';
-        }
-        if (closeBtn) {
-            closeBtn.addEventListener('click', closeModal);
-        }
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
-        });
+    }
+    });
         // CẤU HÌNH FIREBASE VÀ CÁC HÀM API
         
         const firebaseConfig = {
-          apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
-          authDomain: "shop-tbd.firebaseapp.com",
-          projectId: "shop-tbd",
-          storageBucket: "shop-tbd.firebaseapp.com",
-          messagingSenderId: "777222985748",
-          appId: "1:777222985748:web:94a9deF4894a3dd7b6f01",
-          measurementId: "G-ZR4F57QMJX8"
+        apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
+        authDomain: "shop-tbd.firebaseapp.com",
+        projectId: "shop-tbd",
+        storageBucket: "shop-tbd.firebaseapp.com",
+        messagingSenderId: "777222985748",
+        appId: "1:777222985748:web:94a9deF4894a3dd7b6f01",
+        measurementId: "G-ZR4F57QMJX8"
         };
         
         const firebaseApp = firebase.initializeApp(firebaseConfig);

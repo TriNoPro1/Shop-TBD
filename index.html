@@ -7,194 +7,1482 @@
     <link rel="icon" href="https://img.icons8.com/fluent/48/000000/shop.png" type="image/x-icon">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f0f2f5; color: #333; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-        a { text-decoration: none; color: inherit; }
-        button { cursor: pointer; border: none; outline: none; }
-        .header-main { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background-color: #2c3e50; }
-        .header-main .logo-text { font-size: 1.8em; font-weight: 900; color: #ff5722; letter-spacing: 1px; }
-        .top-bar { background-color: #f8f8f8; padding: 8px 0; font-size: 0.9em; border-bottom: 1px solid #eee; }
-        .top-bar .container { display: flex; justify-content: space-between; align-items: center; }
-        .top-bar-left { position: relative; display: flex; align-items: center; width: 400px; background: #1e1e1e; border-radius: 50px; padding: 5px; border: 1px solid #333; }
-        .top-bar-left input { width: 100%; background: transparent; border: none; outline: none; padding: 10px 20px; color: #fff; font-size: 16px; }
-        .top-bar-left button { background: #D30000; border: none; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; color: white; transition: 0.3s; }
-        .top-bar-right { display: flex; align-items: center; }
-        .icon-text { background-color: #D30000; color: white; border-radius: 20px; padding: 12px 10px; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; text-transform: uppercase; font-size: 14px; margin: 5px; cursor: pointer; }
-        .announcement-bar { width: 100%; overflow: hidden; background-color: #a89400; text-align: center; padding: 10px 0; white-space: nowrap; color: white; font-size: 18px; font-weight: bold; }
-        .announcement-text { display: inline-block; padding-left: 100%; animation: running-text 15s linear infinite; }
-        @keyframes running-text { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-        .main-content { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; padding: 20px 0; }
-        .main-banner img { width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .small-banners { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-        .small-banner-item img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; }
-        .main-right { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .top-up-form input, .top-up-form select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        .top-up-form button { width: 100%; background-color: #ff0077; color: white; padding: 12px; border-radius: 4px; font-weight: bold; }
-        .tab-buttons { display: flex; margin-bottom: 15px; }
-        .tab-buttons button { flex: 1; padding: 10px; background-color: #eee; font-weight: bold; }
-        .tab-buttons button.active { background-color: #ff0077; color: white; }
-        .products-section { background-color: #fff; margin-top: 20px; padding: 20px; border-radius: 8px; }
-        .products-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        .product-card { background: #f9f9f9; border: 1px solid #eee; border-radius: 8px; overflow: hidden; cursor: pointer; transition: 0.3s; }
-        .product-card:hover { transform: translateY(-5px); }
-        .product-card .thumbnail img { width: 100%; height: 150px; object-fit: cover; }
-        .product-card .info { padding: 10px; }
-        .product-card .tag { background: #ff0077; color: white; font-size: 10px; padding: 2px 5px; position: absolute; }
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; display: none; justify-content: center; align-items: center; }
-        .modal-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; position: relative; }
-        .modal-step { display: none; }
-        .modal-step.active { display: block; }
-        .modal-input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        .dropdown { position: relative; display: inline-block; }
-        .profile-btn { display: flex; align-items: center; padding: 5px 10px; background: none; color: #333; font-weight: bold; }
-        .profile-btn img { width: 30px; height: 30px; border-radius: 50%; margin-right: 8px; }
-        .dropdown-content { position: absolute; top: 100%; right: 0; background: white; min-width: 200px; box-shadow: 0 4px 8px rgba(0,0,0,0.15); z-index: 10; border-radius: 8px; display: none; text-align: left; }
-        .dropdown-content.show { display: block; }
-        .dropdown-content a { padding: 10px 15px; display: block; border-bottom: 1px solid #eee; }
-        #customAlert { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 9999; display: none; justify-content: center; align-items: center; }
-        .alert-content { background: white; padding: 25px; border-radius: 10px; width: 320px; text-align: center; border-top: 5px solid #ff5722; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #2c3e50;
+        }
+        .header-main .logo-text {
+            font-size: 1.8em;
+            font-weight: 900;
+            color: #ff5722;
+            letter-spacing: 1px;
+        }
+        .top-bar {
+            background-color: #f8f8f8;
+            padding: 8px 0;
+            font-size: 0.9em;
+            border-bottom: 1px solid #eee;
+        }
+        .top-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .top-bar-left input[type="text"] {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        .top-bar-left button {
+            background-color: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+        }
+        .top-bar-right .icon-text {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+            color: #555;
+        }
+        .top-bar-right .icon-text img {
+            width: 18px;
+            height: 18px;
+            margin-right: 5px;
+        }
+        .top-bar-right .top-up-btn {
+            background-color: #ff0077;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .top-bar-right .top-up-btn img {
+            width: 18px;
+            height: 18px;
+            margin-right: 5px;
+        }
+        .announcement-bar {
+            background-color: #ffeb3b;
+            color: #333;
+            padding: 8px 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            padding: 20px 0;
+            align-items: start;
+        }
+        .main-left {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .main-banner {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background-color: #fff;
+        }
+        .main-banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .small-banners {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .small-banner-item {
+            width: 100%;
+            height: 150px;
+            background-color: #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .small-banner-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .main-right {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .top-up-form h3 {
+            margin-top: 0;
+            color: #ff0077;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .top-up-form .form-group {
+            margin-bottom: 15px;
+        }
+        .top-up-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .top-up-form input[type="text"],
+        .top-up-form select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        .top-up-form button {
+            width: 100%;
+            background-color: #ff0077;
+            color: white;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .top-up-form button:hover {
+            background-color: #cc005f;
+        }
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        .tab-buttons button {
+            flex: 1;
+            padding: 10px;
+            background-color: #eee;
+            border-bottom: 2px solid #ccc;
+            color: #555;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .tab-buttons button.active {
+            background-color: #ff0077;
+            color: white;
+            border-color: #ff0077;
+        }
+        .category-icons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+        }
+        .category-item {
+            text-align: center;
+            color: #555;
+            font-size: 0.9em;
+        }
+        .category-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .products-section {
+            background-color: #fff;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .products-header h2 {
+            margin: 0;
+            color: #ff0077;
+            font-size: 1.5em;
+        }
+        .products-header .view-all-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-card .tag {
+            background-color: #ff0077;
+            color: white;
+            font-size: 0.75em;
+            padding: 3px 8px;
+            border-radius: 0 0 5px 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+        .product-card .thumbnail {
+            position: relative;
+            width: 100%;
+            height: 120px;
+            overflow: hidden;
+            border-bottom: 1px solid #eee;
+        }
+        .product-card .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .product-card .info {
+            padding: 10px;
+            text-align: left;
+        }
+        .product-card .info h4 {
+            margin: 0 0 5px 0;
+            font-size: 1em;
+            color: #333;
+            height: 2.4em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .product-card .info .price {
+            font-size: 0.9em;
+            color: #888;
+            margin-bottom: 5px;
+        }
+        .product-card .info .price strong {
+            color: #ff0077;
+        }
+        .product-card .info .sold-count {
+            font-size: 0.8em;
+            color: #666;
+        }
+        .footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9em;
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .top-bar .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .top-bar-left, .top-bar-right {
+                margin-bottom: 10px;
+            }
+            .top-bar-right {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .top-bar-right .icon-text, .top-bar-right .top-up-btn {
+                margin-left: 0;
+                margin-right: 10px;
+                margin-bottom: 5px;
+            }
+            .small-banners {
+                grid-template-columns: 1fr;
+            }
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+            text-align: center;
+        }
+        .modal-content h2 {
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        .modal-input {
+            width: calc(100% - 20px);
+            padding: 15px 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+        .modal-login-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #ff0000;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        .modal-register-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: white;
+            color: #ff0000;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: 1px solid #ff0000;
+            border-radius: 6px;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #999;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-step {
+            display: none;
+        }
+        .modal-step.active {
+            display: block;
+        }
+        .admin-btn {
+            background-color: #4CAF50; 
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        /* Style cho Top Nạp */
+        .top-depositors {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .top-depositor-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .top-depositor-item:last-child {
+            border-bottom: none;
+        }
+        .top-depositor-rank {
+            font-size: 1.5em;
+            font-weight: bold;
+            width: 30px;
+            text-align: center;
+            margin-right: 10px;
+            color: #ff0077;
+        }
+        .top-depositor-rank.rank1 { color: #FFD700; } 
+        .top-depositor-rank.rank2 { color: #C0C0C0; } 
+        .top-depositor-rank.rank3 { color: #CD7F32; } 
+        /* Profile Dropdown Styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            color: #333;
+        }
+        .profile-btn:hover {
+            opacity: 0.8;
+        }
+        .profile-btn img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 8px;
+            border: 1px solid #ddd;
+        }
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            z-index: 10;
+            border-radius: 8px;
+            overflow: hidden;
+            display: none;
+            text-align: left;
+            margin-top: 5px;
+        }
+        .dropdown-content.show {
+            display: block;
+        }
+        .dropdown-content a {
+            padding: 10px 15px;
+            display: block;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+            font-size: 0.95em;
+        }
+        .dropdown-content a:hover {
+            background-color: #f0f0f0;
+        }
+        .dropdown-header {
+            padding: 10px 15px;
+            font-weight: bold;
+            color: #ff0077;
+            background-color: #f8e1e7;
+            font-size: 0.85em;
+        }
+        .dropdown-separator {
+            height: 1px;
+            background-color: #ddd;
+            margin: 5px 0;
+        }
+        /* CUSTOM ALERT MODAL STYLES */
+        #customAlert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .alert-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            border-top: 5px solid #ff5722;
+        }
+        .alert-content h3 {
+            color: #28a745; 
+            margin-top: 0;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .alert-content p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+        .alert-content .error-text {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .alert-content button {
+            background-color: #ff5722;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+        .icon-text {
+        background-color: #D30000;
+        color: white;
+        border-radius: 20px; 
+        padding: 12px 10px; 
+        display: inline-flex; 
+        align-items: center;
+        justify-content: center;
+        font-family: sans-serif;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 14px;
+        cursor: pointer;
+        margin: 5px; 
+        transition: background-color 0.2s ease-in-out;
+        }
+        .icon-text:hover {
+        background-color: #ff1a1a;
+        }
+        .icon-text img {
+        width: 5px;
+        height: 5px;
+        margin-right: 10px;
+        filter: invert(100%) brightness(200%);
+        }
+        #auth-status-area {
+        display: flex;
+        flex-wrap: wrap;
+        }
+        .top-bar-left {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 400px;
+        background: #1e1e1e;
+        border-radius: 50px;
+        padding: 5px;
+        border: 1px solid #333;
+        transition: all 0.4s ease;
+        }
+        .top-bar-left:focus-within {
+        border-color: #D30000;
+        box-shadow: 0 0 15px rgba(211, 0, 0, 0.4);
+        transform: translateY(-2px);
+        }
+        .top-bar-left input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        padding: 10px 20px;
+        color: #fff;
+        font-size: 16px;
+        font-family: sans-serif;
+        }
+        .top-bar-left button {
+        background: #D30000;
+        border: none;
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-right: 2px;
+        }
+        .top-bar-left button:hover {
+        background: #ff0000;
+        transform: rotate(90deg);
+        }
+        .announcement-bar {
+        width: 100%;
+        overflow: hidden;
+        background-color: #a89400;
+        text-align: center;
+        padding: 10px 0;
+        white-space: nowrap;
+        position: relative;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        }
+    .announcement-text {
+    display: inline-block;
+    padding-left: 100%;
+    animation: 
+        running-text 15s linear infinite,
+        blinking-color 2s ease-in-out infinite alternate;
+    }
+    @keyframes running-text {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+    }
+    @keyframes blinking-color {
+    0% {
+        color: white;
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff;
+    }
+    50% {
+        color: #ffcc00;
+        text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00;
+    }
+    100% {
+        color: white;
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff;
+    }
+    }
     </style>
 </head>
 <body>
     <header>
-        <div class="header-main"><div class="container"><span class="logo-text">Shop TBD</span></div></div>
+        <div class="header-main">
+            <div class="container">
+                <span class="logo-text">Shop TBD</span>
+            </div>
+        </div>
         <div class="top-bar">
             <div class="container">
-                <div class="top-bar-left"><input type="text" placeholder="Tìm kiếm dịch vụ..."><button>🔍</button></div>
-                <div class="top-bar-right" id="auth-status-area">
-                    <div class="icon-text" onclick="showAuthPrompt()">Đăng nhập</div>
-                    <div class="icon-text" onclick="showAuthPrompt()">Đăng ký</div>
+                <div class="top-bar-left">
+                    <input type="text" placeholder="Tìm kiếm dịch vụ...">
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
+                </div>
+                <div class="top-bar-right">
+                    <button class="top-up-btn" onclick="showCustomAlert('Tính năng chưa sẵn sàng', 'Chức năng Nạp tiền qua thẻ đang được bảo trì.')">
+                        <img src="https://img.icons8.com/plasticine/100/000000/money--v2.png" alt="Nạp Tiền Icon"> Nạp tiền
+                    </button>
+                    <div class="icon-text" onclick="showCustomAlert('Thông báo', 'Hiện không có thông báo mới.')">
+                        <img src="https://img.icons8.com/ios-filled/50/000000/bell.png" alt="Notification Icon">
+                    </div>
+                    
+                    <div id="auth-status-area">
+                        <div class="icon-text" onclick="showAuthPrompt()">
+                            <img src="https://img.icons8.com/ios-filled/50/000000/user--v1.png" alt="User Icon"> Đăng nhập
+                        </div>
+                        <div class="icon-text" onclick="showAuthPrompt()">
+                            <img src="https://img.icons8.com/ios-filled/50/000000/add-user-male--v1.png" alt="Register Icon"> Đăng ký
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="announcement-bar"><span class="announcement-text">GIẢM GIÁ ĐẶC BIỆT CÁC DỊCH VỤ VIP: XỬ LÝ ĐƠN HÀNG NHANH CHÓNG TRONG 24H</span></div>
+        <div class="announcement-bar">
+            <span class="announcement-text">
+            GIẢM GIÁ ĐẶC BIỆT CÁC DỊCH VỤ VIP: XỬ LÝ ĐƠN HÀNG NHANH CHÓNG TRONG 24H
+            </span>
+        </div>
     </header>
 
     <main class="container main-content">
         <div class="main-left">
-            <div class="main-banner"><img src="https://staticg.sportskeeda.com/editor/2023/09/da5e0-16958857892879-1920.jpg"></div>
+            <div class="main-banner">
+                <img src="https://staticg.sportskeeda.com/editor/2023/09/da5e0-16958857892879-1920.jpg" alt="Honkai Star Rail Banner">
+            </div>
+
             <div class="small-banners">
-                <div class="small-banner-item"><img src="https://upanh.top/b0otqmchs5.jpg"></div>
-                <div class="small-banner-item"><img src="https://upanh.top/mro60465uz.jpg"></div>
+                <div class="small-banner-item">
+                    <img src="https://upanh.top/b0otqmchs5.jpg" alt="Fish IT Banner">
+                </div>
+                <div class="small-banner-item">
+                    <img src="https://upanh.top/mro60465uz.jpg" alt="Plant vs Brainrot Banner">
+                </div>
             </div>
         </div>
+
         <div class="main-right">
             <div class="top-up-form">
-                <div class="tab-buttons"><button class="active" onclick="changeTab(this, 'napthe')">Nạp thẻ</button><button onclick="changeTab(this, 'phanthuong')">Phần thưởng</button></div>
+                <div class="tab-buttons">
+                    <button class="active" onclick="changeTab(this, 'napthe')">Nạp thẻ</button>
+                    <button onclick="changeTab(this, 'phanthuong')">Phần thưởng</button>
+                </div>
+
                 <div id="napthe" class="tab-content active">
+                    <h3>TOP NẠP HÀNG TUẦN</h3>
+
+                    <ul class="top-depositors">
+                        <li class="top-depositor-item">
+                            <span class="top-depositor-rank rank1">1</span>
+                            <div class="top-depositor-info">
+                                <div class="name">Kana</div>
+                                <div class="amount">Đã nạp: <strong>100,000,000 VND</strong></div>
+                            </div>
+                        </li>
+                        <li class="top-depositor-item">
+                            <span class="top-depositor-rank rank2">2</span>
+                            <div class="top-depositor-info">
+                                <div class="name">Mèo Béo Màu Xanh</div>
+                                <div class="amount">Đã nạp: <strong>36,000,000 VND</strong></div>
+                            </div>
+                        </li>
+                        <li class="top-depositor-item">
+                            <span class="top-depositor-rank rank3">3</span>
+                            <div class="top-depositor-info">
+                                <div class="name">Zasida</div>
+                                <div class="amount">Đã nạp: <strong>16,000,000 VND</strong></div>
+                            </div>
+                        </li>
+                    </ul>
+
                     <form id="topUpForm">
-                        <select id="provider" required><option value="viettel">Viettel</option><option value="vinaphone">Vinaphone</option></select>
-                        <select id="amount" required><option value="10000">10,000 VND</option><option value="50000">50,000 VND</option><option value="100000">100,000 VND</option><option value="500000">500,000 VND</option></select>
-                        <input type="text" id="card-code" placeholder="Mã thẻ" required><input type="text" id="serial" placeholder="Số serial" required>
+                        <div class="form-group">
+                            <label for="provider">Chọn Nhà Mạng</label>
+                            <select id="provider" required>
+                                <option value="viettel">Viettel</option>
+                                <option value="mobifone">Mobifone</option>
+                                <option value="vinaphone">Vinaphone</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">-- Chọn mệnh giá. Vui lòng kiểm tra kỹ</label>
+                            <select id="amount" required>
+                                <option value="10000">10,000 VND</option>
+                                <option value="20000">20,000 VND</option>
+                                <option value="50000">50,000 VND</option>
+                                <option value="100000">100,000 VND</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="card-code">Nhập mã thẻ</label>
+                            <input type="text" id="card-code" placeholder="Mã thẻ" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="serial">Nhập số serial</label>
+                            <input type="text" id="serial" placeholder="Số serial" required>
+                        </div>
                         <button type="submit">NẠP THẺ NGAY</button>
                     </form>
                 </div>
-                <div id="phanthuong" class="tab-content" style="display:none"><button onclick="claimReward()" style="width:100%;padding:15px;background:#28a745;color:white;border-radius:4px;font-weight:bold">NHẬN 5,000đ THƯỞNG</button></div>
+                
+                <div id="phanthuong" class="tab-content">
+                    <h3>THƯỞNG HÀNG NGÀY</h3>
+                    <p>Nhận ngay 5,000 VND vào số dư tài khoản của bạn sau mỗi lần nạp thẻ thành công, giới hạn 1 lần mỗi 24 giờ!</p>
+                    <button id="claimRewardBtn">NHẬN PHẦN THƯỞNG</button>
+                </div>
             </div>
         </div>
     </main>
 
     <div class="container products-section">
-        <div class="products-header"><h2>DỊCH VỤ ROBLOX & MUA ACCOUNT</h2></div>
+        
+        <div class="products-header">
+            <h2>DỊCH VỤ ROBLOX & MUA ACCOUNT</h2>
+            <button class="view-all-btn" onclick="showCustomAlert('Xem thêm', 'Đang chuyển đến trang danh sách dịch vụ.')">Xem thêm</button>
+        </div>
         <div class="product-grid">
-            <div class="product-card" onclick="window.location.href='muarobux.html'"><div class="thumbnail"><img src="https://upanh.top/hwlgcryxkz.jpg"></div><div class="info"><h4>MUA ROBUX 120H</h4><p>Giá: <strong>1:100</strong></p></div></div>
-            <div class="product-card" onclick="window.location.href='vong quay.html'"><div class="thumbnail"><img src="https://upanh.top/jegyw18gr3.jpg"></div><div class="info"><h4>VÒNG QUAY ROBUX</h4><p>Giá: <strong>20k/lượt</strong></p></div></div>
-            <div class="product-card" onclick="window.location.href='accfisch.html'"><div class="thumbnail"><img src="https://cdn-cf.ginx.tv/imgcdn/UyYTJQfoU-EGPew4_Jy3g9V1xcWwIKmvxF5_oID0vEk/rs:fill:2400:0:1/g:ce/aHR0cHM6Ly93d3cuZ2lueC50di91cGxvYWRzMy8xLkNoYWQvcm9ibG94IDIvZmlzY2gvZmlzY2ggcm9ibHhvIHBhdGNoIG5vdGVzLmpwZw"></div><div class="info"><h4>MUA ACC FISCH</h4></div></div>
-            <div class="product-card" onclick="window.location.href='accblockfruit.html'"><div class="thumbnail"><img src="https://upanh.top/gu0u5ngywn.jpg"></div><div class="info"><h4>ACC BLOX FRUIT</h4></div></div>
-            <div class="product-card" onclick="window.location.href='acc99night.html'"><div class="thumbnail"><img src="https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/cach_mo_khoa_toan_bo_huy_hieu_trong_99_nights_in_the_forest_5_42208255f8.jpg"></div><div class="info"><h4>ACC 99 NIGHTS</h4></div></div>
-            <div class="product-card" onclick="window.location.href='acctheforge.html'"><div class="thumbnail"><img src="https://res.ldrescdn.com/rms/ldplayer/process/img/4650491c7c4d4b83af858d5fef6db6961764397844.png?x-oss-process=image/format,webp/quality,Q_100/resize,w_1024"></div><div class="info"><h4>ACC THE FORGE</h4></div></div>
+            
+            <div class="product-card" onclick="window.location.href='muarobux.html'">
+                <div class="tag">HOT DEAL</div>
+                <div class="thumbnail">
+                    <img src="https://upanh.top/hwlgcryxkz.jpg" alt="ROBUX 120H">
+                </div>
+                <div class="info">
+                    <h4>MUA ROBUX 120H</h4>
+                    <p class="price">Đã bán: 75846 | <span>Giá: <strong>790895</strong></span></p>
+                    <p class="sold-count">Ưu đãi mùa hè</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='vong quay.html'">
+                <div class="tag">SUMMER</div>
+                <div class="thumbnail">
+                    <img src="https://upanh.top/jegyw18gr3.jpg" alt="Vòng Quay Robux">
+                </div>
+                <div class="info">
+                    <h4>VÒNG QUAY ROBUX CHÍNH HÃNG</h4>
+                    <p class="price">Mỗi lượt: 20,000 VND</p>
+                    <p class="sold-count">Trúng từ 50 - 8000 Robux</p>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="window.location.href='accfisch.html'">
+                <div class="tag">HOT DEAL</div>
+                <div class="thumbnail">
+                    <img src="https://cdn-cf.ginx.tv/imgcdn/UyYTJQfoU-EGPew4_Jy3g9V1xcWwIKmvxF5_oID0vEk/rs:fill:2400:0:1/g:ce/aHR0cHM6Ly93d3cuZ2lueC50di91cGxvYWRzMy8xLkNoYWQvcm9ibG94IDIvZmlzY2gvZmlzY2ggcm9ibHhvIHBhdGNoIG5vdGVzLmpwZw" alt="ROBUX 120H">
+                </div>
+                <div class="info">
+                    <h4>MUA ACC FISCH</h4>
+                    <p class="price">Đã bán: 75846 | <span>Giá: <strong>790895</strong></span></p>
+                    <p class="sold-count">Ưu đãi mùa hè</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='accblockfruit.html'">
+                <div class="tag">SUMMER</div>
+                <div class="thumbnail">
+                    <img src="https://upanh.top/gu0u5ngywn.jpg" alt="Vòng Quay Robux">
+                </div>
+                <div class="info">
+                    <h4>MUA ACC BLOCK FRUIT</h4>
+                    <p class="price">Mỗi lượt: 20,000 VND</p>
+                    <p class="sold-count">Trúng từ 50 - 8000 Robux</p>
+                </div>
+            </div>
+            <div class="product-card" onclick="window.location.href='acc99night.html'">
+                <div class="tag">SUMMER</div>
+                <div class="thumbnail">
+                    <img src="https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/cach_mo_khoa_toan_bo_huy_hieu_trong_99_nights_in_the_forest_5_42208255f8.jpg" alt="Vòng Quay Robux">
+                </div>
+                <div class="info">
+                    <h4>MUA ACC 99 NIGHTS</h4>
+                    <p class="price">Mỗi lượt: 20,000 VND</p>
+                    <p class="sold-count">Trúng từ 50 - 8000 Robux</p>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="window.location.href='accstealabrainrot.html'">
+                <div class="tag">MỚI</div>
+                <div class="thumbnail">
+                    <img src="https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/cach_lay_tat_ca_vu_khi_trong_steal_a_brainrot_1_ab7da330ec.jpg" alt="TRÁI ÁC QUỶ VĨNH VIỄN">
+                </div>
+                <div class="info">
+                    <h4>MUA ACC STEAL A BRAINROT</h4>
+                    <p class="price">Đã bán: 49771 | <span>Giá: <strong>300096</strong></span></p>
+                    <p class="sold-count">Giảm 50% hôm nay</p>
+                </div>
+            </div>
+        
+            <div class="product-card" onclick="window.location.href='acctheforge.html'">
+                <div class="tag">HOT</div>
+                <div class="thumbnail">
+                    <img src="https://res.ldrescdn.com/rms/ldplayer/process/img/4650491c7c4d4b83af858d5fef6db6961764397844.png?x-oss-process=image/format,webp/quality,Q_100/resize,w_1024" alt="TRÁI ÁC QUỶ RƯƠNG">
+                </div>
+                <div class="info">
+                    <h4>MUA ACC THE FORGE</h4>
+                    <p class="price">Đã bán: 89094 | <span>Giá: <strong>955381</strong></span></p>
+                    <p class="sold-count">Giảm Giá 15% Code: TBDVIP</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='accfischit.html'">
+                <div class="tag">BEST</div>
+                <div class="thumbnail">
+                    <img src="https://cdn-media.sforum.vn/storage/app/media/2imagegame/code-fish-it-roblox-1.jpg" alt="DỊCH VỤ KANA">
+                </div>
+                <div class="info">
+                    <h4>MUA ACC FISCH IT</h4>
+                    <p class="price">Đã bán: 87917 | <span>Giá: <strong>178094</strong></span></p>
+                    <p class="sold-count">DỊCH VỤ UY TÍN 100%</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='accplantvsbrainrot.html'">
+                <div class="tag">SALE</div>
+                <div class="thumbnail">
+                    <img src="https://assets-prd.ignimgs.com/2025/10/07/pvb-ign-1759874758090.jpg?crop=1%3A1%2Csmart&format=jpg&auto=webp&quality=80" alt="PLANT VS BRAINROT">
+                </div>
+                <div class="info">
+                    <h4>MUA ACC PLANT VS BRAINROT</h4>
+                    <p class="price">Đã bán: 64648 | <span>Giá: <strong>198953</strong></span></p>
+                    <p class="sold-count">Giá tốt nhất</p>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="window.location.href='accadoptme.html'">
+                <div class="tag">SALE</div>
+                <div class="thumbnail">
+                    <img src="https://tr.rbxcdn.com/180DAY-e4b66da9872ba86f2fd67a50ca6515ca/768/432/Image/Webp/noFilter" alt="PLANT VS BRAINROT">
+                </div>
+                <div class="info">
+                    <h4>MUA ACC ADOPT ME</h4>
+                    <p class="price">Đã bán: 64648 | <span>Giá: <strong>198953</strong></span></p>
+                    <p class="sold-count">Giá tốt nhất</p>
+                </div>
+            </div>
         </div>
 
-        <div class="products-header" style="margin-top:40px"><h2>DANH MỤC GAMEPASS</h2></div>
+        <div class="products-header" style="margin-top: 40px;">
+            <h2>DANH MỤC GAMEPASS</h2>
+            <button class="view-all-btn" onclick="showCustomAlert('Xem thêm', 'Đang chuyển đến trang danh sách dịch vụ MXH.')">Xem thêm</button>
+        </div>
         <div class="product-grid">
-            <div class="product-card" onclick="window.location.href='gamepassfisch.html'"><div class="thumbnail"><img src="https://cdn-cf.ginx.tv/imgcdn/UyYTJQfoU-EGPew4_Jy3g9V1xcWwIKmvxF5_oID0vEk/rs:fill:2400:0:1/g:ce/aHR0cHM6Ly93d3cuZ2lueC50di91cGxvYWRzMy8xLkNoYWQvcm9ibG94IDIvZmlzY2gvZmlzY2ggcm9ibHhvIHBhdGNoIG5vdGVzLmpwZw"></div><div class="info"><h4>FISCH GAMEPASS</h4></div></div>
-            <div class="product-card" onclick="window.location.href='gamepassfischit.html'"><div class="thumbnail"><img src="https://cdn-media.sforum.vn/storage/app/media/2imagegame/code-fish-it-roblox-1.jpg"></div><div class="info"><h4>FISCH IT GAMEPASS</h4></div></div>
-            <div class="product-card" onclick="window.location.href='gamepassplantvsbrainrot.html'"><div class="thumbnail"><img src="https://assets-prd.ignimgs.com/2025/10/07/pvb-ign-1759874758090.jpg?crop=1%3A1%2Csmart&format=jpg&auto=webp&quality=80"></div><div class="info"><h4>PLANT VS BRAINROT</h4></div></div>
-            <div class="product-card" onclick="window.location.href='gamepassadopt.html'"><div class="thumbnail"><img src="https://tr.rbxcdn.com/180DAY-e4b66da9872ba86f2fd67a50ca6515ca/768/432/Image/Webp/noFilter"></div><div class="info"><h4>ADOPT ME GAMEPASS</h4></div></div>
+            
+         <div class="product-card" onclick="window.location.href='gamepassfisch.html'">
+                <div class="tag">HOT DEAL</div>
+                <div class="thumbnail">
+                    <img src="https://cdn-cf.ginx.tv/imgcdn/UyYTJQfoU-EGPew4_Jy3g9V1xcWwIKmvxF5_oID0vEk/rs:fill:2400:0:1/g:ce/aHR0cHM6Ly93d3cuZ2lueC50di91cGxvYWRzMy8xLkNoYWQvcm9ibG94IDIvZmlzY2gvZmlzY2ggcm9ibHhvIHBhdGNoIG5vdGVzLmpwZw" alt="ROBUX 120H">
+                </div>
+                <div class="info">
+                    <h4>FISCH</h4>
+                    <p class="price">Đã bán: 75846 | <span>Giá: <strong>790895</strong></span></p>
+                    <p class="sold-count">Ưu đãi mùa hè</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='gamepassblockfruit.html'">
+                <div class="tag">SUMMER</div>
+                <div class="thumbnail">
+                    <img src="https://upanh.top/gu0u5ngywn.jpg" alt="Vòng Quay Robux">
+                </div>
+                <div class="info">
+                    <h4>BLOCK FRUIT</h4>
+                    <p class="price">Mỗi lượt: 20,000 VND</p>
+                    <p class="sold-count">Trúng từ 50 - 8000 Robux</p>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="window.location.href='gamepassstealabrainrot.html'">
+                <div class="tag">MỚI</div>
+                <div class="thumbnail">
+                    <img src="https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/cach_lay_tat_ca_vu_khi_trong_steal_a_brainrot_1_ab7da330ec.jpg" alt="TRÁI ÁC QUỶ VĨNH VIỄN">
+                </div>
+                <div class="info">
+                    <h4>STEAL A BRAINROT</h4>
+                    <p class="price">Đã bán: 49771 | <span>Giá: <strong>300096</strong></span></p>
+                    <p class="sold-count">Giảm 50% hôm nay</p>
+                </div>
+            </div>
+        
+            <div class="product-card" onclick="window.location.href='gamepasstheforge.html'">
+                <div class="tag">HOT</div>
+                <div class="thumbnail">
+                    <img src="https://res.ldrescdn.com/rms/ldplayer/process/img/4650491c7c4d4b83af858d5fef6db6961764397844.png?x-oss-process=image/format,webp/quality,Q_100/resize,w_1024" alt="TRÁI ÁC QUỶ RƯƠNG">
+                </div>
+                <div class="info">
+                    <h4>THE FORGE</h4>
+                    <p class="price">Đã bán: 89094 | <span>Giá: <strong>955381</strong></span></p>
+                    <p class="sold-count">Giảm Giá 15% Code: TBDVIP</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='gamepassfischit.html'">
+                <div class="tag">BEST</div>
+                <div class="thumbnail">
+                    <img src="https://cdn-media.sforum.vn/storage/app/media/2imagegame/code-fish-it-roblox-1.jpg" alt="DỊCH VỤ KANA">
+                </div>
+                <div class="info">
+                    <h4>FISCH IT</h4>
+                    <p class="price">Đã bán: 87917 | <span>Giá: <strong>178094</strong></span></p>
+                    <p class="sold-count">DỊCH VỤ UY TÍN 100%</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='gamepassplantvsbrainrot.html'">
+                <div class="tag">SALE</div>
+                <div class="thumbnail">
+                    <img src="https://assets-prd.ignimgs.com/2025/10/07/pvb-ign-1759874758090.jpg?crop=1%3A1%2Csmart&format=jpg&auto=webp&quality=80" alt="PLANT VS BRAINROT">
+                </div>
+                <div class="info">
+                    <h4>PLANT VS BRAINROT</h4>
+                    <p class="price">Đã bán: 64648 | <span>Giá: <strong>198953</strong></span></p>
+                    <p class="sold-count">Giá tốt nhất</p>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="window.location.href='gamepassadopt.html'">
+                <div class="tag">SALE</div>
+                <div class="thumbnail">
+                    <img src="https://tr.rbxcdn.com/180DAY-e4b66da9872ba86f2fd67a50ca6515ca/768/432/Image/Webp/noFilter" alt="PLANT VS BRAINROT">
+                </div>
+                <div class="info">
+                    <h4>ADOPT ME</h4>
+                    <p class="price">Đã bán: 64648 | <span>Giá: <strong>198953</strong></span></p>
+                    <p class="sold-count">Giá tốt nhất</p>
+                </div>
+            </div>
         </div>
 
-        <div class="products-header" style="margin-top:40px"><h2>DỊCH VỤ MẠNG XÃ HỘI</h2></div>
+        <div class="products-header" style="margin-top: 40px;">
+            <h2>DỊCH VỤ GENSHIN</h2>
+            <button class="view-all-btn" onclick="showCustomAlert('Xem thêm', 'Đang chuyển đến trang danh sách dịch vụ Genshin.')">Xem thêm</button>
+        </div>
         <div class="product-grid">
-            <div class="product-card" onclick="window.location.href='trangchucuamxh(khi click từ trang chủ).html'"><div class="thumbnail"><img src="https://lambanner.com/wp-content/uploads/2020/08/MNT-DESIGN-MEO-THIET-KE-QUANG-CAO-MANG-XA-HOI-1130x570.jpg"></div><div class="info"><h4>TIKTOK, NITRO, GEMINI, CHATGPT</h4></div></div>
+            
+            <div class="product-card" onclick="showCustomAlert('Chuyển đến', 'Trang nạp đá Genshin đang được phát triển.')">
+                <div class="tag">HOT</div>
+                <div class="thumbnail">
+                    <img src="https://bumblestore.vn/www/uploads/images/products/2023712214020_9(1).png" alt="Nạp Đá Genshin">
+                </div>
+                <div class="info">
+                    <h4>NẠP ĐÁ GENSHIN IMPACT</h4>
+                    <p class="price">Đã bán: 12500 | <span>Giá: <strong>150000</strong></span></p>
+                    <p class="sold-count">Nạp đá ủy thác chính hãng</p>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="showCustomAlert('Chuyển đến', 'Trang cày thuê Genshin đang được phát triển.')">
+                <div class="tag">MỚI</div>
+                <div class="thumbnail">
+                    <img src="https://shopgarena.net/wp-content/uploads/2023/05/Cay-Thue-Genshin-Impact.jpg" alt="Cày thuê Genshin">
+                </div>
+                <div class="info">
+                    <h4>CÀY THUÊ AR RANK TỐC ĐỘ</h4>
+                    <p class="price">Đã bán: 9800 | <span>Giá: <strong>99000</strong></span></p>
+                    <p class="sold-count">Cày thuê Tinh Anh, Vật phẩm</p>
+                </div>
+            </div>
+        </div>`
+
+        <div class="products-header" style="margin-top: 40px;">
+            <h2>DỊCH VỤ MẠNG XÃ HỘI</h2>
+            <button class="view-all-btn" onclick="showCustomAlert('Xem thêm', 'Đang chuyển đến trang danh sách dịch vụ MXH.')">Xem thêm</button>
+        </div>
+        <div class="product-grid">
+            
+            <div class="product-card" onclick="window.location.href='trangchucuamxh(khi click từ trang chủ).html'">
+                <div class="tag">HOT</div>
+                <div class="thumbnail">
+                    <img src="https://lambanner.com/wp-content/uploads/2020/08/MNT-DESIGN-MEO-THIET-KE-QUANG-CAO-MANG-XA-HOI-1130x570.jpg" alt="Mạng xã hội"> // THÊM ẢNH DỊCH VỤ Ở ĐÂY
+                </div>
+                <div class="info">
+                    <h4>ACC TIKTOK PR, GEMINI PRO, CAPCUT PR, CHATGPT PLUS, NITRO ...</h4>
+                    <p class="price">Đã bán: 12500 | <span>Giá: <strong>???</strong></span></p>
+                    <p class="sold-count">Bảo hành 100%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div id="customAlert">
+        <div class="alert-content">
+            <h3 id="alertTitle"></h3>
+            <p id="alertMessage"></p>
+            <button onclick="document.getElementById('customAlert').style.display='none'">OK</button>
         </div>
     </div>
 
     <div id="authModal" class="modal-overlay" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <span class="modal-close" onclick="closeModal()" style="position:absolute;top:10px;right:15px;font-size:25px;cursor:pointer">&times;</span>
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            
             <div id="loginStep" class="modal-step active">
-                <h2>ĐĂNG NHẬP</h2>
-                <form id="loginForm"><input type="text" id="modalUsername" class="modal-input" placeholder="Tên tài khoản" required><input type="password" id="modalPassword" class="modal-input" placeholder="Mật khẩu" required><button type="submit" style="width:100%;padding:12px;background:red;color:white;font-weight:bold;border-radius:6px">VÀO SHOP</button></form>
-                <button onclick="showRegisterStep()" style="margin-top:15px;background:none;color:red;font-weight:bold">Tạo tài khoản mới</button>
+                <h2>ĐĂNG NHẬP TÀI KHOẢN</h2>
+                <form id="loginForm">
+                    <input type="text" id="modalUsername" class="modal-input" placeholder="Nhập Tài Khoản..." required>
+                    <input type="password" id="modalPassword" class="modal-input" placeholder="Nhập Mật Khẩu..." required>
+                    
+                    <button type="submit" class="modal-login-btn">ĐĂNG NHẬP</button>
+                    <button type="button" class="modal-register-btn" onclick="showRegisterStep()">TẠO TÀI KHOẢN</button>
+                </form>
             </div>
+
             <div id="registerStep" class="modal-step">
-                <h2>ĐĂNG KÝ</h2>
-                <form id="registerForm"><input type="text" id="regUsername" class="modal-input" placeholder="Tên đăng ký" required><input type="password" id="regPassword" class="modal-input" placeholder="Mật khẩu" required><input type="password" id="regConfirmPassword" class="modal-input" placeholder="Nhập lại mật khẩu" required><button type="submit" style="width:100%;padding:12px;background:red;color:white;font-weight:bold;border-radius:6px">ĐĂNG KÝ NGAY</button></form>
-                <button onclick="showLoginStep()" style="margin-top:15px;background:none;color:red;font-weight:bold">Quay lại đăng nhập</button>
+                <h2>TẠO TÀI KHOẢN MỚI</h2>
+                <form id="registerForm">
+                    <input type="text" id="regUsername" class="modal-input" placeholder="Tên Tài Khoản..." required>
+                    <input type="password" id="regPassword" class="modal-input" placeholder="Mật Khẩu..." required>
+                    <input type="password" id="regConfirmPassword" class="modal-input" placeholder="Xác Nhận Mật Khẩu..." required>
+
+                    <button type="submit" class="modal-login-btn">ĐĂNG KÝ NGAY</button>
+                    <button type="button" class="modal-register-btn" onclick="showLoginStep()">QUAY LẠI ĐĂNG NHẬP</button>
+                </form>
             </div>
         </div>
     </div>
 
-    <div id="customAlert"><div class="alert-content"><h3 id="alertTitle"></h3><p id="alertMessage"></p><button onclick="document.getElementById('customAlert').style.display='none'" style="background:#ff5722;color:white;padding:10px 25px;border-radius:5px;font-weight:bold">ĐÓNG</button></div></div>
-
-    <footer class="footer"><div class="container" style="text-align:center;padding:30px 0"><p>&copy; 2025 Shop TBD. All Rights Reserved.</p></div></footer>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Shop TBD. Bảo lưu mọi quyền.</p>
+        </div>
+    </footer>
 
     <script>
-        const firebaseConfig = { apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ", authDomain: "shop-tbd.firebaseapp.com", projectId: "shop-tbd", storageBucket: "shop-tbd.appspot.com", messagingSenderId: "777222985748", appId: "1:777222985748:web:94a9deF4894a3dd7b6f01" };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        function showCustomAlert(t, m, e = false) { document.getElementById('alertTitle').textContent = t; document.getElementById('alertTitle').style.color = e ? 'red' : 'green'; document.getElementById('alertMessage').innerHTML = m; document.getElementById('customAlert').style.display = 'flex'; }
-        function showAuthPrompt() { document.getElementById('authModal').classList.add('active'); showLoginStep(); }
-        function closeModal() { document.getElementById('authModal').classList.remove('active'); }
-        function showRegisterStep() { document.getElementById('loginStep').classList.remove('active'); document.getElementById('registerStep').classList.add('active'); }
-        function showLoginStep() { document.getElementById('registerStep').classList.remove('active'); document.getElementById('loginStep').classList.add('active'); }
-        function changeTab(b, i) { document.querySelectorAll('.tab-buttons button').forEach(x => x.classList.remove('active')); b.classList.add('active'); document.querySelectorAll('.tab-content').forEach(x => x.style.display = 'none'); document.getElementById(i).style.display = 'block'; }
-        document.getElementById('registerForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const u = document.getElementById('regUsername').value;
-            const p = document.getElementById('regPassword').value;
-            if(p !== document.getElementById('regConfirmPassword').value) return showCustomAlert('Lỗi','Mật khẩu không khớp',true);
-            const doc = await db.collection('users').doc(u).get();
-            if(doc.exists) return showCustomAlert('Lỗi','Tài khoản đã tồn tại',true);
-            await db.collection('users').doc(u).set({ username: u, password: p, balance: 50000, robuxBalance: 0, joinDate: new Date().toISOString() });
-            showCustomAlert('Thành công','Đăng ký xong! Bạn nhận 50k trải nghiệm.'); showLoginStep();
+        // CẤU HÌNH FIREBASE VÀ CÁC HÀM API
+        
+        const firebaseConfig = {
+          apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
+          authDomain: "shop-tbd.firebaseapp.com",
+          projectId: "shop-tbd",
+          storageBucket: "shop-tbd.firebaseapp.com",
+          messagingSenderId: "777222985748",
+          appId: "1:777222985748:web:94a9deF4894a3dd7b6f01",
+          measurementId: "G-ZR4F57QMJX8"
         };
-        document.getElementById('loginForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const u = document.getElementById('modalUsername').value;
-            const p = document.getElementById('modalPassword').value;
-            const doc = await db.collection('users').doc(u).get();
-            if(doc.exists && doc.data().password === p) { localStorage.setItem('currentUser', u); closeModal(); checkLoginStatus(); showCustomAlert('Thành công','Chào mừng bro!'); }
-            else showCustomAlert('Lỗi','Sai thông tin',true);
-        };
-        document.getElementById('topUpForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const cur = localStorage.getItem('currentUser');
-            if(!cur) return showAuthPrompt();
-            const amt = parseInt(document.getElementById('amount').value);
-            if(cur === 'Tri') {
-                const userRef = db.collection('users').doc(cur);
-                const doc = await userRef.get();
-                await userRef.update({ balance: (doc.data().balance || 0) + amt });
-                await db.collection('transactions').add({ user: cur, amount: amt, type: 'TOPUP_ADMIN', time: new Date() });
-                showCustomAlert('Admin','Nạp thành công!'); checkLoginStatus();
-            } else showCustomAlert('Bảo trì','Nạp tự động đang bảo trì',true);
-        };
-        async function checkLoginStatus() {
-            const u = localStorage.getItem('currentUser');
+        
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
+        const db = firebaseApp.firestore(); 
+        const cardsDb = db.collection("card_records"); 
+
+        async function fetchUserData(username) {
+            const doc = await db.collection("users").doc(username).get();
+            if (doc.exists) {
+                const data = doc.data();
+                data.robuxBalance = data.robuxBalance || 0; 
+                return data;
+            }
+            return null;
+        }
+
+        async function saveUserData(username, userData) {
+            await db.collection("users").doc(username).set(userData);
+            return true;
+        }
+
+        async function fetchCardData(cardCode) {
+            const doc = await cardsDb.doc(cardCode).get();
+            if (doc.exists) {
+                return doc.data();
+            }
+            return null;
+        }
+
+        async function saveCardData(cardCode, cardData) {
+            await db.collection("card_records").doc(cardCode).set(cardData);
+            return true;
+        }
+        
+        // HÀM HIỂN THỊ ALERT TÙY CHỈNH (THAY THẾ alert())
+        function showCustomAlert(title, message, isError = false) {
+            document.getElementById('alertTitle').textContent = title;
+            document.getElementById('alertMessage').innerHTML = message;
+            
+            if (isError) {
+                document.getElementById('alertTitle').style.color = '#e74c3c';
+            } else {
+                document.getElementById('alertTitle').style.color = '#28a745';
+            }
+            document.getElementById('customAlert').style.display = 'flex';
+        }
+
+        function changeTab(element, tabId) {
+            const buttons = document.querySelectorAll('.tab-buttons button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.style.display = 'none');
+            document.getElementById(tabId).style.display = 'block';
+        }
+
+        const authModal = document.getElementById('authModal');
+        const loginStep = document.getElementById('loginStep');
+        const registerStep = document.getElementById('registerStep');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const topUpForm = document.getElementById('topUpForm');
+        const claimRewardBtn = document.getElementById('claimRewardBtn');
+
+        function showAuthPrompt() {
+            showLoginStep();
+            authModal.classList.add('active');
+        }
+
+        function closeModal() {
+            authModal.classList.remove('active');
+            loginForm.reset();
+            registerForm.reset();
+        }
+
+        function showLoginStep() {
+            loginStep.classList.add('active');
+            registerStep.classList.remove('active');
+        }
+
+        function showRegisterStep() {
+            registerStep.classList.add('active');
+            loginStep.classList.remove('active');
+        }
+
+        function isRepeatedChar(str) {
+            if (str.length === 0) return false;
+            return /^([0-9a-zA-Z])\1*$/.test(str);
+        }
+
+        async function addAdminBalance() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser !== 'Tri') {
+                showCustomAlert("Lỗi", "Bạn không có quyền truy cập Admin!", true);
+                return;
+            }
+
+            let user = await fetchUserData(currentUser);
+            const amount = 100000;
+
+            user.balance += amount;
+            await saveUserData(currentUser, user);
+
+            showCustomAlert("ADMIN", `Cộng thành công ${amount.toLocaleString('vi-VN')} VND vào tài khoản Tri!`);
+            checkLoginStatus(); 
+        }
+        
+        registerForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+            if (password !== confirmPassword) {
+                showCustomAlert("Lỗi Đăng ký", "Mật khẩu xác nhận không khớp!", true);
+                return;
+            }
+
+            let existingUser = await fetchUserData(username);
+            if (existingUser) {
+                showCustomAlert("Lỗi Đăng ký", "Tên người dùng đã tồn tại!", true);
+                return;
+            }
+
+            const newUser = { username, password, balance: 50000, robuxBalance: 0, lastClaim: 0, canClaimReward: false };
+            await saveUserData(username, newUser);
+            
+            showCustomAlert("Đăng ký thành công", "Bạn có 50,000 VND. Vui lòng đăng nhập.");
+            
+            showLoginStep();
+            registerForm.reset();
+        });
+
+        loginForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('modalUsername').value;
+            const password = document.getElementById('modalPassword').value;
+
+            let user = await fetchUserData(username);
+
+            if (user && user.password === password) {
+                localStorage.setItem('currentUser', username);
+                closeModal();
+                showCustomAlert("Thành công", "Đăng nhập thành công!");
+                checkLoginStatus();
+            } else {
+                showCustomAlert("Lỗi Đăng nhập", "Sai tên người dùng hoặc mật khẩu!", true);
+            }
+        });
+
+        topUpForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                showCustomAlert("Lỗi Đăng nhập", "Vui lòng đăng nhập để nạp thẻ!", true);
+                showAuthPrompt();
+                return;
+            }
+
+            const amount = parseInt(document.getElementById('amount').value);
+            const cardCode = document.getElementById('card-code').value.trim();
+            const serial = document.getElementById('serial').value.trim();
+            
+            if (cardCode.startsWith('999') || isRepeatedChar(cardCode) || isRepeatedChar(serial)) {
+                showCustomAlert("Lỗi Xác nhận", "Mã thẻ hoặc Serial không hợp lệ (Không được nhập số lặp lại/mã giả).", true);
+                return;
+            }
+
+            if (!cardCode.includes('VALID25')) {
+                 showCustomAlert("Lỗi Xác nhận", "Mã thẻ không tìm thấy trong hệ thống.", true);
+                 return;
+            }
+
+            let usedCard = await fetchCardData(cardCode);
+            
+            if (usedCard) {
+                if (usedCard.serial === serial) {
+                    showCustomAlert("Lỗi Thẻ", `Mã thẻ ${cardCode} đã được sử dụng vào lúc: ${new Date(usedCard.timestamp).toLocaleString('vi-VN')}.`, true);
+                } else {
+                    showCustomAlert("Lỗi Thẻ", `Mã thẻ ${cardCode} đã được sử dụng. (Lỗi Serial)`, true);
+                }
+                return;
+            }
+            
+            let user = await fetchUserData(currentUser);
+            
+            user.balance += amount;
+            user.canClaimReward = true; 
+            await saveUserData(currentUser, user); 
+
+            const cardRecord = {
+                serial: serial, 
+                amount: amount,
+                timestamp: new Date().getTime(),
+                user: currentUser
+            };
+            await saveCardData(cardCode, cardRecord); 
+
+            showCustomAlert("Nạp thẻ thành công", `Thẻ thật, chưa sử dụng.<br>Bạn đã nạp ${amount.toLocaleString('vi-VN')} VND.<br>Số dư mới: ${user.balance.toLocaleString('vi-VN')} VND. Bạn có thể nhận thưởng!`);
+            
+            topUpForm.reset();
+            checkLoginStatus();
+        });
+
+        claimRewardBtn.addEventListener('click', async function() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                showCustomAlert("Lỗi Đăng nhập", "Vui lòng đăng nhập để nhận thưởng!", true);
+                showAuthPrompt();
+                return;
+            }
+
+            let user = await fetchUserData(currentUser);
+            const rewardAmount = 5000;
+            const hours24 = 24 * 60 * 60 * 1000;
+            const currentTime = new Date().getTime();
+
+            if (!user.canClaimReward) {
+                showCustomAlert("Lỗi", "Phần thưởng này đã được nhận sau lần nạp thẻ gần nhất. Hãy nạp thẻ để làm mới quyền nhận thưởng!", true);
+                return;
+            }
+
+            if (currentTime - user.lastClaim < hours24) {
+                const nextClaimTime = new Date(user.lastClaim + hours24);
+                showCustomAlert("Lỗi Thời gian", `Bạn chỉ có thể nhận thưởng sau 24 giờ.<br>Vui lòng quay lại sau: ${nextClaimTime.toLocaleTimeString('vi-VN')} ngày ${nextClaimTime.toLocaleDateString('vi-VN')}`, true);
+                return;
+            }
+
+            user.balance += rewardAmount;
+            user.lastClaim = currentTime;
+            user.canClaimReward = false; 
+            await saveUserData(currentUser, user); 
+
+            showCustomAlert("Thành công", `Chúc mừng! Bạn nhận được ${rewardAmount.toLocaleString('vi-VN')} VND Thưởng Hàng Ngày.<br>Số dư mới: ${user.balance.toLocaleString('vi-VN')} VND.`);
+            checkLoginStatus();
+        });
+        
+        async function renderAuthStatus(user) {
             const area = document.getElementById('auth-status-area');
-            if(u) {
-                const doc = await db.collection('users').doc(u).get();
-                if(doc.exists) {
-                    const d = doc.data();
-                    area.innerHTML = `<div class="dropdown"><button class="profile-btn" onclick="document.getElementById('pDrop').classList.toggle('show')"><img src="https://tse2.mm.bing.net/th/id/OIP.vg41yG82qw84ziz5nS-CWQHaHa?pid=Api&P=0&h=180">${u}</button><div class="dropdown-content" id="pDrop"><div style="padding:10px 15px;background:#f8e1e7;color:#ff0077;font-weight:bold">VND: ${d.balance.toLocaleString()}đ<br>Robux: ${d.robuxBalance}</div><a href="taikhoan.html">Quản lý tài khoản</a><a href="#" onclick="localStorage.removeItem('currentUser');location.reload()">Đăng xuất</a></div></div>`;
+            let adminButtonHtml = '';
+            const avatarUrl = "https://tse2.mm.bing.net/th/id/OIP.vg41yG82qw84ziz5nS-CWQHaHa?pid=Api&P=0&h=180";
+
+            if (user && user.username === 'Tri') {
+                 adminButtonHtml = `
+                    <button class="admin-btn" onclick="addAdminBalance()">
+                        ADMIN: +100K 💰
+                    </button>`;
+            }
+
+            if (user) {
+                area.innerHTML = `
+                    ${adminButtonHtml}
+                    <div class="dropdown" onclick="toggleDropdown()">
+                        <button class="profile-btn">
+                            <img src="${avatarUrl}" alt="Avatar">
+                            ${user.username}
+                            <span class="dropdown-arrow">&#9660;</span>
+                        </button>
+                        <div class="dropdown-content" id="profileDropdown">
+                            <div class="dropdown-header">
+                                Số dư: ${user.balance.toLocaleString('vi-VN')} VND 
+                                <br>
+                                Robux: ${(user.robuxBalance || 0).toLocaleString('vi-VN')} 💎
+                            </div>
+                            <a href="taikhoan.html" class="red-text">Quản lý tài khoản</a>
+                            <a href="taikhoan.html#lichsunap">Lịch sử nạp tiền</a>
+                            <a href="taikhoan.html#lichsumua">Lịch sử mua nick</a>
+                            <a href="taikhoan.html#lichsudv">Lịch sử dịch vụ</a>
+                            <a href="taikhoan.html#lichsuquay">Lịch sử quay</a>
+                            <div class="dropdown-separator"></div>
+                            <a href="#" onclick="logout()">Đăng xuất</a>
+                        </div>
+                    </div>
+                `;
+            } else {
+                area.innerHTML = `
+                    <div class="icon-text" onclick="showAuthPrompt()">
+                        <img src="https://img.icons8.com/ios-filled/50/000000/user--v1.png" alt="User Icon"> Đăng nhập
+                    </div>
+                    <div class="icon-text" onclick="showAuthPrompt()">
+                        <img src="https://img.icons8.com/ios-filled/50/000000/add-user-male--v1.png" alt="Register Icon"> Đăng ký
+                    </div>
+                `;
+            }
+        }
+
+        function toggleDropdown() {
+            document.getElementById("profileDropdown").classList.toggle("show");
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.profile-btn') && !event.target.closest('.profile-btn')) {
+                const dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    const openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
                 }
             }
         }
-        window.onclick = (e) => { if(!e.target.closest('.dropdown')) document.getElementById('pDrop')?.classList.remove('show'); };
-        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            showCustomAlert("Đăng xuất", "Bạn đã đăng xuất thành công.");
+            window.location.reload(); 
+        }
+
+        async function checkLoginStatus() {
+            const username = localStorage.getItem('currentUser');
+            if (username) {
+                let user = await fetchUserData(username);
+                if (user) {
+                    renderAuthStatus(user);
+                    return;
+                }
+            }
+            renderAuthStatus(null);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus(); 
+            document.querySelectorAll('.top-up-form .tab-content').forEach(content => content.style.display = 'none');
+            const firstTabContent = document.querySelector('.top-up-form .tab-content');
+            if (firstTabContent) {
+                firstTabContent.style.display = 'block';
+                const firstButton = document.querySelector('.tab-buttons button');
+                if (firstButton) {
+                    firstButton.classList.add('active');
+                }
+            }
+        });
     </script>
 </body>
 </html>
