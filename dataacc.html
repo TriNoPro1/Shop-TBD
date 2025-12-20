@@ -9,131 +9,27 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-        /* --- GIỮ NGUYÊN CSS CỦA INDEX ĐỂ ĐỒNG BỘ GIAO DIỆN --- */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f0f2f5; color: #333; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-        a { text-decoration: none; color: inherit; }
-        button { cursor: pointer; border: none; outline: none; }
-        
         .header-main { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background-color: #2c3e50; }
-        .header-main .logo-text { font-size: 1.8em; font-weight: 900; color: #ff5722; letter-spacing: 1px; }
+        .header-main .logo-text { font-size: 1.8em; font-weight: 900; color: #ff5722; text-decoration: none; }
         
-        .top-bar { background-color: #f8f8f8; padding: 8px 0; font-size: 0.9em; border-bottom: 1px solid #eee; }
-        .top-bar .container { display: flex; justify-content: space-between; align-items: center; }
-        .top-bar-right { display: flex; align-items: center; gap: 15px; }
-        
-        .footer { background-color: #2c3e50; color: #ecf0f1; padding: 20px 0; text-align: center; margin-top: 30px; font-size: 0.9em; }
-
-        /* --- CSS RIÊNG CHO TRANG ADMIN --- */
-        .admin-panel {
-            background-color: #fff;
-            margin-top: 20px;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        
-        .admin-header {
-            border-bottom: 2px solid #ff5722;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            color: #2c3e50;
-            text-transform: uppercase;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .form-group {
-            flex: 1;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #555;
-        }
-
-        .admin-input, .admin-select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            box-sizing: border-box;
-            outline: none;
-        }
-
-        .admin-input:focus, .admin-select:focus {
-            border-color: #ff5722;
-        }
-
-        .add-btn {
-            background-color: #28a745;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 16px;
-            transition: 0.3s;
-            width: 100%;
-        }
+        .admin-panel { background-color: #fff; margin-top: 20px; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .admin-header { border-bottom: 2px solid #ff5722; padding-bottom: 10px; margin-bottom: 20px; color: #2c3e50; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; }
+        .admin-input, .admin-select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .add-btn { background-color: #28a745; color: white; padding: 12px; border: none; border-radius: 6px; font-weight: bold; width: 100%; cursor: pointer; }
         .add-btn:hover { background-color: #218838; }
-
-        /* Bảng danh sách acc */
-        .stock-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        .stock-table th, .stock-table td {
-            border: 1px solid #eee;
-            padding: 12px;
-            text-align: left;
-        }
-        .stock-table th {
-            background-color: #f8f8f8;
-            color: #ff5722;
-        }
-        .delete-btn {
-            background-color: #dc3545;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-        .delete-btn:hover { background-color: #c82333; }
-        
-        .badge {
-            background: #ff5722;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 12px;
-        }
+        .stock-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .stock-table th, .stock-table td { border: 1px solid #eee; padding: 10px; text-align: left; }
+        .stock-table th { background: #f8f8f8; color: #ff5722; }
+        .delete-btn { background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-main">
-            <div class="container">
-                <a href="index.html" class="logo-text">Shop TBD (ADMIN)</a>
-            </div>
-        </div>
-        <div class="top-bar">
-            <div class="container">
-                <div class="top-bar-left">
-                    <strong>XIN CHÀO ADMIN: <span style="color: #ff5722;">Tri</span></strong>
-                </div>
-                <div class="top-bar-right">
-                    <a href="index.html" style="color: #007bff; font-weight: bold;">Quay lại Shop</a>
-                </div>
-            </div>
-        </div>
+    <header class="header-main">
+        <div class="container"><a href="index.html" class="logo-text">Shop TBD (ADMIN)</a></div>
     </header>
 
     <main class="container">
@@ -141,60 +37,36 @@
             <h2 class="admin-header">🛠️ QUẢN LÝ KHO ACC - THE FORGE</h2>
             
             <div style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
-                <div class="form-group" style="margin-bottom: 15px;">
+                <div class="form-group">
                     <label>Chọn Loại Dịch Vụ:</label>
                     <select id="serviceSelect" class="admin-select" onchange="filterStock()">
-                        <option value="DOUBLE STORAGE">DOUBLE STORAGE</option>
-                        <option value="BETTER FORGE">BETTER FORGE</option>
-                        <option value="SUPPORTER">SUPPORTER</option>
-                        <option value="SELL ANYWHERE">SELL ANYWHERE</option>
-                        <option value="FORGE ANYWHERE">FORGE ANYWHERE</option>
-                        <option value="FAST FORGE">FAST FORGE</option>
+                        <option value="100% Arcane Pickaxe + Random Race">100% Arcane Pickaxe + Random Race</option>
+                        <option value="Arcane, Magma, Demonic Pickaxe">Arcane, Magma, Demonic Pickaxe</option>
+                        <option value="Arcane, Magma + Mythic Race">Arcane, Magma + Mythic Race</option>
                     </select>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Tài khoản (Username):</label>
-                        <input type="text" id="accUser" class="admin-input" placeholder="Nhập tên đăng nhập...">
-                    </div>
-                    <div class="form-group">
-                        <label>Mật khẩu (Password):</label>
-                        <input type="text" id="accPass" class="admin-input" placeholder="Nhập mật khẩu...">
-                    </div>
+                <div class="form-group">
+                    <label>Tài khoản:</label>
+                    <input type="text" id="accUser" class="admin-input" placeholder="Nhập username...">
                 </div>
-
+                <div class="form-group">
+                    <label>Mật khẩu:</label>
+                    <input type="text" id="accPass" class="admin-input" placeholder="Nhập password...">
+                </div>
                 <button class="add-btn" onclick="addAccount()">THÊM VÀO KHO NGAY</button>
             </div>
 
             <div style="margin-top: 30px;">
-                <h3>📦 DANH SÁCH ACC TRONG KHO <span id="totalCount" class="badge">0</span></h3>
-                <p style="font-size: 13px; color: #666; margin-bottom: 10px;">(Danh sách này sẽ tự động giảm khi khách mua hàng)</p>
-                
+                <h3>📦 KHO HIỆN TẠI (<span id="totalCount">0</span>)</h3>
                 <table class="stock-table">
-                    <thead>
-                        <tr>
-                            <th>Dịch Vụ</th>
-                            <th>Tài Khoản</th>
-                            <th>Mật Khẩu</th>
-                            <th>Hành Động</th>
-                        </tr>
-                    </thead>
-                    <tbody id="stockTableBody">
-                        </tbody>
+                    <thead><tr><th>Dịch Vụ</th><th>User</th><th>Pass</th><th>Xóa</th></tr></thead>
+                    <tbody id="stockTableBody"></tbody>
                 </table>
             </div>
         </div>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 Shop TBD Admin Panel.</p>
-        </div>
-    </footer>
-
     <script>
-        // CẤU HÌNH FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
             authDomain: "shop-tbd.firebaseapp.com",
@@ -207,92 +79,52 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 1. BẢO MẬT: CHẶN NGƯỜI LẠ
-        const currentUser = localStorage.getItem('currentUser');
-        if (currentUser !== 'Tri') {
-            document.body.innerHTML = "<h1 style='text-align:center; margin-top:50px; color:red;'>BẠN KHÔNG CÓ QUYỀN TRUY CẬP!</h1>";
-            setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+        if (localStorage.getItem('currentUser') !== 'Tri') {
+            document.body.innerHTML = "<h1 style='text-align:center; color:red; margin-top:50px;'>NO ACCESS</h1>";
+            setTimeout(() => { window.location.href = 'index.html'; }, 1500);
         }
 
-        // 2. HÀM THÊM ACC
         async function addAccount() {
             const service = document.getElementById('serviceSelect').value;
             const user = document.getElementById('accUser').value.trim();
             const pass = document.getElementById('accPass').value.trim();
 
-            if (!user || !pass) {
-                alert("Vui lòng nhập đầy đủ Tài khoản và Mật khẩu!");
-                return;
-            }
+            if (!user || !pass) return alert("Thiếu thông tin!");
 
             try {
                 await db.collection("stock_theforge").add({
-                    service: service,
-                    username: user,
-                    password: pass,
+                    service: service, username: user, password: pass,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                
-                alert("Đã thêm Acc thành công!");
+                alert("Đã thêm!");
                 document.getElementById('accUser').value = '';
                 document.getElementById('accPass').value = '';
-                loadStock(); // Tải lại bảng
-            } catch (error) {
-                console.error("Lỗi:", error);
-                alert("Lỗi khi thêm: " + error.message);
-            }
+            } catch (error) { alert("Lỗi: " + error.message); }
         }
 
-        // 3. HÀM TẢI DANH SÁCH KHO
         function loadStock() {
-            const currentFilter = document.getElementById('serviceSelect').value;
-            const tbody = document.getElementById('stockTableBody');
-            
-            // Lắng nghe thay đổi real-time
-            db.collection("stock_theforge")
-              .where("service", "==", currentFilter) // Chỉ hiện dịch vụ đang chọn
-              .onSnapshot((snapshot) => {
+            const filter = document.getElementById('serviceSelect').value;
+            db.collection("stock_theforge").where("service", "==", filter).onSnapshot((snapshot) => {
+                const tbody = document.getElementById('stockTableBody');
                 tbody.innerHTML = '';
                 document.getElementById('totalCount').innerText = snapshot.size;
-
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Kho đang hết hàng loại này.</td></tr>';
-                    return;
-                }
-
                 snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const row = `
+                    const d = doc.data();
+                    tbody.innerHTML += `
                         <tr>
-                            <td><b>${data.service}</b></td>
-                            <td>${data.username}</td>
-                            <td>${data.password}</td>
-                            <td>
-                                <button class="delete-btn" onclick="deleteAcc('${doc.id}')">Xóa</button>
-                            </td>
-                        </tr>
-                    `;
-                    tbody.innerHTML += row;
+                            <td>${d.service}</td><td>${d.username}</td><td>${d.password}</td>
+                            <td><button class="delete-btn" onclick="deleteAcc('${doc.id}')">Xóa</button></td>
+                        </tr>`;
                 });
             });
         }
 
-        // 4. HÀM XÓA ACC (NẾU ADMIN NHẬP SAI)
         function deleteAcc(id) {
-            if (confirm("Bạn có chắc muốn xóa acc này không?")) {
-                db.collection("stock_theforge").doc(id).delete();
-            }
+            if (confirm("Xóa acc này?")) db.collection("stock_theforge").doc(id).delete();
         }
 
-        // 5. BỘ LỌC KHI ĐỔI DROPDOWN
-        function filterStock() {
-            loadStock();
-        }
-
-        // CHẠY KHI MỞ TRANG
-        document.addEventListener('DOMContentLoaded', () => {
-            loadStock();
-        });
+        function filterStock() { loadStock(); }
+        document.addEventListener('DOMContentLoaded', loadStock);
     </script>
 </body>
 </html>
