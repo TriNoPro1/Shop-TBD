@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mua Gamepass Fisch - Shop TBD</title>
+    <link rel="icon" href="https://img.icons8.com/fluent/48/000000/shop.png" type="image/x-icon">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; background-color: #f0f2f5; color: #333; }
+        .header-main { width: 100%; background-color: #2c3e50; padding: 10px 0; }
+        .header-main a { color: #ff5722; font-size: 1.8em; font-weight: 900; text-decoration: none; margin-left: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        .top-bar { background-color: #f8f8f8; padding: 8px 0; font-size: 0.9em; border-bottom: 1px solid #eee; }
+        .top-bar .container { display: flex; justify-content: space-between; align-items: center; }
+        .top-bar-right { display: flex; align-items: center; margin-left: auto; }
+        .main-content { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; padding: 20px 0; }
+        .product-image { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; }
+        .product-image img { max-width: 100%; border-radius: 8px; }
+        .purchase-box { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .purchase-box h1 { color: #ff5722; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .price-tag { background: #ffe0b2; padding: 15px; border-radius: 6px; margin-bottom: 20px; font-weight: bold; display: flex; justify-content: space-between; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group select, .form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .btn-submit { width: 100%; background: #28a745; color: white; padding: 15px; border-radius: 4px; font-size: 1.1em; font-weight: bold; cursor: pointer; }
+        .dropdown { position: relative; display: inline-block; }
+        .profile-btn { display: flex; align-items: center; padding: 5px 12px; background: #fff; border: 1px solid #ddd; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        .profile-btn img { width: 25px; height: 25px; border-radius: 50%; margin-right: 8px; }
+        .dropdown-content { position: absolute; top: 100%; right: 0; background: white; min-width: 220px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10; border-radius: 8px; display: none; text-align: left; }
+        .dropdown-content.show { display: block; }
+        .dropdown-content a { padding: 12px 15px; display: block; border-bottom: 1px solid #eee; text-decoration: none; color: #333; }
+        #customAlert { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 9999; display: none; justify-content: center; align-items: center; }
+        .alert-content { background: white; padding: 25px; border-radius: 10px; width: 320px; text-align: center; border-top: 5px solid #ff5722; }
+        @media (max-width: 768px) { .main-content { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-main"><div class="container"><a href="index.html">Shop TBD</a></div></div>
+        <div class="top-bar"><div class="container"><div class="top-bar-right" id="auth-status-area"><span style="color:#ff0077;font-weight:bold">Vui lòng đăng nhập tại Trang chủ</span></div></div></div>
+    </header>
+    <main class="container main-content">
+        <div class="product-image">
+            <img src="https://cdn-cf.ginx.tv/imgcdn/UyYTJQfoU-EGPew4_Jy3g9V1xcWwIKmvxF5_oID0vEk/rs:fill:2400:0:1/g:ce/aHR0cHM6Ly93d3cuZ2lueC50di91cGxvYWRzMy8xLkNoYWQvcm9ibG94IDIvZmlzY2gvZmlzY2ggcm9ibHhvIHBhdGNoIG5vdGVzLmpwZw">
+        </div>
+        <div class="purchase-box">
+            <h1>MUA GAMEPASS FISCH</h1>
+            <div class="price-tag"><span>Sản phẩm</span><span style="color:#ff0077">Roblox Gamepass</span></div>
+            <form id="orderForm">
+                <div class="form-group"><label>Vật phẩm:</label><select id="pkg"><option value="50000">Gói Cơ Bản (50,000đ)</option><option value="200000">Gói Thần Thoại (200,000đ)</option></select></div>
+                <div class="form-group"><label>Tên nhân vật:</label><input type="text" id="acc" placeholder="Username Roblox" required></div>
+                <div class="form-group"><label>Link Gamepass:</label><input type="text" id="link" placeholder="Link chính xác" required></div>
+                <button type="submit" class="btn-submit">XÁC NHẬN MUA</button>
+            </form>
+        </div>
+    </main>
+    <div id="customAlert"><div class="alert-content"><h3 id="alertTitle"></h3><p id="alertMessage"></p><button onclick="document.getElementById('customAlert').style.display='none'" style="background:#ff5722;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;font-weight:bold">ĐÓNG</button></div></div>
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ", authDomain: "shop-tbd.firebaseapp.com", projectId: "shop-tbd", storageBucket: "shop-tbd.appspot.com", messagingSenderId: "777222985748", appId: "1:777222985748:web:94a9deF4894a3dd7b6f01" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        function showCustomAlert(t, m, e = false) { document.getElementById('alertTitle').textContent = t; document.getElementById('alertTitle').style.color = e ? 'red' : 'green'; document.getElementById('alertMessage').innerHTML = m; document.getElementById('customAlert').style.display = 'flex'; }
+        async function checkLoginStatus() {
+            const u = localStorage.getItem('currentUser');
+            if(!u) return;
+            const doc = await db.collection("users").doc(u).get();
+            if(doc.exists) {
+                const d = doc.data();
+                document.getElementById('auth-status-area').innerHTML = `<div class="dropdown"><button class="profile-btn" onclick="document.getElementById('pDrop').classList.toggle('show')"><img src="https://tse2.mm.bing.net/th/id/OIP.vg41yG82qw84ziz5nS-CWQHaHa?pid=Api&P=0&h=180">${u} ▼</button><div class="dropdown-content" id="pDrop"><div style="padding:12px;background:#fff0f3;color:#ff0077;font-weight:bold">Tiền: ${d.balance.toLocaleString()}đ</div><a href="taikhoan.html">Tài khoản</a><a href="#" onclick="localStorage.removeItem('currentUser');location.reload()">Đăng xuất</a></div></div>`;
+            }
+        }
+        document.getElementById('orderForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const cur = localStorage.getItem('currentUser');
+            if(!cur) return showCustomAlert('Lỗi','Bạn chưa đăng nhập!',true);
+            const price = parseInt(document.getElementById('pkg').value);
+            const userRef = db.collection("users").doc(cur);
+            const userDoc = await userRef.get();
+            const userData = userDoc.data();
+            if(userData.balance < price) return showCustomAlert('Lỗi','Số dư không đủ!',true);
+            await userRef.update({ balance: userData.balance - price });
+            await db.collection("orders").add({ customer: cur, robloxAccount: document.getElementById('acc').value, gamepassLink: document.getElementById('link').value, price: price, type: 'GAMEPASS_FISCH', status: 'PENDING', time: new Date() });
+            showCustomAlert('Thành công','Đã gửi đơn hàng!'); document.getElementById('orderForm').reset(); checkLoginStatus();
+        };
+        window.onclick = (e) => { if(!e.target.closest('.dropdown')) document.getElementById('pDrop')?.classList.remove('show'); };
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+</html>
