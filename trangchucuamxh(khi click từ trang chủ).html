@@ -9,7 +9,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-        /* GIỮ NGUYÊN TOÀN BỘ CSS GỐC CỦA BẠN */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -114,84 +113,6 @@
             height: auto;
             display: block;
         }
-        .top-up-form h3 {
-            margin-top: 0;
-            color: #ff0077;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        .top-up-form .form-group {
-            margin-bottom: 15px;
-        }
-        .top-up-form label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-        .top-up-form input[type="text"],
-        .top-up-form select {
-            width: calc(100% - 22px);
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1em;
-            box-sizing: border-box;
-        }
-        .top-up-form button {
-            width: 100%;
-            background-color: #ff0077;
-            color: white;
-            padding: 12px;
-            border-radius: 4px;
-            font-size: 1.1em;
-            font-weight: bold;
-            margin-top: 10px;
-            transition: background-color 0.3s ease;
-        }
-        .top-up-form button:hover {
-            background-color: #cc005f;
-        }
-        .tab-buttons {
-            display: flex;
-            margin-bottom: 15px;
-        }
-        .tab-buttons button {
-            flex: 1;
-            padding: 10px;
-            background-color: #eee;
-            border-bottom: 2px solid #ccc;
-            color: #555;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        .tab-buttons button.active {
-            background-color: #ff0077;
-            color: white;
-            border-color: #ff0077;
-        }
-        .category-icons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 15px;
-            padding: 20px 0;
-            border-top: 1px solid #eee;
-            margin-top: 20px;
-        }
-        .category-item {
-            text-align: center;
-            color: #555;
-            font-size: 0.9em;
-        }
-        .category-item img {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-            margin-bottom: 5px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
         .products-section {
             background-color: #fff;
             margin-top: 20px;
@@ -260,10 +181,6 @@
         .product-card .info .price strong {
             color: #ff0077;
         }
-        .product-card .info .sold-count {
-            font-size: 0.8em;
-            color: #666;
-        }
         .footer {
             background-color: #2c3e50;
             color: #ecf0f1;
@@ -271,33 +188,6 @@
             text-align: center;
             margin-top: 30px;
             font-size: 0.9em;
-        }
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            .top-bar .container {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .top-bar-left, .top-bar-right {
-                margin-bottom: 10px;
-            }
-            .top-bar-right {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            .top-bar-right .icon-text, .top-bar-right .top-up-btn {
-                margin-left: 0;
-                margin-right: 10px;
-                margin-bottom: 5px;
-            }
-            .small-banners {
-                grid-template-columns: 1fr;
-            }
-            .product-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            }
         }
         .modal-overlay {
             position: fixed;
@@ -371,41 +261,6 @@
         .modal-step.active {
             display: block;
         }
-        .admin-btn {
-            background-color: #4CAF50; 
-            color: white;
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-size: 0.9em;
-            margin-right: 10px;
-        }
-        /* Style cho Top Nạp */
-        .top-depositors {
-            list-style: none;
-            padding: 0;
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }
-        .top-depositor-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px dashed #eee;
-        }
-        .top-depositor-item:last-child {
-            border-bottom: none;
-        }
-        .top-depositor-rank {
-            font-size: 1.5em;
-            font-weight: bold;
-            width: 30px;
-            text-align: center;
-            margin-right: 10px;
-            color: #ff0077;
-        }
-        .top-depositor-rank.rank1 { color: #FFD700; } 
-        .top-depositor-rank.rank2 { color: #C0C0C0; } 
-        .top-depositor-rank.rank3 { color: #CD7F32; } 
         /* Profile Dropdown Styles */
         .dropdown {
             position: relative;
@@ -466,11 +321,6 @@
             background-color: #f8e1e7;
             font-size: 0.85em;
         }
-        .dropdown-separator {
-            height: 1px;
-            background-color: #ddd;
-            margin: 5px 0;
-        }
         /* CUSTOM ALERT MODAL STYLES */
         #customAlert {
             position: fixed;
@@ -504,10 +354,6 @@
             font-size: 1.1em;
             line-height: 1.4;
         }
-        .alert-content .error-text {
-            color: #e74c3c;
-            font-weight: bold;
-        }
         .alert-content button {
             background-color: #ff5722;
             color: white;
@@ -538,7 +384,9 @@
         .announcement-text {
             display: inline-block;
             padding-left: 100%;
-            animation: running-text 15s linear infinite, blinking-color 2s ease-in-out infinite alternate;
+            animation: 
+                running-text 15s linear infinite,
+                blinking-color 2s ease-in-out infinite alternate;
         }
         @keyframes running-text {
             0% { transform: translateX(0); }
@@ -666,7 +514,7 @@
             max-width: 500px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
             text-align: center;
-            color: white; /* Thêm màu chữ trắng cho dễ nhìn trên nền tối */
+            color: white;
         }
         .modal-content h2 {
             margin-top: 0;
@@ -701,7 +549,7 @@
             margin-top: 20px;
             font-size: 16px;
             color: #ddd;
-            background-color: #333; /* Thêm nền cho phần giá */
+            background-color: #333;
             padding: 10px;
             border-radius: 4px;
         }
@@ -796,8 +644,8 @@
                 </div>
                 <div class="info">
                     <h4>GEMINI PRO  4 THÁNG </h4>
-                    <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('GEMINI PRO 4 THÁNG', 999000)">Buy now</button>
+                    <p class="price"><span>Giá: <strong>68,000 VNĐ</strong></span></p>
+                    <button id="buyNowButton" onclick="openModalWithPrice('GEMINI PRO 4 THÁNG', 68000)">Buy now</button>
                 </div>
             </div>
             
@@ -808,8 +656,8 @@
                 </div>
                 <div class="info">
                     <h4>CAPCUT PRO 28 NGÀY</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VND</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('CAPCUT PRO 28 NGÀY', 999000)">Buy now</button>
+                    <p class="price"><span>Giá: <strong>55,000 VND</strong></span></p>
+                    <button id="buyNowButton" onclick="openModalWithPrice('CAPCUT PRO 28 NGÀY', 55000)">Buy now</button>
                 </div>
             </div>
 
@@ -820,8 +668,8 @@
                 </div>
                 <div class="info">
                     <h4>CAPCUT PRO 7 NGÀY</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VND</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('CAPCUT PRO 7 NGÀY', 999000)">Buy now</button>
+                    <p class="price"><span>Giá: <strong>50,000 VND</strong></span></p>
+                    <button id="buyNowButton" onclick="openModalWithPrice('CAPCUT PRO 7 NGÀY', 50000)">Buy now</button>
                 </div>
             </div>
 
@@ -832,8 +680,8 @@
                 </div>
                 <div class="info">
                     <h4>CAPCUT PRO 1 NĂM</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VND</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('CAPCUT PRO 1 NĂM', 999000)">Buy now</button>
+                    <p class="price"><span>Giá: <strong>95,000 VND</strong></span></p>
+                    <button id="buyNowButton" onclick="openModalWithPrice('CAPCUT PRO 1 NĂM', 95000)">Buy now</button>
                 </div>
             </div>
 
@@ -844,8 +692,8 @@
                 </div>
                 <div class="info">
                     <h4>CHAT GPT PLUS 1 THÁNG</h4>
-                    <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('CHAT GPT PLUS 1 THÁNG', 999000)">Buy now</button>
+                    <p class="price"><span>Giá: <strong>79,000 VNĐ</strong></span></p>
+                    <button id="buyNowButton" onclick="openModalWithPrice('CHAT GPT PLUS 1 THÁNG', 79000)">Buy now</button>
                 </div>
             </div>
 
@@ -856,8 +704,8 @@
                 </div>
                 <div class="info">
                     <h4>CHAT GPT PLUS 3 THÁNG</h4>
-                    <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('CHAT GPT PLUS 3 THÁNG', 999000)">Buy now</button>
+                    <p class="price"><span>Giá: <strong>85,000 VNĐ</strong></span></p>
+                    <button id="buyNowButton" onclick="openModalWithPrice('CHAT GPT PLUS 3 THÁNG', 85000)">Buy now</button>
                 </div>
             </div>
 
@@ -868,8 +716,8 @@
                 </div>
                 <div class="info">
                     <h4>CHAT GPT PLUS 6 THÁNG</h4>
-                    <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('CHAT GPT PLUS 6 THÁNG', 999000)">Buy now</button>
+                    <p class="price"><span>Giá: <strong>92,000 VNĐ</strong></span></p>
+                    <button id="buyNowButton" onclick="openModalWithPrice('CHAT GPT PLUS 6 THÁNG', 92000)">Buy now</button>
                 </div>
             </div>
 
@@ -880,8 +728,8 @@
                 </div>
                 <div class="info">
                     <h4>CHAT GPT PLUS 1 NĂM</h4>
-                    <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('CHAT GPT PLUS 1 NĂM', 999000)">Buy now</button>
+                    <p class="price"><span>Giá: <strong>99,000 VNĐ</strong></span></p>
+                    <button id="buyNowButton" onclick="openModalWithPrice('CHAT GPT PLUS 1 NĂM', 99000)">Buy now</button>
                 </div>
             </div>
 
@@ -892,8 +740,8 @@
                 </div>
                 <div class="info">
                     <h4>NITRO BOOST 1 THÁNG</h4>
-                    <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('NITRO BOOST 1 THÁNG', 999000)">Buy now</button>
+                    <p class="price"><span>Giá: <strong>88,000 VNĐ</strong></span></p>
+                    <button id="buyNowButton" onclick="openModalWithPrice('NITRO BOOST 1 THÁNG', 88000)">Buy now</button>
                 </div>
             </div>
             
@@ -904,8 +752,8 @@
                 </div>
                 <div class="info">
                     <h4>NITRO BOOST 1 NĂM</h4>
-                    <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('NITRO BOOST 1 NĂM', 999000)">Buy now</button>
+                    <p class="price"><span>Giá: <strong>100,000 VNĐ</strong></span></p>
+                    <button id="buyNowButton" onclick="openModalWithPrice('NITRO BOOST 1 NĂM', 100000)">Buy now</button>
                 </div>
             </div>
 
@@ -916,8 +764,8 @@
                 </div>
                 <div class="info">
                     <h4>NITRO BASIC 1 THÁNG</h4>
-                    <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('NITRO BASIC 1 THÁNG', 999000)">Buy now</button>
+                    <p class="price"><span>Giá: <strong>52,000 VNĐ</strong></span></p>
+                    <button id="buyNowButton" onclick="openModalWithPrice('NITRO BASIC 1 THÁNG', 52000)">Buy now</button>
                 </div>
             </div>
             
@@ -928,8 +776,8 @@
                 </div>
                 <div class="info">
                     <h4>NITRO BASIC 1 NĂM</h4>
-                    <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('NITRO BASIC 1 NĂM', 999000)">Buy now</button>
+                    <p class="price"><span>Giá: <strong>75,000 VNĐ</strong></span></p>
+                    <button id="buyNowButton" onclick="openModalWithPrice('NITRO BASIC 1 NĂM', 75000)">Buy now</button>
                 </div>
             </div>
             
@@ -940,8 +788,8 @@
                 </div>
                 <div class="info">
                     <h4>DỊCH VỤ DIGITAL</h4>
-                    <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('DỊCH VỤ DIGITAL', 999000)">Buy now</button>
+                    <p class="price"><span>Giá: <strong>60,000 VNĐ</strong></span></p>
+                    <button id="buyNowButton" onclick="openModalWithPrice('DỊCH VỤ DIGITAL', 60000)">Buy now</button>
                 </div>
             </div>
         </div>
@@ -951,7 +799,7 @@
         <div class="modal-content">
             <h2 id="modalTitle">Confirm purchase</h2>
 
-            <div class="input-group">
+            <div class="input-group" id="linkInputGroup">
                 <label for="targetAccount">Link/ID tài khoản cần nâng cấp</label>
                 <input type="text" id="targetAccount" placeholder="Dán link FB/TikTok/Discord...">
             </div>
@@ -1030,7 +878,7 @@
         const db = firebase.firestore(); 
 
         let selectedData = { name: '', price: 0 };
-        let currentUnitPrice = 0; // Biến lưu đơn giá hiện tại
+        let currentUnitPrice = 0; 
 
         function openModalWithPrice(name, price) {
             if (!localStorage.getItem('currentUser')) {
@@ -1044,16 +892,30 @@
             
             // Reset form
             document.getElementById('buyAmount').value = 1;
-            document.getElementById('targetAccount').value = '';
+            
+            // LOGIC MỚI: Ẩn/Hiện Link Input dựa trên tên dịch vụ
+            const linkInputGroup = document.getElementById('linkInputGroup');
+            const targetInput = document.getElementById('targetAccount');
+
+            if (name.toUpperCase().includes('NITRO')) {
+                // Nếu là Nitro, hiện ô nhập và yêu cầu nhập
+                linkInputGroup.style.display = 'block';
+                targetInput.value = ''; // Reset giá trị
+                targetInput.placeholder = "Dán link Discord hoặc ID nhận Nitro...";
+            } else {
+                // Nếu không phải Nitro, ẩn ô nhập và điền giá trị mặc định để không bị lỗi validate
+                linkInputGroup.style.display = 'none';
+                targetInput.value = 'Mua Ngay (Không cần link)'; 
+            }
             
             // Cập nhật giao diện
             document.getElementById('selectedService').innerText = name;
-            updateTotalPrice(); // Tính tiền lần đầu
+            updateTotalPrice(); 
             
             document.getElementById('confirmPurchaseModal').style.display = 'flex';
         }
 
-        // HÀM MỚI: TÍNH TIỀN TỰ ĐỘNG
+        // TÍNH TIỀN TỰ ĐỘNG
         function updateTotalPrice() {
             const amount = parseInt(document.getElementById('buyAmount').value) || 0;
             const total = amount * currentUnitPrice;
@@ -1067,10 +929,15 @@
 
         async function processPayment() {
             const user = localStorage.getItem('currentUser');
-            const target = document.getElementById('targetAccount').value;
+            let target = document.getElementById('targetAccount').value;
             const amount = parseInt(document.getElementById('buyAmount').value) || 0;
+            const isNitro = selectedData.name.toUpperCase().includes('NITRO');
 
-            if (!target) return showCustomAlert("Lỗi", "Vui lòng nhập Link/ID!", true);
+            // Kiểm tra link/ID CHỈ KHI là Nitro
+            if (isNitro && (!target || target.trim() === '')) {
+                return showCustomAlert("Lỗi", "Vui lòng nhập Link/ID Discord để nhận Nitro!", true);
+            }
+
             if (amount < 1) return showCustomAlert("Lỗi", "Số lượng không hợp lệ!", true);
 
             const totalCost = amount * currentUnitPrice;
@@ -1089,10 +956,10 @@
             await db.collection("orders_mxh").add({
                 customer: user,
                 service: selectedData.name,
-                target: target,
+                target: target, // Lưu target (có thể là link nitro hoặc text mặc định)
                 quantity: amount,
-                amount: totalCost, // Tổng tiền
-                accountFile: fakeFileContent, // Give file vào đây
+                amount: totalCost, 
+                accountFile: fakeFileContent, 
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
 
@@ -1163,7 +1030,6 @@
 
         document.addEventListener('DOMContentLoaded', checkLoginStatus);
         
-        // Đóng dropdown khi click ra ngoài
         window.onclick = function(event) {
             if (!event.target.closest('.dropdown')) {
                 var dropdowns = document.getElementsByClassName("dropdown-content");
