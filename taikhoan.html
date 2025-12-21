@@ -8,7 +8,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <style>
-        /* GIỮ NGUYÊN CSS CŨ */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f0f2f5; color: #333; }
         .header-main { width: 100%; background-color: #2c3e50; padding: 10px 0; margin-bottom: 20px; }
         .header-main a { color: #ff5722; font-size: 1.8em; font-weight: 900; text-decoration: none; margin-left: 20px; }
@@ -38,6 +37,18 @@
         .password-form button { background-color: #e74c3c; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; border: none; }
         .red-text { color: #e74c3c; }
         .green-text { color: #27ae60; }
+        
+        /* CSS BẢNG LỊCH SỬ */
+        .history-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
+        .history-table th, .history-table td { border: 1px solid #eee; padding: 12px; text-align: left; vertical-align: top; }
+        .history-table th { background-color: #f9f9f9; color: #e74c3c; font-weight: bold; }
+        .history-table tr:hover { background-color: #f1f1f1; }
+        .copy-btn {
+            background-color: #3498db; color: white; border: none; 
+            padding: 4px 8px; border-radius: 4px; cursor: pointer; 
+            font-size: 0.8em; margin-left: 5px;
+        }
+        .copy-btn:hover { background-color: #2980b9; }
 
         @media (max-width: 850px) {
             .dashboard-container { flex-direction: column; }
@@ -47,23 +58,9 @@
             .info-grid { grid-template-columns: 1fr; }
         }
 
-        /* --- CSS MỚI CHO BẢNG LỊCH SỬ --- */
-        .history-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
-        .history-table th, .history-table td { border: 1px solid #eee; padding: 12px; text-align: left; }
-        .history-table th { background-color: #f9f9f9; color: #e74c3c; font-weight: bold; }
-        .history-table tr:hover { background-color: #f1f1f1; }
-        .copy-btn {
-            background-color: #3498db; color: white; border: none; 
-            padding: 3px 8px; border-radius: 4px; cursor: pointer; 
-            font-size: 0.8em; margin-left: 5px;
-        }
-        .copy-btn:hover { background-color: #2980b9; }
-
-        /* CUSTOM ALERT */
         #customAlert { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 9999; display: none; justify-content: center; align-items: center; }
         .alert-content { background-color: white; padding: 30px; border-radius: 10px; width: 350px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); text-align: center; border-top: 5px solid #ff5722; }
         .alert-content h3 { color: #28a745; margin-top: 0; font-size: 1.5em; margin-bottom: 15px; }
-        .alert-content p { margin-bottom: 20px; font-size: 1.1em; line-height: 1.4; }
         .alert-content button { background-color: #ff5722; color: white; padding: 10px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; border: none; outline: none; }
     </style>
 </head>
@@ -77,21 +74,19 @@
         <div class="sidebar">
             <div class="profile-header">
                 <img id="profile-avatar" src="https://tse2.mm.bing.net/th/id/OIP.vg41yG82qw84ziz5nS-CWQHaHa?pid=Api&P=0&h=180" alt="Avatar">
-                <div id="profile-username" class="username">Tên Tài Khoản</div>
-                <div id="profile-uid" class="uid">ID: Đang tải...</div>
+                <div id="profile-username" class="username">Đang tải...</div>
+                <div id="profile-uid" class="uid">ID: ...</div>
             </div>
 
             <ul class="sidebar-menu">
                 <li><div class="header red-text">QUẢN LÝ TÀI KHOẢN</div></li>
-                <li><a href="#" id="menu-info" class="active" onclick="showSection('thongtin', this)">Thông tin tài khoản</a></li>
-                <li><a href="#" id="menu-password" onclick="showSection('doimatkhau', this)">Đổi mật khẩu</a></li>
+                <li><a href="#" class="active" onclick="showSection('thongtin', this)">Thông tin tài khoản</a></li>
+                <li><a href="#" onclick="showSection('doimatkhau', this)">Đổi mật khẩu</a></li>
                 <li><div class="header red-text">LỊCH SỬ</div></li>
-                <li><a href="#" onclick="showSection('lichsunap', this); showCustomAlert('Thông báo', 'Chức năng đang được phát triển.')">Lịch sử nạp tiền</a></li>
-                <li><a href="#" onclick="showSection('lichsumua', this); loadPurchaseHistory()">Lịch sử mua nick</a></li>
-                <li><a href="#" onclick="showSection('lichsudv', this); showCustomAlert('Thông báo', 'Chức năng đang được phát triển.')">Lịch sử dịch vụ</a></li>
-                <li><a href="#" onclick="showSection('lichsuquay', this); showCustomAlert('Thông báo', 'Chức năng đang được phát triển.')">Lịch sử quay</a></li>
+                <li><a href="#" onclick="showSection('lichsunap', this); showCustomAlert('Thông báo', 'Đang cập nhật.')">Lịch sử nạp tiền</a></li>
+                <li><a href="#" onclick="showSection('lichsumua', this); loadAllHistory()">Lịch sử mua nick & Dịch vụ</a></li>
+                <li><a href="#" onclick="showSection('lichsuquay', this); showCustomAlert('Thông báo', 'Đang cập nhật.')">Lịch sử quay</a></li>
                 <li><div class="header red-text">KHÁC</div></li>
-                <li><a href="#" onclick="showSection('rutvatpham', this); showCustomAlert('Thông báo', 'Chức năng đang được phát triển.')">Rút vật phẩm</a></li>
                 <li><a href="#" onclick="logoutUser()" class="red-text">Đăng xuất</a></li>
             </ul>
         </div>
@@ -117,14 +112,6 @@
                         <div class="info-label red-text">Số dư Robux</div>
                         <div id="info-robux" class="info-value">...</div>
                     </div>
-                    <div class="info-box diamond">
-                        <div class="info-label red-text">Số dư Kim Cương</div>
-                        <div id="info-diamond" class="info-value">...</div>
-                    </div>
-                    <div class="info-box">
-                        <div class="info-label">Ngày tham gia</div>
-                        <div id="info-join-date" class="info-value">...</div>
-                    </div>
                 </div>
             </div>
 
@@ -140,42 +127,35 @@
                     <button type="submit">Cập nhật</button>
                 </form>
             </div>
-
-            <div id="lichsunap" class="content-section">
-                <h2>Lịch sử nạp tiền</h2>
-                <p>Nội dung này sẽ hiển thị lịch sử nạp thẻ từ Firestore (Collection 'card_records').</p>
-            </div>
             
             <div id="lichsumua" class="content-section">
-                <h2>Lịch sử mua Acc The Forge</h2>
+                <h2>Lịch sử mua Acc & Dịch vụ</h2>
                 <div style="overflow-x:auto;">
                     <table class="history-table">
                         <thead>
                             <tr>
-                                <th style="width: 20%;">Dịch vụ</th>
-                                <th style="width: 25%;">Tài Khoản</th>
-                                <th style="width: 25%;">Mật Khẩu</th>
-                                <th style="width: 15%;">Giá</th>
-                                <th style="width: 15%;">Thời gian</th>
+                                <th style="width: 25%;">Dịch vụ / Game</th>
+                                <th style="width: 35%;">Thông tin Acc / Note</th>
+                                <th style="width: 20%;">Giá tiền</th>
+                                <th style="width: 20%;">Thời gian</th>
                             </tr>
                         </thead>
                         <tbody id="purchaseHistoryBody">
-                            <tr><td colspan="5" style="text-align:center">Đang tải dữ liệu...</td></tr>
+                            <tr><td colspan="4" style="text-align:center">Đang tải dữ liệu...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div id="lichsudv" class="content-section"><h2>Lịch sử dịch vụ</h2><p>Nội dung mô phỏng.</p></div>
-            <div id="lichsuquay" class="content-section"><h2>Lịch sử quay</h2><p>Nội dung mô phỏng.</p></div>
-            <div id="rutvatpham" class="content-section"><h2>Rút vật phẩm</h2><p>Nội dung mô phỏng.</p></div>
+            <div id="lichsunap" class="content-section"><h2>Lịch sử nạp</h2><p>Chưa có dữ liệu.</p></div>
+            <div id="lichsuquay" class="content-section"><h2>Lịch sử quay</h2><p>Chưa có dữ liệu.</p></div>
 
         </div>
     </div>
 
     <div id="customAlert">
         <div class="alert-content">
-            <h3 id="alertTitle"></h3>
+            <h3 id="alertTitle">Thông báo</h3>
             <p id="alertMessage"></p>
             <button onclick="document.getElementById('customAlert').style.display='none'">OK</button>
         </div>
@@ -191,191 +171,160 @@
             appId: "1:777222985748:web:94a9deF4894a3dd7b6f01",
             measurementId: "G-ZR4F57QMJX8"
         };
-        
-        const firebaseApp = firebase.initializeApp(firebaseConfig);
-        const db = firebaseApp.firestore(); 
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
+        // DANH SÁCH TẤT CẢ CÁC KHO CẦN QUÉT
+        const ALL_ORDER_COLLECTIONS = [
+            "orders_theforge", 
+            "orders_99nights", 
+            "orders_adoptme", 
+            "orders_bloxfruits",
+            "orders_fisch", 
+            "orders_fischit", 
+            "orders_plantvsbrainrot", 
+            "orders_stealabrainrot",
+            "orders_mxh" // Thêm cả MXH vào đây
+        ];
+
+        // 1. TẢI THÔNG TIN USER
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
-            if (doc.exists) {
-                const data = doc.data();
-                data.robuxBalance = data.robuxBalance || 0;
-                data.kimCuongBalance = data.kimCuongBalance || 0;
-                data.balance = data.balance || 0;
-                return data;
-            }
-            return null;
+            return doc.exists ? doc.data() : null;
         }
 
-        async function saveUserData(username, userData) {
-            await db.collection("users").doc(username).set(userData);
-            return true;
-        }
-        
-        // --- HÀM TẢI LỊCH SỬ MUA ACC ---
-        async function loadPurchaseHistory() {
+        async function initPage() {
             const user = localStorage.getItem('currentUser');
-            if(!user) return;
+            if(!user) {
+                alert("Vui lòng đăng nhập!");
+                window.location.href = 'index.html';
+                return;
+            }
 
-            const tbody = document.getElementById('purchaseHistoryBody');
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">Đang tải...</td></tr>';
+            const userData = await fetchUserData(user);
+            if(userData) {
+                document.getElementById('profile-username').innerText = userData.username;
+                document.getElementById('info-username').innerText = userData.username;
+                document.getElementById('info-uid').innerText = 'ID-' + Math.floor(Math.random()*1000000);
+                document.getElementById('info-balance-vnd').innerText = (userData.balance || 0).toLocaleString() + ' VNĐ';
+                document.getElementById('info-robux').innerText = (userData.robuxBalance || 0).toLocaleString();
+            }
 
-            // Lấy dữ liệu từ collection 'orders_theforge'
-            db.collection("orders_theforge")
-              .where("customer", "==", user)
-              .orderBy("timestamp", "desc") // Sắp xếp mới nhất lên đầu
-              .get()
-              .then((querySnapshot) => {
-                  tbody.innerHTML = '';
-                  
-                  if(querySnapshot.empty) {
-                      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">Bạn chưa mua acc nào.</td></tr>';
-                      return;
-                  }
-
-                  querySnapshot.forEach((doc) => {
-                      const data = doc.data();
-                      const date = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString('vi-VN') : 'Vừa xong';
-                      
-                      // Hiển thị thông tin
-                      const row = `
-                        <tr>
-                            <td style="color:#007bff; font-weight:bold;">${data.service}</td>
-                            <td>
-                                ${data.acc_username} 
-                                <button class="copy-btn" onclick="copyText('${data.acc_username}')">Copy</button>
-                            </td>
-                            <td>
-                                ${data.acc_password} 
-                                <button class="copy-btn" onclick="copyText('${data.acc_password}')">Copy</button>
-                            </td>
-                            <td class="red-text">${(data.price || 0).toLocaleString()}đ</td>
-                            <td style="font-size:13px; color:#666;">${date}</td>
-                        </tr>
-                      `;
-                      tbody.innerHTML += row;
-                  });
-              })
-              .catch((error) => {
-                  console.error("Lỗi tải lịch sử: ", error);
-                  tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red">Lỗi tải dữ liệu (Có thể do chưa tạo Index Firestore).</td></tr>`;
-              });
+            // Tự động load lịch sử luôn
+            loadAllHistory();
         }
 
+        // 2. HÀM QUÉT TOÀN BỘ LỊCH SỬ TỪ TẤT CẢ GAME
+        async function loadAllHistory() {
+            const user = localStorage.getItem('currentUser');
+            const tbody = document.getElementById('purchaseHistoryBody');
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">Đang quét dữ liệu từ hệ thống...</td></tr>';
+
+            let allOrders = [];
+
+            // Tạo danh sách các Promise để chạy song song (cho nhanh)
+            const promises = ALL_ORDER_COLLECTIONS.map(collectionName => 
+                db.collection(collectionName)
+                    .where("customer", "==", user)
+                    .get()
+                    .then(snapshot => {
+                        snapshot.forEach(doc => {
+                            let data = doc.data();
+                            // Thêm trường sortTime để sắp xếp sau này
+                            data.sortTime = data.timestamp ? data.timestamp.seconds : 0;
+                            allOrders.push(data);
+                        });
+                    })
+                    .catch(err => console.log(`Không tìm thấy đơn ở ${collectionName}`))
+            );
+
+            // Đợi tất cả quét xong
+            await Promise.all(promises);
+
+            // Sắp xếp: Mới nhất lên đầu
+            allOrders.sort((a, b) => b.sortTime - a.sortTime);
+
+            // Hiển thị ra bảng
+            tbody.innerHTML = '';
+            if (allOrders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">Bạn chưa mua acc nào.</td></tr>';
+                return;
+            }
+
+            allOrders.forEach(order => {
+                const date = order.timestamp ? new Date(order.timestamp.toDate()).toLocaleString('vi-VN') : 'N/A';
+                
+                // Xử lý hiển thị Acc/Pass
+                let accInfoHtml = '';
+                if (order.acc_username) {
+                    // Dạng Acc Game
+                    accInfoHtml = `
+                        <b>TK:</b> ${order.acc_username} <button class="copy-btn" onclick="copyText('${order.acc_username}')">Copy</button><br>
+                        <b>MK:</b> ${order.acc_password} <button class="copy-btn" onclick="copyText('${order.acc_password}')">Copy</button>
+                    `;
+                } else if (order.details || order.info) {
+                    // Dạng Acc MXH (Lưu kiểu cũ)
+                    accInfoHtml = order.details || order.info;
+                } else {
+                    accInfoHtml = '<i style="color:#999">Không có dữ liệu acc</i>';
+                }
+
+                const row = `
+                    <tr>
+                        <td style="color:#007bff; font-weight:bold;">${order.service}</td>
+                        <td>${accInfoHtml}</td>
+                        <td style="color:#e74c3c; font-weight:bold;">${(order.price || 0).toLocaleString()}đ</td>
+                        <td style="font-size:13px; color:#555;">${date}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // --- CÁC HÀM PHỤ TRỢ ---
         function copyText(text) {
             navigator.clipboard.writeText(text);
             showCustomAlert("Thành công", "Đã sao chép: " + text);
         }
 
-        // UTILITY FUNCTIONS
-        function showCustomAlert(title, message, isError = false) {
-            document.getElementById('alertTitle').textContent = title;
-            document.getElementById('alertMessage').innerHTML = message;
-            
-            if (isError) {
-                document.getElementById('alertTitle').style.color = '#e74c3c'; 
-            } else {
-                document.getElementById('alertTitle').style.color = '#28a745'; 
-            }
+        function showCustomAlert(title, message) {
+            document.getElementById('alertTitle').innerText = title;
+            document.getElementById('alertMessage').innerText = message;
             document.getElementById('customAlert').style.display = 'flex';
         }
 
-        function showSection(id, element) {
-            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+        function showSection(id, el) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            
-            document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
-            if (element && element.tagName === 'A') {
-                element.classList.add('active');
+            if(el) {
+                document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+                el.classList.add('active');
             }
         }
 
         function logoutUser() {
             localStorage.removeItem('currentUser');
-            showCustomAlert("Đăng xuất", "Bạn đã đăng xuất thành công. Đang chuyển về trang chủ.");
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1000);
+            window.location.href = 'index.html';
         }
 
-        function formatBalance(value) {
-            return (value || 0).toLocaleString('vi-VN');
-        }
-
-        function formatDate(timestamp) {
-            if (timestamp && timestamp.toDate) {
-                return new Date(timestamp.toDate()).toLocaleDateString('vi-VN');
-            }
-            return '01-12-2025'; 
-        }
-
-        async function handlePasswordChange(event) {
-            event.preventDefault();
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
-                showCustomAlert("Lỗi", "Phiên đăng nhập đã hết hạn.", true);
-                return;
-            }
-
+        async function handlePasswordChange(e) {
+            e.preventDefault();
+            const user = localStorage.getItem('currentUser');
             const oldPass = document.getElementById('old-pass').value;
             const newPass = document.getElementById('new-pass').value;
-            const confirmNewPass = document.getElementById('confirm-new-pass').value;
+            const confirmPass = document.getElementById('confirm-new-pass').value;
 
-            if (newPass !== confirmNewPass) {
-                showCustomAlert("Lỗi", "Mật khẩu mới không khớp!", true);
-                return;
-            }
+            if (newPass !== confirmPass) return showCustomAlert("Lỗi", "Mật khẩu mới không khớp!");
 
-            let user = await fetchUserData(currentUser);
-            if (user.password !== oldPass) {
-                 showCustomAlert("Lỗi", "Mật khẩu cũ không chính xác!", true);
-                 return;
-            }
-            
-            user.password = newPass;
-            await saveUserData(currentUser, user);
+            const userData = await fetchUserData(user);
+            if (userData.password !== oldPass) return showCustomAlert("Lỗi", "Mật khẩu cũ sai!");
 
-            showCustomAlert("Thành công", "Mật khẩu đã được cập nhật thành công!");
-            document.querySelector('.password-form').reset();
+            await db.collection("users").doc(user).update({ password: newPass });
+            showCustomAlert("Thành công", "Đổi mật khẩu thành công!");
+            e.target.reset();
         }
 
-        async function setupDashboard() {
-            const username = localStorage.getItem('currentUser');
-            if (!username) {
-                showCustomAlert("Lỗi", "Vui lòng đăng nhập để truy cập trang quản lý.", true);
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1000);
-                return;
-            }
-
-            const user = await fetchUserData(username);
-            if (!user) {
-                showCustomAlert("Lỗi", "Không tìm thấy dữ liệu người dùng.", true);
-                logoutUser();
-                return;
-            }
-            
-            const uid = '692d46a656f54'; 
-            const joinDate = formatDate(user.joinDate);
-
-            // Cập nhật Profile Header
-            document.getElementById('profile-username').textContent = user.username;
-            document.getElementById('profile-uid').textContent = `ID: ${uid}`;
-
-            // Cập nhật Thông tin cá nhân
-            document.getElementById('info-uid').textContent = uid;
-            document.getElementById('info-username').textContent = user.username;
-            document.getElementById('info-balance-vnd').textContent = `${formatBalance(user.balance)} VND`;
-            document.getElementById('info-robux').textContent = formatBalance(user.robuxBalance);
-            document.getElementById('info-diamond').textContent = formatBalance(user.kimCuongBalance);
-            document.getElementById('info-join-date').textContent = joinDate;
-
-            // Tự động load lịch sử mua acc
-            loadPurchaseHistory();
-        }
-
-        document.addEventListener('DOMContentLoaded', setupDashboard);
+        document.addEventListener('DOMContentLoaded', initPage);
     </script>
 </body>
 </html>
