@@ -52,7 +52,7 @@
             
             <div class="form-section">
                 <div class="form-group">
-                    <label style="color:#ff5722; font-size:1.1em;">BƯỚC 1: CHỌN GAME MUỐN THÊM ACC</label>
+                    <label style="color:#ff5722; font-size:1.1em;">BƯỚC 1: CHỌN GAME / DỊCH VỤ</label>
                     <select id="gameSelect" class="admin-select" onchange="updateServiceList()">
                         <option value="theforge">The Forge</option>
                         <option value="99nights">99 Nights</option>
@@ -62,21 +62,21 @@
                         <option value="fischit">Fisch IT</option>
                         <option value="plantvsbrainrot">Plant vs Brainrot</option>
                         <option value="stealabrainrot">Steal A Brainrot</option>
-                    </select>
+                        <option value="mxh">Mạng Xã Hội (MXH)</option> </select>
                 </div>
 
                 <div class="form-group">
-                    <label>BƯỚC 2: CHỌN LOẠI ACC</label>
+                    <label>BƯỚC 2: CHỌN LOẠI ACC / GÓI</label>
                     <select id="serviceSelect" class="admin-select" onchange="loadStock()">
                         </select>
                 </div>
 
                 <div class="form-group">
-                    <label>Tài khoản:</label>
+                    <label>Tài khoản (hoặc Key/Link):</label>
                     <input type="text" id="accUser" class="admin-input" placeholder="Nhập username...">
                 </div>
                 <div class="form-group">
-                    <label>Mật khẩu:</label>
+                    <label>Mật khẩu (hoặc Thông tin thêm):</label>
                     <input type="text" id="accPass" class="admin-input" placeholder="Nhập password...">
                 </div>
 
@@ -127,6 +127,19 @@
 
         // --- CẤU HÌNH DANH SÁCH DỊCH VỤ ---
         const GAME_DATA = {
+            "mxh": {
+                collection: "stock_mxh",
+                services: [
+                    "GEMINI PRO 4 THÁNG",
+                    "CAPCUT PRO 28 NGÀY",
+                    "CAPCUT PRO 7 NGÀY",
+                    "CAPCUT PRO 1 NĂM",
+                    "CHAT GPT PLUS 1 THÁNG",
+                    "CHAT GPT PLUS 3 THÁNG",
+                    "CHAT GPT PLUS 6 THÁNG",
+                    "CHAT GPT PLUS 1 NĂM"
+                ]
+            },
             "theforge": {
                 collection: "stock_theforge",
                 services: [
@@ -282,10 +295,12 @@
             if (!user || !pass) return alert("Thiếu thông tin Acc/Pass!");
 
             try {
+                // Thêm trường 'status' để đồng bộ với logic mua hàng (chua = chưa bán)
                 await db.collection(currentCollection).add({
                     service: service,
                     username: user,
                     password: pass,
+                    status: 'chua', 
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 alert(`Đã thêm acc vào kho [${currentCollection}]!`);
@@ -307,14 +322,16 @@
 
             tbody.innerHTML = '<tr><td colspan="4">Đang tải...</td></tr>';
 
+            // Chỉ hiện những acc chưa bán (status == 'chua')
             unsubscribe = db.collection(currentCollection)
                 .where("service", "==", filterService)
+                .where("status", "==", "chua") 
                 .onSnapshot((snapshot) => {
                     tbody.innerHTML = '';
                     document.getElementById('totalCount').innerText = snapshot.size;
 
                     if (snapshot.empty) {
-                        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red;">Kho đang trống loại này.</td></tr>';
+                        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red;">Kho đang trống hoặc đã bán hết.</td></tr>';
                         return;
                     }
 

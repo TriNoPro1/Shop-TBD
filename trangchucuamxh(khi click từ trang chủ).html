@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
         /* =========================================
-           PHẦN CSS GIỮ NGUYÊN TOÀN BỘ (KHÔNG CẮT BỚT)
+           PHẦN CSS GIỮ NGUYÊN TOÀN BỘ
            ========================================= */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -271,6 +271,17 @@
             font-size: 0.8em;
             color: #666;
         }
+        
+        /* CSS Mới cho Stock Count */
+        .stock-count {
+            display: block;
+            font-size: 0.85em;
+            color: #27ae60;
+            font-weight: bold;
+            margin-top: -5px;
+            margin-bottom: 5px;
+        }
+
         .footer {
             background-color: #2c3e50;
             color: #ecf0f1;
@@ -386,6 +397,7 @@
             font-size: 0.9em;
             margin-right: 10px;
         }
+        /* Style cho Top Nạp */
         .top-depositors {
             list-style: none;
             padding: 0;
@@ -412,6 +424,7 @@
         .top-depositor-rank.rank1 { color: #FFD700; } 
         .top-depositor-rank.rank2 { color: #C0C0C0; } 
         .top-depositor-rank.rank3 { color: #CD7F32; } 
+        /* Profile Dropdown Styles */
         .dropdown {
             position: relative;
             display: inline-block;
@@ -476,6 +489,7 @@
             background-color: #ddd;
             margin: 5px 0;
         }
+        /* CUSTOM ALERT MODAL STYLES */
         #customAlert {
             position: fixed;
             top: 0;
@@ -815,8 +829,9 @@
                 </div>
                 <div class="info">
                     <h4>GEMINI PRO 4 THÁNG</h4>
+                    <span class="stock-count" id="stock-GEMINI PRO 4 THÁNG">Đang tải...</span>
                     <p class="price"><span>Giá: <strong>68,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('GEMINI PRO 4 THÁNG', 68000)">Buy now</button>
+                    <button id="buyNowButton" onclick="openModalAccount('GEMINI PRO 4 THÁNG', 68000)">Buy now</button>
                 </div>
             </div>
             
@@ -827,8 +842,9 @@
                 </div>
                 <div class="info">
                     <h4>CAPCUT PRO 28 NGÀY</h4>
+                    <span class="stock-count" id="stock-CAPCUT PRO 28 NGÀY">Đang tải...</span>
                     <p class="price"><span>Giá: <strong>55,000 VND</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('CAPCUT PRO 28 NGÀY', 55000)">Buy now</button>
+                    <button id="buyNowButton" onclick="openModalAccount('CAPCUT PRO 28 NGÀY', 55000)">Buy now</button>
                 </div>
             </div>
 
@@ -839,8 +855,9 @@
                 </div>
                 <div class="info">
                     <h4>CAPCUT PRO 7 NGÀY</h4>
+                    <span class="stock-count" id="stock-CAPCUT PRO 7 NGÀY">Đang tải...</span>
                     <p class="price"><span>Giá: <strong>50,000 VND</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('CAPCUT PRO 7 NGÀY', 50000)">Buy now</button>
+                    <button id="buyNowButton" onclick="openModalAccount('CAPCUT PRO 7 NGÀY', 50000)">Buy now</button>
                 </div>
             </div>
 
@@ -851,8 +868,9 @@
                 </div>
                 <div class="info">
                     <h4>CAPCUT PRO 1 NĂM</h4>
+                    <span class="stock-count" id="stock-CAPCUT PRO 1 NĂM">Đang tải...</span>
                     <p class="price"><span>Giá: <strong>95,000 VND</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('CAPCUT PRO 1 NĂM', 95000)">Buy now</button>
+                    <button id="buyNowButton" onclick="openModalAccount('CAPCUT PRO 1 NĂM', 95000)">Buy now</button>
                 </div>
             </div>
 
@@ -863,8 +881,9 @@
                 </div>
                 <div class="info">
                     <h4>CHAT GPT PLUS 1 THÁNG</h4>
+                    <span class="stock-count" id="stock-CHAT GPT PLUS 1 THÁNG">Đang tải...</span>
                     <p class="price"><span>Giá: <strong>79,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('CHAT GPT PLUS 1 THÁNG', 79000)">Buy now</button>
+                    <button id="buyNowButton" onclick="openModalAccount('CHAT GPT PLUS 1 THÁNG', 79000)">Buy now</button>
                 </div>
             </div>
 
@@ -875,8 +894,9 @@
                 </div>
                 <div class="info">
                     <h4>CHAT GPT PLUS 3 THÁNG</h4>
+                    <span class="stock-count" id="stock-CHAT GPT PLUS 3 THÁNG">Đang tải...</span>
                     <p class="price"><span>Giá: <strong>85,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('CHAT GPT PLUS 3 THÁNG', 85000)">Buy now</button>
+                    <button id="buyNowButton" onclick="openModalAccount('CHAT GPT PLUS 3 THÁNG', 85000)">Buy now</button>
                 </div>
             </div>
 
@@ -887,8 +907,9 @@
                 </div>
                 <div class="info">
                     <h4>CHAT GPT PLUS 6 THÁNG</h4>
+                    <span class="stock-count" id="stock-CHAT GPT PLUS 6 THÁNG">Đang tải...</span>
                     <p class="price"><span>Giá: <strong>92,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('CHAT GPT PLUS 6 THÁNG', 92000)">Buy now</button>
+                    <button id="buyNowButton" onclick="openModalAccount('CHAT GPT PLUS 6 THÁNG', 92000)">Buy now</button>
                 </div>
             </div>
 
@@ -899,8 +920,9 @@
                 </div>
                 <div class="info">
                     <h4>CHAT GPT PLUS 1 NĂM</h4>
+                    <span class="stock-count" id="stock-CHAT GPT PLUS 1 NĂM">Đang tải...</span>
                     <p class="price"><span>Giá: <strong>99,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('CHAT GPT PLUS 1 NĂM', 99000)">Buy now</button>
+                    <button id="buyNowButton" onclick="openModalAccount('CHAT GPT PLUS 1 NĂM', 99000)">Buy now</button>
                 </div>
             </div>
 
@@ -912,7 +934,7 @@
                 <div class="info">
                     <h4>NITRO BOOST 1 THÁNG</h4>
                     <p class="price"><span>Giá: <strong>88,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('NITRO BOOST 1 THÁNG', 88000)">Buy now</button>
+                    <button id="buyNowButton" onclick="openModalService('NITRO BOOST 1 THÁNG', 88000)">Buy now</button>
                 </div>
             </div>
             
@@ -924,7 +946,7 @@
                 <div class="info">
                     <h4>NITRO BOOST 1 NĂM</h4>
                     <p class="price"><span>Giá: <strong>100,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('NITRO BOOST 1 NĂM', 100000)">Buy now</button>
+                    <button id="buyNowButton" onclick="openModalService('NITRO BOOST 1 NĂM', 100000)">Buy now</button>
                 </div>
             </div>
 
@@ -936,7 +958,7 @@
                 <div class="info">
                     <h4>NITRO BASIC 1 THÁNG</h4>
                     <p class="price"><span>Giá: <strong>52,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('NITRO BASIC 1 THÁNG', 52000)">Buy now</button>
+                    <button id="buyNowButton" onclick="openModalService('NITRO BASIC 1 THÁNG', 52000)">Buy now</button>
                 </div>
             </div>
             
@@ -948,7 +970,7 @@
                 <div class="info">
                     <h4>NITRO BASIC 1 NĂM</h4>
                     <p class="price"><span>Giá: <strong>75,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('NITRO BASIC 1 NĂM', 75000)">Buy now</button>
+                    <button id="buyNowButton" onclick="openModalService('NITRO BASIC 1 NĂM', 75000)">Buy now</button>
                 </div>
             </div>
             
@@ -960,47 +982,38 @@
                 <div class="info">
                     <h4>DỊCH VỤ DIGITAL</h4>
                     <p class="price"><span>Giá: <strong>60,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalWithPrice('DỊCH VỤ DIGITAL', 60000)">Buy now</button>
+                    <button id="buyNowButton" onclick="openModalService('DỊCH VỤ DIGITAL', 60000)">Buy now</button>
                 </div>
             </div>
         </div>
     </div>
     
-<div id="confirmPurchaseModal" class="modal">
+<div id="modalBuyService" class="modal">
     <div class="modal-content">
-        <span class="close-icon" onclick="closeModal()">&times;</span>
-
-        <h2 class="modal-title">NHẬP THÔNG TIN TÀI KHOẢN</h2>
+        <span class="close-icon" onclick="closeModalService()">&times;</span>
+        <h2 class="modal-title">NHẬP THÔNG TIN DỊCH VỤ</h2>
         <div class="divider"></div>
-
-        <div class="rate-banner">
-            <p>VUI LÒNG NHẬP THÔNG TIN CỦA BẠN MỘT CÁCH CHÍNH XÁC NHẤT</p>
-            <p>MỌI THẮC MẮC LIÊN HỆ: <span class="highlight-pink">https://discord.gg/j282RhKD2J</span></p>
-            <p>NẾU MUA KEY CHỈ CẦN ĐIỀN EMAIL</p>
-        </div>
-
+        <div class="rate-banner"><p>DÀNH CHO NITRO & DIGITAL</p><p>HỆ THỐNG SẼ LIÊN HỆ ĐỂ XỬ LÝ</p></div>
         <div class="form-body">
-            <div class="input-group">
-                <label>Thành tiền:</label>
-                <input type="text" id="billAmount" class="custom-input" readonly>
-            </div>
-        
-            <div class="input-group">
-                <label>Tài Khoản (Email/User):</label>
-                <input type="text" id="accUsername" class="custom-input" placeholder="Nhập tài khoản cần nâng cấp...">
-            </div>
+            <div class="input-group"><label>Thành tiền:</label><input type="text" id="svcPrice" class="custom-input" readonly></div>
+            <div class="input-group"><label>Tài Khoản (Nếu cần):</label><input type="text" id="svcUser" class="custom-input" placeholder="User/Link..."></div>
+            <div class="input-group"><label>Mật Khẩu (Nếu cần):</label><input type="text" id="svcPass" class="custom-input" placeholder="Pass/Note..."></div>
+            <div class="input-group"><label>Ghi chú:</label><input type="text" id="svcNote" class="custom-input" placeholder="Yêu cầu khác..."></div>
+            <button class="pay-btn" onclick="handleServicePurchase()">THANH TOÁN</button>
+        </div>
+    </div>
+</div>
 
-            <div class="input-group">
-                <label>Mật Khẩu (Nếu cần):</label>
-                <input type="text" id="accPassword" class="custom-input" placeholder="Mật khẩu (để trống nếu mua key)">
-            </div>
-
-            <div class="input-group">
-                <label>Ghi chú / Backup Code:</label>
-                <input type="text" id="accBackupCode" class="custom-input" placeholder="Mã dự phòng hoặc ghi chú khác...">
-            </div>
-
-            <button class="pay-btn" onclick="handlePurchase()">THANH TOÁN & ĐẶT HÀNG</button>
+<div id="modalBuyAccount" class="modal">
+    <div class="modal-content">
+        <span class="close-icon" onclick="closeModalAccount()">&times;</span>
+        <h2 class="modal-title">XÁC NHẬN MUA ACC</h2>
+        <div class="divider"></div>
+        <div class="rate-banner"><p>HỆ THỐNG TỰ ĐỘNG TRẢ ACC</p><p>ACC CÓ SẴN TRONG KHO</p></div>
+        <div class="form-body">
+            <div class="input-group"><label>Sản phẩm:</label><input type="text" id="accName" class="custom-input" readonly></div>
+            <div class="input-group"><label>Thành tiền:</label><input type="text" id="accPrice" class="custom-input" readonly style="color:#2ecc71"></div>
+            <button class="pay-btn" onclick="handleAccountPurchase()">XÁC NHẬN MUA NGAY</button>
         </div>
     </div>
 </div>
@@ -1049,51 +1062,44 @@
     </footer>
 
     <script>
-    // === LINK WEBHOOK VÀ CẤU HÌNH PING ĐÃ ĐƯỢC CẬP NHẬT ===
+    // === CẤU HÌNH ===
     const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1341974823944978453/mKyLCzGzPWJ45BKkJ4MmT9pioqJckpXwXjbt9JPOxN8fzXkD0wIGiVVg_o77I1BZ3Vox";
+    let currentItem = null;
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const modal = document.getElementById('confirmPurchaseModal');
-        const closeBtn = document.querySelector('.close-icon'); 
-        
-        // Mở modal, nhận tên và giá sản phẩm
-        window.openModalWithPrice = function(productName, productPrice) {
-            if (!localStorage.getItem('currentUser')) {
-                showCustomAlert("Yêu cầu", "Vui lòng đăng nhập để mua hàng!", true);
-                showAuthPrompt();
-                return;
-            }
-            // Lưu biến toàn cục để dùng khi bấm Thanh toán
-            window.currentProduct = { name: productName, price: productPrice };
-            
-            // Hiển thị giá tiền tự động
-            document.getElementById('billAmount').value = productPrice.toLocaleString('vi-VN') + " VNĐ";
-            
-            // Reset form
-            document.getElementById('accUsername').value = '';
-            document.getElementById('accPassword').value = '';
-            document.getElementById('accBackupCode').value = '';
+    // === MODAL FUNCTIONS ===
+    function openModalService(name, price) {
+        if (!checkLogin()) return;
+        currentItem = { name, price, type: 'service' };
+        document.getElementById('svcPrice').value = price.toLocaleString('vi-VN') + " VNĐ";
+        document.getElementById('modalBuyService').style.display = 'flex';
+    }
 
-            modal.style.display = 'flex';
+    function closeModalService() {
+        document.getElementById('modalBuyService').style.display = 'none';
+    }
+
+    function openModalAccount(name, price) {
+        if (!checkLogin()) return;
+        currentItem = { name, price, type: 'account' };
+        document.getElementById('accName').value = name;
+        document.getElementById('accPrice').value = price.toLocaleString('vi-VN') + " VNĐ";
+        document.getElementById('modalBuyAccount').style.display = 'flex';
+    }
+
+    function closeModalAccount() {
+        document.getElementById('modalBuyAccount').style.display = 'none';
+    }
+
+    function checkLogin() {
+        if (!localStorage.getItem('currentUser')) {
+            showCustomAlert("Yêu cầu", "Vui lòng đăng nhập để mua hàng!", true);
+            showAuthPrompt();
+            return false;
         }
+        return true;
+    }
 
-        window.closeModal = function() {
-            modal.style.display = 'none';
-            // Cũng đóng auth modal nếu đang mở
-            document.getElementById('authModal').classList.remove('active');
-        }
-
-        if (closeBtn) {
-            closeBtn.addEventListener('click', window.closeModal);
-        }
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                window.closeModal();
-            }
-        }
-    });
-
-        // CẤU HÌNH FIREBASE
+    // === FIREBASE & LOGIC ===
         const firebaseConfig = {
           apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
           authDomain: "shop-tbd.firebaseapp.com",
@@ -1107,99 +1113,135 @@
         const firebaseApp = firebase.initializeApp(firebaseConfig);
         const db = firebaseApp.firestore(); 
 
+        // --- CHECK STOCK ---
+        function updateStockCounts() {
+            db.collection('stock_mxh').where('status', '==', 'chua').onSnapshot(snapshot => {
+                const counts = {};
+                snapshot.forEach(doc => {
+                    const service = doc.data().service;
+                    counts[service] = (counts[service] || 0) + 1;
+                });
+
+                // Update UI
+                document.querySelectorAll('.stock-count').forEach(el => {
+                    const id = el.id.replace('stock-', '');
+                    el.textContent = `Còn lại: ${counts[id] || 0}`;
+                    if((counts[id] || 0) === 0) el.style.color = 'red';
+                    else el.style.color = '#27ae60';
+                });
+            });
+        }
+
+        // --- MUA DỊCH VỤ (NITRO) ---
+        async function handleServicePurchase() {
+            const user = localStorage.getItem('currentUser');
+            const note = `User: ${document.getElementById('svcUser').value} | Pass: ${document.getElementById('svcPass').value} | Note: ${document.getElementById('svcNote').value}`;
+            
+            try {
+                await processPayment(user, currentItem.price);
+                
+                // Log Order
+                await db.collection("orders_mxh").add({
+                    customer: user, service: currentItem.name, price: currentItem.price,
+                    details: note, status: "Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                sendWebhook(user, currentItem.name, currentItem.price, note, "DỊCH VỤ");
+                closeModalService();
+                showCustomAlert("Thành công", "Đơn hàng đã được gửi đi xử lý!");
+            } catch (e) {
+                showCustomAlert("Thất bại", e);
+            }
+        }
+
+        // --- MUA ACCOUNT (GEMINI/GPT/CAPCUT) ---
+        async function handleAccountPurchase() {
+            const user = localStorage.getItem('currentUser');
+            let boughtAcc = null;
+
+            try {
+                await db.runTransaction(async (t) => {
+                    // Check Balance
+                    const userRef = db.collection("users").doc(user);
+                    const userDoc = await t.get(userRef);
+                    if(!userDoc.exists) throw "Lỗi user";
+                    if(userDoc.data().balance < currentItem.price) throw "Số dư không đủ!";
+
+                    // Find Acc
+                    const q = await db.collection('stock_mxh')
+                        .where('service', '==', currentItem.name)
+                        .where('status', '==', 'chua')
+                        .limit(1).get();
+                    
+                    if(q.empty) throw "Hết hàng!";
+                    
+                    const accDoc = q.docs[0];
+                    boughtAcc = accDoc.data();
+
+                    // Execute
+                    t.update(userRef, { balance: userDoc.data().balance - currentItem.price });
+                    t.update(accDoc.ref, { status: 'da', soldTo: user, soldAt: firebase.firestore.FieldValue.serverTimestamp() });
+                    
+                    // Log History
+                    const histRef = db.collection("user_purchases").doc();
+                    t.set(histRef, {
+                        username: user, item_name: currentItem.name, price: currentItem.price,
+                        acc_username: boughtAcc.username, acc_password: boughtAcc.password,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+
+                sendWebhook(user, currentItem.name, currentItem.price, `||${boughtAcc.username}||\n||${boughtAcc.password}||`, "MUA ACCOUNT");
+                closeModalAccount();
+                showCustomAlert("Thành công", `TK: ${boughtAcc.username}<br>MK: ${boughtAcc.password}`);
+            } catch (e) {
+                showCustomAlert("Lỗi", e.message || e);
+            }
+        }
+
+        async function processPayment(user, amount) {
+            const ref = db.collection("users").doc(user);
+            await db.runTransaction(async (t) => {
+                const doc = await t.get(ref);
+                if(doc.data().balance < amount) throw "Số dư không đủ!";
+                t.update(ref, { balance: doc.data().balance - amount });
+            });
+        }
+
+        function sendWebhook(user, item, price, details, type) {
+            if (!DISCORD_WEBHOOK_URL) return;
+            fetch(DISCORD_WEBHOOK_URL, {
+                method: "POST", headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    content: "@everyone",
+                    embeds: [{
+                        title: `🛒 ĐƠN HÀNG MỚI: ${type}`,
+                        color: type === "MUA ACCOUNT" ? 5763719 : 15158332,
+                        fields: [
+                            { name: "Khách", value: user, inline: true },
+                            { name: "Món", value: item, inline: true },
+                            { name: "Giá", value: price.toLocaleString(), inline: true },
+                            { name: "Chi tiết", value: details }
+                        ]
+                    }]
+                })
+            });
+        }
+
+        // --- AUTH & UI HELPERS ---
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
-            if (doc.exists) {
-                const data = doc.data();
-                data.robuxBalance = data.robuxBalance || 0; 
-                return data;
-            }
-            return null;
+            return doc.exists ? doc.data() : null;
         }
 
         async function saveUserData(username, userData) {
             await db.collection("users").doc(username).set(userData);
-            return true;
         }
 
-        // HÀM XỬ LÝ THANH TOÁN & GỬI WEBHOOK (CẬP NHẬT PING @everyone)
-        async function handlePurchase() {
-            const user = localStorage.getItem('currentUser');
-            const accUser = document.getElementById('accUsername').value.trim();
-            const accPass = document.getElementById('accPassword').value.trim();
-            const accBackup = document.getElementById('accBackupCode').value.trim();
-            const product = window.currentProduct;
-
-            if (!accUser) {
-                showCustomAlert("Thiếu thông tin", "Vui lòng nhập Tài khoản hoặc Email!", true);
-                return;
-            }
-
-            const userRef = db.collection("users").doc(user);
-            const doc = await userRef.get();
-            if(!doc.exists) return;
-            const balance = doc.data().balance || 0;
-
-            if (balance < product.price) {
-                showCustomAlert("Thất bại", "Số dư không đủ!", true);
-                return;
-            }
-
-            // Trừ tiền
-            await userRef.update({ balance: balance - product.price });
-
-            // Lưu lịch sử đơn hàng
-            await db.collection("orders_mxh").add({
-                customer: user,
-                service: product.name,
-                price: product.price,
-                details: `User: ${accUser} | Pass: ${accPass} | Backup: ${accBackup}`,
-                status: "Pending",
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-
-            // Gửi Webhook Discord (PING @EVERYONE)
-            if (DISCORD_WEBHOOK_URL && DISCORD_WEBHOOK_URL.startsWith("http")) {
-                const payload = {
-                    content: `@everyone`, // PING EVERYONE TẠI ĐÂY
-                    embeds: [{
-                        title: "🛒 ĐƠN HÀNG MXH MỚI",
-                        color: 15158332, // Màu Đỏ
-                        fields: [
-                            { name: "Khách hàng", value: user, inline: true },
-                            { name: "Dịch vụ", value: product.name, inline: true },
-                            { name: "Giá tiền", value: `${product.price.toLocaleString()} VNĐ`, inline: true },
-                            { name: "Tài khoản", value: `\`${accUser}\``, inline: false },
-                            { name: "Mật khẩu", value: `\`${accPass}\``, inline: false },
-                            { name: "Ghi chú", value: `\`${accBackup}\``, inline: false }
-                        ],
-                        footer: { text: "Hệ thống tự động Shop TBD" },
-                        timestamp: new Date().toISOString()
-                    }],
-                    allowed_mentions: { parse: ["everyone"] }
-                };
-                fetch(DISCORD_WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                }).catch(err => console.error("Webhook Error:", err));
-            }
-
-            showCustomAlert("Thành công", "Đã đặt hàng thành công! Hệ thống đang xử lý.");
-            closeModal();
-            checkLoginStatus();
-        }
-        
-        // HÀM HIỂN THỊ ALERT TÙY CHỈNH
         function showCustomAlert(title, message, isError = false) {
             document.getElementById('alertTitle').textContent = title;
             document.getElementById('alertMessage').innerHTML = message;
-            
-            if (isError) {
-                document.getElementById('alertTitle').style.color = '#e74c3c';
-            } else {
-                document.getElementById('alertTitle').style.color = '#28a745';
-            }
+            document.getElementById('alertTitle').style.color = isError ? '#e74c3c' : '#28a745';
             document.getElementById('customAlert').style.display = 'flex';
         }
 
@@ -1209,169 +1251,58 @@
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
 
-        function showAuthPrompt() {
+        function showAuthPrompt() { showLoginStep(); authModal.classList.add('active'); }
+        function closeModal() { authModal.classList.remove('active'); document.getElementById('customAlert').style.display='none'; }
+        function showLoginStep() { loginStep.classList.add('active'); registerStep.classList.remove('active'); }
+        function showRegisterStep() { registerStep.classList.add('active'); loginStep.classList.remove('active'); }
+
+        // --- AUTH EVENTS ---
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const u = document.getElementById('regUsername').value;
+            const p = document.getElementById('regPassword').value;
+            const cp = document.getElementById('regConfirmPassword').value;
+            if(p !== cp) return showCustomAlert("Lỗi", "Mật khẩu không khớp", true);
+            if(await fetchUserData(u)) return showCustomAlert("Lỗi", "Tên tồn tại", true);
+            await saveUserData(u, { username: u, password: p, balance: 50000 });
+            showCustomAlert("Thành công", "Đã tạo tài khoản (Tặng 50k)");
             showLoginStep();
-            authModal.classList.add('active');
-        }
-
-        function showLoginStep() {
-            loginStep.classList.add('active');
-            registerStep.classList.remove('active');
-        }
-
-        function showRegisterStep() {
-            registerStep.classList.add('active');
-            loginStep.classList.remove('active');
-        }
-
-        async function addAdminBalance() {
-            const currentUser = localStorage.getItem('currentUser');
-            if (currentUser !== 'Tri') {
-                showCustomAlert("Lỗi", "Bạn không có quyền truy cập Admin!", true);
-                return;
-            }
-
-            let user = await fetchUserData(currentUser);
-            const amount = 100000;
-
-            user.balance += amount;
-            await saveUserData(currentUser, user);
-
-            showCustomAlert("ADMIN", `Cộng thành công ${amount.toLocaleString('vi-VN')} VND vào tài khoản Tri!`);
-            checkLoginStatus(); 
-        }
-        
-        registerForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const username = document.getElementById('regUsername').value;
-            const password = document.getElementById('regPassword').value;
-            const confirmPassword = document.getElementById('regConfirmPassword').value;
-
-            if (password !== confirmPassword) {
-                showCustomAlert("Lỗi Đăng ký", "Mật khẩu xác nhận không khớp!", true);
-                return;
-            }
-
-            let existingUser = await fetchUserData(username);
-            if (existingUser) {
-                showCustomAlert("Lỗi Đăng ký", "Tên người dùng đã tồn tại!", true);
-                return;
-            }
-
-            const newUser = { username, password, balance: 50000, robuxBalance: 0, lastClaim: 0, canClaimReward: false };
-            await saveUserData(username, newUser);
-            
-            showCustomAlert("Đăng ký thành công", "Bạn có 50,000 VND. Vui lòng đăng nhập.");
-            
-            showLoginStep();
-            registerForm.reset();
         });
 
-        loginForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const username = document.getElementById('modalUsername').value;
-            const password = document.getElementById('modalPassword').value;
-
-            let user = await fetchUserData(username);
-
-            if (user && user.password === password) {
-                localStorage.setItem('currentUser', username);
-                document.getElementById('authModal').classList.remove('active');
-                showCustomAlert("Thành công", "Đăng nhập thành công!");
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const u = document.getElementById('modalUsername').value;
+            const p = document.getElementById('modalPassword').value;
+            const user = await fetchUserData(u);
+            if(user && user.password === p) {
+                localStorage.setItem('currentUser', u);
+                closeModal();
                 checkLoginStatus();
-            } else {
-                showCustomAlert("Lỗi Đăng nhập", "Sai tên người dùng hoặc mật khẩu!", true);
-            }
+            } else showCustomAlert("Lỗi", "Sai thông tin", true);
         });
-
-        async function renderAuthStatus(user) {
-            const area = document.getElementById('auth-status-area');
-            let adminButtonHtml = '';
-            const avatarUrl = "https://tse2.mm.bing.net/th/id/OIP.vg41yG82qw84ziz5nS-CWQHaHa?pid=Api&P=0&h=180";
-
-            if (user && user.username === 'Tri') {
-                 adminButtonHtml = `
-                    <button class="admin-btn" onclick="addAdminBalance()">
-                        ADMIN: +100K 💰
-                    </button>`;
-            }
-
-            if (user) {
-                area.innerHTML = `
-                    ${adminButtonHtml}
-                    <div class="dropdown" onclick="toggleDropdown()">
-                        <button class="profile-btn">
-                            <img src="${avatarUrl}" alt="Avatar">
-                            ${user.username}
-                            <span class="dropdown-arrow">&#9660;</span>
-                        </button>
-                        <div class="dropdown-content" id="profileDropdown">
-                            <div class="dropdown-header">
-                                Số dư: ${user.balance.toLocaleString('vi-VN')} VND 
-                                <br>
-                                Robux: ${(user.robuxBalance || 0).toLocaleString('vi-VN')} 💎
-                            </div>
-                            <a href="taikhoan.html" class="red-text">Quản lý tài khoản</a>
-                            <a href="taikhoan.html#lichsunap">Lịch sử nạp tiền</a>
-                            <a href="taikhoan.html#lichsumua">Lịch sử mua nick</a>
-                            <a href="taikhoan.html#lichsudv">Lịch sử dịch vụ</a>
-                            <a href="taikhoan.html#lichsuquay">Lịch sử quay</a>
-                            <div class="dropdown-separator"></div>
-                            <a href="#" onclick="logout()">Đăng xuất</a>
-                        </div>
-                    </div>
-                `;
-            } else {
-                area.innerHTML = `
-                    <div class="icon-text" onclick="showAuthPrompt()">
-                        <img src="https://img.icons8.com/ios-filled/50/000000/user--v1.png" alt="User Icon"> Đăng nhập
-                    </div>
-                    <div class="icon-text" onclick="showAuthPrompt()">
-                        <img src="https://img.icons8.com/ios-filled/50/000000/add-user-male--v1.png" alt="Register Icon"> Đăng ký
-                    </div>
-                `;
-            }
-        }
-
-        function toggleDropdown() {
-            document.getElementById("profileDropdown").classList.toggle("show");
-        }
-
-        window.onclick = function(event) {
-            // Đóng dropdown menu nếu click ra ngoài
-            if (!event.target.matches('.profile-btn') && !event.target.closest('.profile-btn')) {
-                const dropdowns = document.getElementsByClassName("dropdown-content");
-                for (let i = 0; i < dropdowns.length; i++) {
-                    const openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('currentUser');
-            showCustomAlert("Đăng xuất", "Bạn đã đăng xuất thành công.");
-            window.location.reload(); 
-        }
 
         async function checkLoginStatus() {
-            const username = localStorage.getItem('currentUser');
-            if (username) {
-                let user = await fetchUserData(username);
-                if (user) {
-                    renderAuthStatus(user);
+            const u = localStorage.getItem('currentUser');
+            if(u) {
+                const user = await fetchUserData(u);
+                if(user) {
+                    document.getElementById('auth-status-area').innerHTML = `
+                        <div class="dropdown" onclick="this.querySelector('.dropdown-content').classList.toggle('show')">
+                            <button class="profile-btn"><img src="https://tse2.mm.bing.net/th/id/OIP.vg41yG82qw84ziz5nS-CWQHaHa?pid=Api&P=0&h=180">${u} ▼</button>
+                            <div class="dropdown-content">
+                                <div class="dropdown-header">Ví: ${user.balance.toLocaleString()}đ</div>
+                                <a href="#" onclick="localStorage.removeItem('currentUser');location.reload()">Đăng xuất</a>
+                            </div>
+                        </div>`;
                     return;
                 }
             }
-            renderAuthStatus(null);
+            document.getElementById('auth-status-area').innerHTML = `<div class="icon-text" onclick="showAuthPrompt()">Đăng nhập</div><div class="icon-text" onclick="showAuthPrompt()">Đăng ký</div>`;
         }
-        
+
         document.addEventListener('DOMContentLoaded', () => {
-            checkLoginStatus(); 
+            checkLoginStatus();
+            updateStockCounts();
         });
     </script>
 </body>

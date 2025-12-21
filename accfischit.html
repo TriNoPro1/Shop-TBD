@@ -14,6 +14,7 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
         a { text-decoration: none; color: inherit; }
         button { cursor: pointer; border: none; outline: none; }
+        
         .header-main { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background-color: #2c3e50; }
         .header-main .logo-text { font-size: 1.8em; font-weight: 900; color: #ff5722; letter-spacing: 1px; }
         .top-bar { background-color: #f8f8f8; padding: 8px 0; font-size: 0.9em; border-bottom: 1px solid #eee; }
@@ -22,9 +23,11 @@
         .top-bar-left button { background-color: #007bff; color: white; padding: 5px 10px; border-radius: 4px; }
         .top-bar-right { display: flex; align-items: center; gap: 15px; }
         .top-up-btn { background-color: #ff0077; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; }
+        
         .main-banner img { width: 100%; border-radius: 8px; margin-top: 20px; display: block; }
         .products-section { background-color: #fff; margin-top: 20px; padding: 20px; border-radius: 8px; }
         .products-header h2 { color: #ff5722; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .product-card { background-color: #f9f9f9; border: 1px solid #eee; border-radius: 8px; overflow: hidden; text-align: center; transition: 0.3s; position: relative; }
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
@@ -35,6 +38,9 @@
         .product-card .price { font-size: 1.2em; color: #ff0077; font-weight: bold; margin-bottom: 15px; display: block; }
         .buy-btn { background-color: #222; color: #fff; border: 1px solid #ff5722; border-radius: 6px; padding: 10px; width: 100%; font-weight: bold; }
         .buy-btn:hover { background-color: #ff5722; }
+
+        /* STOCK COUNT CSS */
+        .stock-count { display: block; font-size: 0.9em; font-weight: bold; color: #27ae60; margin-bottom: 10px; }
 
         /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
@@ -81,9 +87,10 @@
                 
                 <div class="product-card">
                     <div class="tag">HOT</div>
-                    <img src="https://cdn-media.sforum.vn/storage/app/media/2imagegame/code-fish-it-roblox-1.jpg">
+                    <img src="https://imagedelivery.net/V4X6G9LNxVfPrT3U5oXrIw/aeb9a67d-7a45-4cdc-33a2-0b4b81e3eb00/public">
                     <div class="info">
                         <h4>Ghostfinn Rod + coin random...</h4>
+                        <span class="stock-count" id="stock-Ghostfinn Rod + coin random...">Đang tải...</span>
                         <span class="price">60,000 VNĐ</span>
                         <button class="buy-btn" onclick="openModal('Ghostfinn Rod + coin random...', 60000)">MUA NGAY</button>
                     </div>
@@ -91,9 +98,10 @@
 
                 <div class="product-card">
                     <div class="tag">SALE</div>
-                    <img src="https://cdn-media.sforum.vn/storage/app/media/2imagegame/code-fish-it-roblox-1.jpg">
+                    <img src="https://imagedelivery.net/V4X6G9LNxVfPrT3U5oXrIw/aeb9a67d-7a45-4cdc-33a2-0b4b81e3eb00/public">
                     <div class="info">
                         <h4>Astral Rod + item random,coin....</h4>
+                        <span class="stock-count" id="stock-Astral Rod + item random,coin....">Đang tải...</span>
                         <span class="price">70,000 VNĐ</span>
                         <button class="buy-btn" onclick="openModal('Astral Rod + item random,coin....', 70000)">MUA NGAY</button>
                     </div>
@@ -101,9 +109,10 @@
 
                 <div class="product-card">
                     <div class="tag">VIP</div>
-                    <img src="https://cdn-media.sforum.vn/storage/app/media/2imagegame/code-fish-it-roblox-1.jpg">
+                    <img src="https://imagedelivery.net/V4X6G9LNxVfPrT3U5oXrIw/2dcf1dfe-1a8d-4dcf-6167-a0e2e596cc00/public">
                     <div class="info">
                         <h4>Acc Pack 10M Fish Mythic Value</h4>
+                        <span class="stock-count" id="stock-Acc Pack 10M Fish Mythic Value">Đang tải...</span>
                         <span class="price">120,000 VNĐ</span>
                         <button class="buy-btn" onclick="openModal('Acc Pack 10M Fish Mythic Value', 120000)">MUA NGAY</button>
                     </div>
@@ -111,9 +120,10 @@
 
                 <div class="product-card">
                     <div class="tag">BEST</div>
-                    <img src="https://cdn-media.sforum.vn/storage/app/media/2imagegame/code-fish-it-roblox-1.jpg">
+                    <img src="https://imagedelivery.net/V4X6G9LNxVfPrT3U5oXrIw/b4cb3eae-769a-4abe-f5b9-6ca93927a600/public">
                     <div class="info">
-                        <h4>40% Ghostfinn Rod + 100% rod mythic</h4>
+                        <h4>40% Ghostfinn Rod + 100% rod mythic + rod random...</h4>
+                        <span class="stock-count" id="stock-40% Ghostfinn Rod + 100% rod mythic + rod random...">Đang tải...</span>
                         <span class="price">90,000 VNĐ</span>
                         <button class="buy-btn" onclick="openModal('40% Ghostfinn Rod + 100% rod mythic + rod random...', 90000)">MUA NGAY</button>
                     </div>
@@ -121,11 +131,34 @@
 
                 <div class="product-card">
                     <div class="tag">NEW</div>
-                    <img src="https://cdn-media.sforum.vn/storage/app/media/2imagegame/code-fish-it-roblox-1.jpg">
+                    <img src="https://imagedelivery.net/V4X6G9LNxVfPrT3U5oXrIw/627e48eb-e8ed-4443-b8d1-33711efdaa00/public">
                     <div class="info">
                         <h4>Ares Rod,Astral Rod,Random Item,...</h4>
+                        <span class="stock-count" id="stock-Ares Rod,Astral Rod,Random Item,...">Đang tải...</span>
                         <span class="price">100,000 VNĐ</span>
                         <button class="buy-btn" onclick="openModal('Ares Rod,Astral Rod,Random Item,...', 100000)">MUA NGAY</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="tag">NEW</div>
+                    <img src="https://imagedelivery.net/V4X6G9LNxVfPrT3U5oXrIw/ef834541-8183-42aa-4fa1-a6bcda922600/public">
+                    <div class="info">
+                        <h4>Acc Pack 100m Fish Mythic Value</h4>
+                        <span class="stock-count" id="stock-Acc Pack 100m Fish Mythic Value">Đang tải...</span>
+                        <span class="price">100,000 VNĐ</span>
+                        <button class="buy-btn" onclick="openModal('Acc Pack 100m Fish Mythic Value', 100000)">MUA NGAY</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="tag">NEW</div>
+                    <img src="https://imagedelivery.net/V4X6G9LNxVfPrT3U5oXrIw/447e1029-3ee4-436d-2001-dcedbab4c700/public">
+                    <div class="info">
+                        <h4>Acc Pack 10M Fish Secret Value</h4>
+                        <span class="stock-count" id="stock-Acc Pack 10M Fish Secret Value">Đang tải...</span>
+                        <span class="price">100,000 VNĐ</span>
+                        <button class="buy-btn" onclick="openModal('Acc Pack 10M Fish Secret Value', 100000)">MUA NGAY</button>
                     </div>
                 </div>
 
@@ -145,11 +178,7 @@
                 <label>Giá tiền:</label>
                 <input type="text" id="modalPPrice" class="custom-input" readonly style="color:#2ecc71; font-weight:bold;">
             </div>
-            <div class="input-group">
-                <label>Ghi chú:</label>
-                <input type="text" id="modalNote" class="custom-input" placeholder="Nhập ghi chú...">
-            </div>
-            <button class="confirm-btn" onclick="handlePurchase()">THANH TOÁN</button>
+            <button class="confirm-btn" onclick="handlePurchase()">XÁC NHẬN MUA NGAY</button>
         </div>
     </div>
     
@@ -163,13 +192,42 @@
         const db = firebase.firestore();
         let currentItem = null;
 
+        // CẤU HÌNH COLLECTION KHO CHO FILE NÀY
+        const COLLECTION_NAME = "stock_fischit";
+
         function showAlert(t, m, e=false) { document.getElementById('alertTitle').innerText=t; document.getElementById('alertMessage').innerHTML=m; document.getElementById('customAlert').style.display='flex'; }
         function openModal(n, p) { if(!localStorage.getItem('currentUser')) return showAlert("Lỗi","Đăng nhập đi!"); currentItem={name:n, price:p}; document.getElementById('modalPName').value=n; document.getElementById('modalPPrice').value=p.toLocaleString()+" VNĐ"; document.getElementById('confirmPurchaseModal').style.display='flex'; }
         function closeModal() { document.getElementById('confirmPurchaseModal').style.display='none'; }
 
+        // HÀM CẬP NHẬT TỒN KHO REALTIME
+        function updateStockCounts() {
+            db.collection(COLLECTION_NAME).where('status', '==', 'chua').onSnapshot(snapshot => {
+                const counts = {};
+                snapshot.forEach(doc => {
+                    const service = doc.data().service;
+                    counts[service] = (counts[service] || 0) + 1;
+                });
+
+                // Cập nhật lên UI (tìm theo ID)
+                const items = document.querySelectorAll('.stock-count');
+                items.forEach(el => {
+                    // Lấy tên sản phẩm từ ID (bỏ tiền tố 'stock-')
+                    const serviceName = el.id.replace('stock-', '');
+                    const count = counts[serviceName] || 0;
+                    
+                    if (count > 0) {
+                        el.textContent = `Còn lại: ${count} acc`;
+                        el.style.color = '#27ae60'; // Xanh
+                    } else {
+                        el.textContent = `Hết hàng`;
+                        el.style.color = '#e74c3c'; // Đỏ
+                    }
+                });
+            });
+        }
+
         async function handlePurchase() {
             const user = localStorage.getItem('currentUser');
-            const note = document.getElementById('modalNote').value;
             if(!user) return;
             try {
                 await db.runTransaction(async (t) => {
@@ -177,19 +235,21 @@
                     const uDoc = await t.get(userRef);
                     if(uDoc.data().balance < currentItem.price) throw "Số dư không đủ!";
                     
-                    // LẤY KHO FISCH IT
-                    const q = await db.collection("stock_fischit").where("service", "==", currentItem.name).limit(1).get();
+                    // LẤY ACC TỪ KHO
+                    const q = await db.collection(COLLECTION_NAME).where("service", "==", currentItem.name).where("status", "==", "chua").limit(1).get();
                     if(q.empty) throw "Hết hàng!";
                     
                     const acc = q.docs[0].data();
+                    const accRef = q.docs[0].ref;
+
+                    // TRỪ TIỀN & CẬP NHẬT TRẠNG THÁI ACC
                     t.update(userRef, { balance: uDoc.data().balance - currentItem.price });
-                    t.delete(db.collection("stock_fischit").doc(q.docs[0].id));
+                    t.update(accRef, { status: 'da', soldTo: user, soldAt: firebase.firestore.FieldValue.serverTimestamp() });
                     
-                    // LƯU LỊCH SỬ FISCH IT
-                    t.set(db.collection("orders_fischit").doc(), {
-                        customer: user, service: currentItem.name, price: currentItem.price,
+                    // LƯU LỊCH SỬ MUA HÀNG
+                    t.set(db.collection("user_purchases").doc(), {
+                        username: user, item_name: currentItem.name, price: currentItem.price,
                         acc_username: acc.username, acc_password: acc.password,
-                        note: note,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     window.boughtAcc = acc;
@@ -211,7 +271,12 @@
                 if(d.exists) document.getElementById('auth-status-area').innerHTML = `<div class="dropdown" onclick="this.querySelector('.dropdown-content').classList.toggle('show')"><button style="background:none;border:none;font-weight:bold;cursor:pointer">👤 ${u} ▼</button><div class="dropdown-content"><div class="header">Ví: ${d.data().balance.toLocaleString()}đ</div><a href="taikhoan.html">Quản lý</a><a href="#" onclick="localStorage.removeItem('currentUser');location.reload()">Đăng xuất</a></div></div>`;
             } else document.getElementById('auth-status-area').innerHTML = `<button onclick="location.href='index.html'">Đăng nhập</button>`;
         }
-        document.addEventListener('DOMContentLoaded', checkAuth);
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            updateStockCounts(); // Kích hoạt hàm đếm tồn kho
+        });
+        
         window.onclick = e => { if(!e.target.closest('.dropdown')) document.querySelectorAll('.dropdown-content').forEach(d=>d.classList.remove('show')); if(e.target==document.getElementById('confirmPurchaseModal')) closeModal(); }
     </script>
 </body>

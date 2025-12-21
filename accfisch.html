@@ -13,7 +13,6 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
         a { text-decoration: none; color: inherit; }
         button { cursor: pointer; border: none; outline: none; }
-        
         .header-main { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background-color: #2c3e50; }
         .header-main .logo-text { font-size: 1.8em; font-weight: 900; color: #ff5722; letter-spacing: 1px; }
         .top-bar { background-color: #f8f8f8; padding: 8px 0; font-size: 0.9em; border-bottom: 1px solid #eee; }
@@ -37,6 +36,9 @@
         .product-card .price { font-size: 1.2em; color: #ff0077; font-weight: bold; margin-bottom: 15px; display: block; }
         .buy-btn { background-color: #222; color: #fff; border: 1px solid #ff5722; border-radius: 6px; padding: 10px; width: 100%; font-weight: bold; }
         .buy-btn:hover { background-color: #ff5722; }
+
+        /* STOCK COUNT CSS */
+        .stock-count { display: block; font-size: 0.9em; font-weight: bold; color: #27ae60; margin-bottom: 10px; }
 
         /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
@@ -86,6 +88,7 @@
                     <img src="https://cdn-cf.ginx.tv/imgcdn/UyYTJQfoU-EGPew4_Jy3g9V1xcWwIKmvxF5_oID0vEk/rs:fill:2400:0:1/g:ce/aHR0cHM6Ly93d3cuZ2lueC50di91cGxvYWRzMy8xLkNoYWQvcm9ibG94IDIvZmlzY2gvZmlzY2ggcm9ibHhvIHBhdGNoIG5vdGVzLmpwZw">
                     <div class="info">
                         <h4>Random 500-1000 Level Random Unlock 10 - 45 % ROD</h4>
+                        <span class="stock-count" id="stock-Random 500-1000 Level Random Unlock 10 - 45 % ROD, Chance Many Coin, Many Fish">Đang tải...</span>
                         <span class="price">50,000 VNĐ</span>
                         <button class="buy-btn" onclick="openModal('Random 500-1000 Level Random Unlock 10 - 45 % ROD, Chance Many Coin, Many Fish', 50000)">MUA NGAY</button>
                     </div>
@@ -96,6 +99,7 @@
                     <img src="https://cdn-cf.ginx.tv/imgcdn/UyYTJQfoU-EGPew4_Jy3g9V1xcWwIKmvxF5_oID0vEk/rs:fill:2400:0:1/g:ce/aHR0cHM6Ly93d3cuZ2lueC50di91cGxvYWRzMy8xLkNoYWQvcm9ibG94IDIvZmlzY2gvZmlzY2ggcm9ibHhvIHBhdGNoIG5vdGVzLmpwZw">
                     <div class="info">
                         <h4>Random 1000 Level + Random Unlock 10 - 45 % ROD</h4>
+                        <span class="stock-count" id="stock-Random 1000 Level + Random Unlock 10 - 45 % ROD, Chance Many Coin, Many Fish">Đang tải...</span>
                         <span class="price">80,000 VNĐ</span>
                         <button class="buy-btn" onclick="openModal('Random 1000 Level + Random Unlock 10 - 45 % ROD, Chance Many Coin, Many Fish', 80000)">MUA NGAY</button>
                     </div>
@@ -106,6 +110,7 @@
                     <img src="https://cdn-cf.ginx.tv/imgcdn/UyYTJQfoU-EGPew4_Jy3g9V1xcWwIKmvxF5_oID0vEk/rs:fill:2400:0:1/g:ce/aHR0cHM6Ly93d3cuZ2lueC50di91cGxvYWRzMy8xLkNoYWQvcm9ibG94IDIvZmlzY2gvZmlzY2ggcm9ibHhvIHBhdGNoIG5vdGVzLmpwZw">
                     <div class="info">
                         <h4>Fisch Level Max Random Unlock 35 - 55 % ROD</h4>
+                        <span class="stock-count" id="stock-Fisch Level Max Random Unlock 35 - 55 % ROD, Chance Many Coin, Many Fish">Đang tải...</span>
                         <span class="price">150,000 VNĐ</span>
                         <button class="buy-btn" onclick="openModal('Fisch Level Max Random Unlock 35 - 55 % ROD, Chance Many Coin, Many Fish', 150000)">MUA NGAY</button>
                     </div>
@@ -127,11 +132,7 @@
                 <label>Giá tiền:</label>
                 <input type="text" id="modalPPrice" class="custom-input" readonly style="color:#2ecc71; font-weight:bold;">
             </div>
-            <div class="input-group">
-                <label>Ghi chú:</label>
-                <input type="text" id="modalNote" class="custom-input" placeholder="Nhập ghi chú...">
-            </div>
-            <button class="confirm-btn" onclick="handlePurchase()">THANH TOÁN</button>
+            <button class="confirm-btn" onclick="handlePurchase()">XÁC NHẬN MUA NGAY</button>
         </div>
     </div>
     
@@ -145,13 +146,42 @@
         const db = firebase.firestore();
         let currentItem = null;
 
+        // CẤU HÌNH COLLECTION KHO CHO FILE NÀY
+        const COLLECTION_NAME = "stock_fisch";
+
         function showAlert(t, m, e=false) { document.getElementById('alertTitle').innerText=t; document.getElementById('alertMessage').innerHTML=m; document.getElementById('customAlert').style.display='flex'; }
         function openModal(n, p) { if(!localStorage.getItem('currentUser')) return showAlert("Lỗi","Đăng nhập đi!"); currentItem={name:n, price:p}; document.getElementById('modalPName').value=n; document.getElementById('modalPPrice').value=p.toLocaleString()+" VNĐ"; document.getElementById('confirmPurchaseModal').style.display='flex'; }
         function closeModal() { document.getElementById('confirmPurchaseModal').style.display='none'; }
 
+        // HÀM CẬP NHẬT TỒN KHO REALTIME
+        function updateStockCounts() {
+            db.collection(COLLECTION_NAME).where('status', '==', 'chua').onSnapshot(snapshot => {
+                const counts = {};
+                snapshot.forEach(doc => {
+                    const service = doc.data().service;
+                    counts[service] = (counts[service] || 0) + 1;
+                });
+
+                // Cập nhật lên UI (tìm theo ID)
+                const items = document.querySelectorAll('.stock-count');
+                items.forEach(el => {
+                    // Lấy tên sản phẩm từ ID (bỏ tiền tố 'stock-')
+                    const serviceName = el.id.replace('stock-', '');
+                    const count = counts[serviceName] || 0;
+                    
+                    if (count > 0) {
+                        el.textContent = `Còn lại: ${count} acc`;
+                        el.style.color = '#27ae60'; // Xanh
+                    } else {
+                        el.textContent = `Hết hàng`;
+                        el.style.color = '#e74c3c'; // Đỏ
+                    }
+                });
+            });
+        }
+
         async function handlePurchase() {
             const user = localStorage.getItem('currentUser');
-            const note = document.getElementById('modalNote').value;
             if(!user) return;
             try {
                 await db.runTransaction(async (t) => {
@@ -159,19 +189,21 @@
                     const uDoc = await t.get(userRef);
                     if(uDoc.data().balance < currentItem.price) throw "Số dư không đủ!";
                     
-                    // LẤY KHO FISCH
-                    const q = await db.collection("stock_fisch").where("service", "==", currentItem.name).limit(1).get();
+                    // LẤY ACC TỪ KHO
+                    const q = await db.collection(COLLECTION_NAME).where("service", "==", currentItem.name).where("status", "==", "chua").limit(1).get();
                     if(q.empty) throw "Hết hàng!";
                     
                     const acc = q.docs[0].data();
+                    const accRef = q.docs[0].ref;
+
+                    // TRỪ TIỀN & CẬP NHẬT TRẠNG THÁI ACC
                     t.update(userRef, { balance: uDoc.data().balance - currentItem.price });
-                    t.delete(db.collection("stock_fisch").doc(q.docs[0].id));
+                    t.update(accRef, { status: 'da', soldTo: user, soldAt: firebase.firestore.FieldValue.serverTimestamp() });
                     
-                    // LƯU LỊCH SỬ FISCH
-                    t.set(db.collection("orders_fisch").doc(), {
-                        customer: user, service: currentItem.name, price: currentItem.price,
+                    // LƯU LỊCH SỬ MUA HÀNG
+                    t.set(db.collection("user_purchases").doc(), {
+                        username: user, item_name: currentItem.name, price: currentItem.price,
                         acc_username: acc.username, acc_password: acc.password,
-                        note: note,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     window.boughtAcc = acc;
@@ -193,7 +225,12 @@
                 if(d.exists) document.getElementById('auth-status-area').innerHTML = `<div class="dropdown" onclick="this.querySelector('.dropdown-content').classList.toggle('show')"><button style="background:none;border:none;font-weight:bold;cursor:pointer">👤 ${u} ▼</button><div class="dropdown-content"><div class="header">Ví: ${d.data().balance.toLocaleString()}đ</div><a href="taikhoan.html">Quản lý</a><a href="#" onclick="localStorage.removeItem('currentUser');location.reload()">Đăng xuất</a></div></div>`;
             } else document.getElementById('auth-status-area').innerHTML = `<button onclick="location.href='index.html'">Đăng nhập</button>`;
         }
-        document.addEventListener('DOMContentLoaded', checkAuth);
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            updateStockCounts(); // Kích hoạt hàm đếm tồn kho
+        });
+        
         window.onclick = e => { if(!e.target.closest('.dropdown')) document.querySelectorAll('.dropdown-content').forEach(d=>d.classList.remove('show')); if(e.target==document.getElementById('confirmPurchaseModal')) closeModal(); }
     </script>
 </body>

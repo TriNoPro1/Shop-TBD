@@ -174,17 +174,11 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // DANH SÁCH TẤT CẢ CÁC KHO CẦN QUÉT
-        const ALL_ORDER_COLLECTIONS = [
-            "orders_theforge", 
-            "orders_99nights", 
-            "orders_adoptme", 
-            "orders_bloxfruits",
-            "orders_fisch", 
-            "orders_fischit", 
-            "orders_plantvsbrainrot", 
-            "orders_stealabrainrot",
-            "orders_mxh" // Thêm cả MXH vào đây
+        // DANH SÁCH CÁC BẢNG LỊCH SỬ CŨ (Dùng trường "customer")
+        const OLD_ORDER_COLLECTIONS = [
+            "orders_theforge", "orders_99nights", "orders_adoptme", "orders_bloxfruits",
+            "orders_fisch", "orders_fischit", "orders_plantvsbrainrot", 
+            "orders_stealabrainrot", "orders_mxh"
         ];
 
         // 1. TẢI THÔNG TIN USER
@@ -210,11 +204,10 @@
                 document.getElementById('info-robux').innerText = (userData.robuxBalance || 0).toLocaleString();
             }
 
-            // Tự động load lịch sử luôn
             loadAllHistory();
         }
 
-        // 2. HÀM QUÉT TOÀN BỘ LỊCH SỬ TỪ TẤT CẢ GAME
+        // 2. HÀM GỘP LỊCH SỬ (QUAN TRỌNG: Quét cả 2 nguồn dữ liệu)
         async function loadAllHistory() {
             const user = localStorage.getItem('currentUser');
             const tbody = document.getElementById('purchaseHistoryBody');
@@ -222,29 +215,43 @@
 
             let allOrders = [];
 
-            // Tạo danh sách các Promise để chạy song song (cho nhanh)
-            const promises = ALL_ORDER_COLLECTIONS.map(collectionName => 
+            // A. Quét từ bảng user_purchases (Dữ liệu mới: Acc tự động, MXH tự động...)
+            // Bảng này dùng trường 'username' thay vì 'customer'
+            const newHistoryPromise = db.collection("user_purchases")
+                .where("username", "==", user)
+                .get()
+                .then(snapshot => {
+                    snapshot.forEach(doc => {
+                        let data = doc.data();
+                        data.sortTime = data.timestamp ? data.timestamp.seconds : 0;
+                        data.isNewFormat = true; // Đánh dấu là format mới
+                        allOrders.push(data);
+                    });
+                });
+
+            // B. Quét từ các bảng orders_ cũ (Acc thủ công, Dịch vụ cũ...)
+            const oldHistoryPromises = OLD_ORDER_COLLECTIONS.map(collectionName => 
                 db.collection(collectionName)
                     .where("customer", "==", user)
                     .get()
                     .then(snapshot => {
                         snapshot.forEach(doc => {
                             let data = doc.data();
-                            // Thêm trường sortTime để sắp xếp sau này
                             data.sortTime = data.timestamp ? data.timestamp.seconds : 0;
+                            data.isNewFormat = false; // Đánh dấu là format cũ
                             allOrders.push(data);
                         });
                     })
-                    .catch(err => console.log(`Không tìm thấy đơn ở ${collectionName}`))
+                    .catch(err => console.log(`Skipping ${collectionName}`))
             );
 
-            // Đợi tất cả quét xong
-            await Promise.all(promises);
+            // Đợi tất cả xong
+            await Promise.all([newHistoryPromise, ...oldHistoryPromises]);
 
             // Sắp xếp: Mới nhất lên đầu
             allOrders.sort((a, b) => b.sortTime - a.sortTime);
 
-            // Hiển thị ra bảng
+            // Hiển thị
             tbody.innerHTML = '';
             if (allOrders.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">Bạn chưa mua acc nào.</td></tr>';
@@ -254,26 +261,42 @@
             allOrders.forEach(order => {
                 const date = order.timestamp ? new Date(order.timestamp.toDate()).toLocaleString('vi-VN') : 'N/A';
                 
-                // Xử lý hiển thị Acc/Pass
+                let serviceName = '';
                 let accInfoHtml = '';
-                if (order.acc_username) {
-                    // Dạng Acc Game
+                let price = 0;
+
+                if (order.isNewFormat) {
+                    // Dữ liệu từ user_purchases (Acc tự động)
+                    serviceName = order.item_name || 'Acc Game/MXH';
+                    price = order.price || 0;
                     accInfoHtml = `
                         <b>TK:</b> ${order.acc_username} <button class="copy-btn" onclick="copyText('${order.acc_username}')">Copy</button><br>
                         <b>MK:</b> ${order.acc_password} <button class="copy-btn" onclick="copyText('${order.acc_password}')">Copy</button>
                     `;
-                } else if (order.details || order.info) {
-                    // Dạng Acc MXH (Lưu kiểu cũ)
-                    accInfoHtml = order.details || order.info;
                 } else {
-                    accInfoHtml = '<i style="color:#999">Không có dữ liệu acc</i>';
+                    // Dữ liệu từ orders_... (Dịch vụ cũ/Order tay)
+                    serviceName = order.service || 'Dịch vụ';
+                    price = order.price || 0;
+                    
+                    // Logic hiển thị cũ
+                    if (order.acc_username) {
+                        accInfoHtml = `<b>TK:</b> ${order.acc_username}<br><b>MK:</b> ${order.acc_password}`;
+                    } else if (order.details) {
+                        accInfoHtml = order.details;
+                    } else if (order.info) {
+                        accInfoHtml = order.info;
+                    } else if (order.roblox_user) {
+                         accInfoHtml = `User: ${order.roblox_user} | Pass: ${order.roblox_pass}`;
+                    } else {
+                        accInfoHtml = '<i style="color:#999">Đang xử lý / Không có data</i>';
+                    }
                 }
 
                 const row = `
                     <tr>
-                        <td style="color:#007bff; font-weight:bold;">${order.service}</td>
+                        <td style="color:#007bff; font-weight:bold;">${serviceName}</td>
                         <td>${accInfoHtml}</td>
-                        <td style="color:#e74c3c; font-weight:bold;">${(order.price || 0).toLocaleString()}đ</td>
+                        <td style="color:#e74c3c; font-weight:bold;">${price.toLocaleString()}đ</td>
                         <td style="font-size:13px; color:#555;">${date}</td>
                     </tr>
                 `;
