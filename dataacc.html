@@ -40,7 +40,7 @@
         <div class="container" style="display:flex; justify-content:space-between; width:100%">
             <a href="index.html" class="logo-text">Shop TBD (ADMIN)</a>
             <div>
-                <span style="color:white; margin-right:10px;">Xin chào, Tri</span>
+                <span id="adminNameDisplay" style="color:white; margin-right:10px;">Xin chào, Admin</span>
                 <a href="index.html" class="logout-btn">Thoát</a>
             </div>
         </div>
@@ -114,10 +114,15 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // CHECK ADMIN
-        if (localStorage.getItem('currentUser') !== 'Tri') {
-            document.body.innerHTML = "<h1 style='text-align:center; color:red; margin-top:50px;'>NO ACCESS</h1>";
+        // --- BẢO MẬT: CHỈ ADMIN MỚI VÀO ĐƯỢC ---
+        const ALLOWED_ADMINS = ['Tri', 'zyydai'];
+        const currentUser = localStorage.getItem('currentUser');
+
+        if (!ALLOWED_ADMINS.includes(currentUser)) {
+            document.body.innerHTML = "<h1 style='text-align:center; color:red; margin-top:50px;'>BẠN KHÔNG CÓ QUYỀN TRUY CẬP!</h1>";
             setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+        } else {
+            document.getElementById('adminNameDisplay').innerText = "Xin chào, " + currentUser;
         }
 
         // --- CẤU HÌNH DANH SÁCH DỊCH VỤ ---
@@ -201,15 +206,9 @@
                 services: [
                     "Ghostfinn Rod + coin random...",
                     "Astral Rod + item random,coin....",
-                    "Angler rod + item random,coin....",
-                    "40% Ghostfinn Rod + 100% rod mythic + rod random...",
-                    "Ares Rod,Astral Rod,Random Item,...",
                     "Acc Pack 10M Fish Mythic Value",
-                    "Acc Pack 10M Fish Secret Value",
-                    "Acc Pack 20M Fish Secret Value",
-                    "Acc Pack 50m Fish Mythic Value",
-                    "Acc Pack 50M Fish Secret Value",
-                    "Acc Pack 100m Fish Mythic Value"
+                    "40% Ghostfinn Rod + 100% rod mythic + rod random...",
+                    "Ares Rod,Astral Rod,Random Item,..."
                 ]
             },
             "plantvsbrainrot": {
@@ -292,20 +291,18 @@
                 alert(`Đã thêm acc vào kho [${currentCollection}]!`);
                 document.getElementById('accUser').value = '';
                 document.getElementById('accPass').value = '';
-                // Không cần gọi loadStock() vì onSnapshot tự cập nhật
             } catch (error) {
                 alert("Lỗi: " + error.message);
             }
         }
 
         // HÀM TẢI KHO (REALTIME)
-        let unsubscribe = null; // Để hủy lắng nghe cũ
+        let unsubscribe = null; 
 
         function loadStock() {
             const filterService = document.getElementById('serviceSelect').value;
             const tbody = document.getElementById('stockTableBody');
 
-            // Hủy listener cũ nếu có
             if (unsubscribe) unsubscribe();
 
             tbody.innerHTML = '<tr><td colspan="4">Đang tải...</td></tr>';
@@ -341,7 +338,6 @@
             }
         }
 
-        // Khởi chạy lần đầu
         document.addEventListener('DOMContentLoaded', () => {
             updateServiceList();
         });
