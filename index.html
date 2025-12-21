@@ -680,9 +680,13 @@
             return /^([0-9a-zA-Z])\1*$/.test(str);
         }
 
+        // --- DANH SÁCH ADMIN ---
+        const ADMIN_LIST = ['Tri', 'zyydai']; // Thêm zyydai vào đây
+
         async function addAdminBalance() {
             const currentUser = localStorage.getItem('currentUser');
-            if (currentUser !== 'Tri') {
+            // SỬA: Kiểm tra nếu user nằm trong danh sách Admin
+            if (!ADMIN_LIST.includes(currentUser)) {
                 showCustomAlert("Lỗi", "Bạn không có quyền truy cập Admin!", true);
                 return;
             }
@@ -693,7 +697,7 @@
             user.balance += amount;
             await saveUserData(currentUser, user);
 
-            showCustomAlert("ADMIN", `Cộng thành công ${amount.toLocaleString('vi-VN')} VND vào tài khoản Tri!`);
+            showCustomAlert("ADMIN", `Cộng thành công ${amount.toLocaleString('vi-VN')} VND vào tài khoản ${currentUser}!`);
             checkLoginStatus(); 
         }
         
@@ -835,7 +839,8 @@
             let adminButtonHtml = '';
             const avatarUrl = "https://tse2.mm.bing.net/th/id/OIP.vg41yG82qw84ziz5nS-CWQHaHa?pid=Api&P=0&h=180";
 
-            if (user && user.username === 'Tri') {
+            // SỬA: Kiểm tra danh sách Admin để hiện nút cộng tiền
+            if (user && ADMIN_LIST.includes(user.username)) {
                  adminButtonHtml = `
                     <button class="admin-btn" onclick="addAdminBalance()">
                         ADMIN: +100K 💰
@@ -913,8 +918,8 @@
                 if (user) {
                     renderAuthStatus(user);
                     
-                    // Nếu là Admin Tri thì hiện nút
-                    if (user.username === 'Tri' && adminBtn) {
+                    // SỬA: Nếu là Admin trong danh sách thì hiện nút vào trang Quản Lý Kho
+                    if (ADMIN_LIST.includes(user.username) && adminBtn) {
                         adminBtn.style.display = 'inline-block';
                     }
                     return;
