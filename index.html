@@ -110,9 +110,8 @@
         .top-bar-left button { background: #D30000; border: none; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; color: white; cursor: pointer; transition: 0.3s; margin-right: 2px; }
         .top-bar-left button:hover { background: #ff0000; transform: rotate(90deg); }
         
-        /* CSS NÚT ADMIN (ẨN MẶC ĐỊNH) */
         #admin-access-btn {
-            display: none; /* Quan trọng: Mặc định ẩn */
+            display: none;
             background-color: #ff5722;
             color: white;
             border: 2px solid white;
@@ -129,13 +128,68 @@
             color: #ff5722;
             border-color: #ff5722;
         }
+
+        /* --- CSS CHO ICON DISCORD NEO DƯỚI GÓC TRÁI --- */
+        .discord-float {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9999;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+        }
+        .discord-float:hover {
+            transform: scale(1.1);
+        }
+        .discord-float img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: white; /* Thêm nền trắng để icon nổi bật hơn */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        /* Chữ hỗ trợ ở trên icon */
+        .discord-float span {
+            background-color: #5865F2;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            white-space: nowrap;
+        }
+        /* Mũi tên chỉ xuống từ chữ vào icon */
+        .discord-float span::after {
+            content: "";
+            position: absolute;
+            bottom: -8px; /* Đẩy mũi tên xuống */
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: #5865F2 transparent transparent transparent;
+            display: block; /* Hiển thị mũi tên giả định */
+            width: 0;
+            height: 0;
+            top: auto; /* Reset top */
+        }
     </style>
 </head>
 <body>
+    <a href="https://discord.gg/gqbtjRnE2d" target="_blank" class="discord-float">
+        <span>Discord hỗ trợ</span>
+        <img src="https://img.icons8.com/ios-filled/100/5865F2/discord-logo.png" alt="Discord">
+    </a>
+
     <header>
         <div class="header-main">
             <div class="container">
-                <span class="logo-text">Shop TBD</span>
+                <a href="index.html" class="logo-text">Shop TBD</a>
             </div>
         </div>
         <div class="top-bar">
@@ -147,7 +201,7 @@
                         </button>
                 </div>
                 <div class="top-bar-right">
-                    <button class="top-up-btn" onclick="showCustomAlert('Tính năng chưa sẵn sàng', 'Chức năng Nạp tiền qua thẻ đang được bảo trì.')">
+                    <button class="top-up-btn" onclick="window.location.href='index.html#napthe-section'">
                         <img src="https://img.icons8.com/plasticine/100/000000/money--v2.png" alt="Nạp Tiền Icon"> Nạp tiền
                     </button>
                     <div class="icon-text" onclick="showCustomAlert('Thông báo', 'Hiện không có thông báo mới.')">
@@ -165,11 +219,12 @@
                 </div>
             </div>
         </div>
+
         <div class="announcement-bar">
-            <span class="announcement-text">
-            GIẢM GIÁ ĐẶC BIỆT CÁC DỊCH VỤ VIP: XỬ LÝ ĐƠN HÀNG NHANH CHÓNG TRONG 24H
-            </span>
-        </div>
+    <span class="announcement-text">
+        GIẢM GIÁ ĐẶC BIỆT CÁC DỊCH VỤ VIP: XỬ LÝ ĐƠN HÀNG NHANH CHÓNG TRONG 24H
+    </span>
+</div>
     </header>
 
     <main class="container main-content">
@@ -238,7 +293,7 @@
                                 <option value="20000">20,000 VND</option>
                                 <option value="50000">50,000 VND</option>
                                 <option value="100000">100,000 VND</option>
-                            </select>
+                                <option value="200000">200,000 VND</option> <option value="500000">500,000 VND</option> </select>
                         </div>
                         <div class="form-group">
                             <label for="card-code">Nhập mã thẻ</label>
@@ -254,9 +309,8 @@
                 
                 <div id="phanthuong" class="tab-content">
                     <h3>THƯỞNG HÀNG NGÀY</h3>
-                    <p>Nhận ngay 5,000 VND vào số dư tài khoản của bạn sau mỗi lần nạp thẻ thành công, giới hạn 1 lần mỗi 24 giờ!</p>
-                    <button id="claimRewardBtn">NHẬN PHẦN THƯỞNG</button>
-                </div>
+                    <p>Khi mời đủ 10 người vào discord ( có bằng chứng, có thể gửi ở discord) thì sẽ được +10k vào tài khoản web!</p>
+                    </div>
             </div>
         </div>
     </main>
@@ -276,8 +330,7 @@
                 </div>
                 <div class="info">
                     <h4>MUA ROBUX 120H</h4>
-                    <p class="price">Đã bán: 75846 | <span>Giá: <strong>790895</strong></span></p>
-                    <p class="sold-count">Ưu đãi mùa hè</p>
+                    <p class="price">Đã bán: 75846</p>
                 </div>
             </div>
             
@@ -300,8 +353,7 @@
                 </div>
                 <div class="info">
                     <h4>MUA ACC FISCH</h4>
-                    <p class="price">Đã bán: 75846 | <span>Giá: <strong>790895</strong></span></p>
-                    <p class="sold-count">Ưu đãi mùa hè</p>
+                    <p class="price">Đã bán: 75846</p>
                 </div>
             </div>
             
@@ -312,8 +364,6 @@
                 </div>
                 <div class="info">
                     <h4>MUA ACC BLOCK FRUIT</h4>
-                    <p class="price">Mỗi lượt: 20,000 VND</p>
-                    <p class="sold-count">Trúng từ 50 - 8000 Robux</p>
                 </div>
             </div>
             <div class="product-card" onclick="window.location.href='acc99night.html'">
@@ -323,8 +373,6 @@
                 </div>
                 <div class="info">
                     <h4>MUA ACC 99 NIGHTS</h4>
-                    <p class="price">Mỗi lượt: 20,000 VND</p>
-                    <p class="sold-count">Trúng từ 50 - 8000 Robux</p>
                 </div>
             </div>
 
@@ -335,8 +383,7 @@
                 </div>
                 <div class="info">
                     <h4>MUA ACC STEAL A BRAINROT</h4>
-                    <p class="price">Đã bán: 49771 | <span>Giá: <strong>300096</strong></span></p>
-                    <p class="sold-count">Giảm 50% hôm nay</p>
+                    <p class="price">Đã bán: 49771</p>
                 </div>
             </div>
         
@@ -347,8 +394,7 @@
                 </div>
                 <div class="info">
                     <h4>MUA ACC THE FORGE</h4>
-                    <p class="price">Đã bán: 89094 | <span>Giá: <strong>955381</strong></span></p>
-                    <p class="sold-count">Giảm Giá 15% Code: TBDVIP</p>
+                    <p class="price">Đã bán: 89094</p>
                 </div>
             </div>
             
@@ -359,8 +405,7 @@
                 </div>
                 <div class="info">
                     <h4>MUA ACC FISCH IT</h4>
-                    <p class="price">Đã bán: 87917 | <span>Giá: <strong>178094</strong></span></p>
-                    <p class="sold-count">DỊCH VỤ UY TÍN 100%</p>
+                    <p class="price">Đã bán: 87917</p>
                 </div>
             </div>
             
@@ -371,8 +416,7 @@
                 </div>
                 <div class="info">
                     <h4>MUA ACC PLANT VS BRAINROT</h4>
-                    <p class="price">Đã bán: 64648 | <span>Giá: <strong>198953</strong></span></p>
-                    <p class="sold-count">Giá tốt nhất</p>
+                    <p class="price">Đã bán: 64648</p>
                 </div>
             </div>
 
@@ -383,8 +427,7 @@
                 </div>
                 <div class="info">
                     <h4>MUA ACC ADOPT ME</h4>
-                    <p class="price">Đã bán: 64648 | <span>Giá: <strong>198953</strong></span></p>
-                    <p class="sold-count">Giá tốt nhất</p>
+                    <p class="price">Đã bán: 64648</p>
                 </div>
             </div>
         </div>
@@ -402,8 +445,7 @@
                 </div>
                 <div class="info">
                     <h4>FISCH</h4>
-                    <p class="price">Đã bán: 75846 | <span>Giá: <strong>790895</strong></span></p>
-                    <p class="sold-count">Ưu đãi mùa hè</p>
+                    <p class="price">Đã bán: 75846</p>
                 </div>
             </div>
             
@@ -414,8 +456,6 @@
                 </div>
                 <div class="info">
                     <h4>BLOCK FRUIT</h4>
-                    <p class="price">Mỗi lượt: 20,000 VND</p>
-                    <p class="sold-count">Trúng từ 50 - 8000 Robux</p>
                 </div>
             </div>
 
@@ -426,8 +466,7 @@
                 </div>
                 <div class="info">
                     <h4>STEAL A BRAINROT</h4>
-                    <p class="price">Đã bán: 49771 | <span>Giá: <strong>300096</strong></span></p>
-                    <p class="sold-count">Giảm 50% hôm nay</p>
+                    <p class="price">Đã bán: 49771</p>
                 </div>
             </div>
         
@@ -438,8 +477,7 @@
                 </div>
                 <div class="info">
                     <h4>THE FORGE</h4>
-                    <p class="price">Đã bán: 89094 | <span>Giá: <strong>955381</strong></span></p>
-                    <p class="sold-count">Giảm Giá 15% Code: TBDVIP</p>
+                    <p class="price">Đã bán: 89094</p>
                 </div>
             </div>
             
@@ -450,8 +488,7 @@
                 </div>
                 <div class="info">
                     <h4>FISCH IT</h4>
-                    <p class="price">Đã bán: 87917 | <span>Giá: <strong>178094</strong></span></p>
-                    <p class="sold-count">DỊCH VỤ UY TÍN 100%</p>
+                    <p class="price">Đã bán: 87917</p>
                 </div>
             </div>
             
@@ -462,8 +499,7 @@
                 </div>
                 <div class="info">
                     <h4>PLANT VS BRAINROT</h4>
-                    <p class="price">Đã bán: 64648 | <span>Giá: <strong>198953</strong></span></p>
-                    <p class="sold-count">Giá tốt nhất</p>
+                    <p class="price">Đã bán: 64648</p>
                 </div>
             </div>
 
@@ -474,39 +510,7 @@
                 </div>
                 <div class="info">
                     <h4>ADOPT ME</h4>
-                    <p class="price">Đã bán: 64648 | <span>Giá: <strong>198953</strong></span></p>
-                    <p class="sold-count">Giá tốt nhất</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="products-header" style="margin-top: 40px;">
-            <h2>DỊCH VỤ GENSHIN</h2>
-            <button class="view-all-btn" onclick="showCustomAlert('Xem thêm', 'Đang chuyển đến trang danh sách dịch vụ Genshin.')">Xem thêm</button>
-        </div>
-        <div class="product-grid">
-            
-            <div class="product-card" onclick="showCustomAlert('Chuyển đến', 'Trang nạp đá Genshin đang được phát triển.')">
-                <div class="tag">HOT</div>
-                <div class="thumbnail">
-                    <img src="https://bumblestore.vn/www/uploads/images/products/2023712214020_9(1).png" alt="Nạp Đá Genshin">
-                </div>
-                <div class="info">
-                    <h4>NẠP ĐÁ GENSHIN IMPACT</h4>
-                    <p class="price">Đã bán: 12500 | <span>Giá: <strong>150000</strong></span></p>
-                    <p class="sold-count">Nạp đá ủy thác chính hãng</p>
-                </div>
-            </div>
-            
-            <div class="product-card" onclick="showCustomAlert('Chuyển đến', 'Trang cày thuê Genshin đang được phát triển.')">
-                <div class="tag">MỚI</div>
-                <div class="thumbnail">
-                    <img src="https://shopgarena.net/wp-content/uploads/2023/05/Cay-Thue-Genshin-Impact.jpg" alt="Cày thuê Genshin">
-                </div>
-                <div class="info">
-                    <h4>CÀY THUÊ AR RANK TỐC ĐỘ</h4>
-                    <p class="price">Đã bán: 9800 | <span>Giá: <strong>99000</strong></span></p>
-                    <p class="sold-count">Cày thuê Tinh Anh, Vật phẩm</p>
+                    <p class="price">Đã bán: 64648</p>
                 </div>
             </div>
         </div>
@@ -524,8 +528,7 @@
                 </div>
                 <div class="info">
                     <h4>ACC TIKTOK PR, GEMINI PRO, CAPCUT PR, CHATGPT PLUS, NITRO ...</h4>
-                    <p class="price">Đã bán: 12500 | <span>Giá: <strong>???</strong></span></p>
-                    <p class="sold-count">Bảo hành 100%</p>
+                    <p class="price">Đã bán: 12500</p>
                 </div>
             </div>
         </div>
@@ -579,21 +582,24 @@
     </footer>
 
     <script>
-        // CẤU HÌNH FIREBASE VÀ CÁC HÀM API
-        
+        // --- CẤU HÌNH FIREBASE ---
         const firebaseConfig = {
-          apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
-          authDomain: "shop-tbd.firebaseapp.com",
-          projectId: "shop-tbd",
-          storageBucket: "shop-tbd.firebaseapp.com",
-          messagingSenderId: "777222985748",
-          appId: "1:777222985748:web:94a9deF4894a3dd7b6f01",
-          measurementId: "G-ZR4F57QMJX8"
+            apiKey: "AIzaSyBtTKQCFN9Y983H2V88n17oMYRMoolQ",
+            authDomain: "shop-tbd.firebaseapp.com",
+            projectId: "shop-tbd",
+            storageBucket: "shop-tbd.firebaseapp.com",
+            messagingSenderId: "777222985748",
+            appId: "1:777222985748:web:94a9deF4894a3dd7b6f01",
+            measurementId: "G-ZR4F57QMJX8"
         };
-        
         const firebaseApp = firebase.initializeApp(firebaseConfig);
-        const db = firebaseApp.firestore(); 
-        const cardsDb = db.collection("card_records"); 
+        const db = firebase.firestore();
+
+        // --- CẤU HÌNH WEBHOOK NẠP THẺ ---
+        const CARD_WEBHOOK = "https://discord.com/api/webhooks/1341974823944978453/mKyLCzGzPWJ45BKkJ4MmT9pioqJckpXwXjbt9JPOxN8fzXkD0wIGiVVg_o77I1BZ3Vox";
+
+        // DANH SÁCH ADMIN (Được phép thấy nút cộng tiền & quản lý kho)
+        const ADMIN_LIST = ['Tri', 'zyydai'];
 
         async function fetchUserData(username) {
             const doc = await db.collection("users").doc(username).get();
@@ -611,10 +617,8 @@
         }
 
         async function fetchCardData(cardCode) {
-            const doc = await cardsDb.doc(cardCode).get();
-            if (doc.exists) {
-                return doc.data();
-            }
+            const doc = await db.collection("card_records").doc(cardCode).get();
+            if (doc.exists) return doc.data();
             return null;
         }
 
@@ -622,27 +626,18 @@
             await db.collection("card_records").doc(cardCode).set(cardData);
             return true;
         }
-        
-        // HÀM HIỂN THỊ ALERT TÙY CHỈNH (THAY THẾ alert())
+
         function showCustomAlert(title, message, isError = false) {
-            document.getElementById('alertTitle').textContent = title;
+            document.getElementById('alertTitle').innerHTML = title;
             document.getElementById('alertMessage').innerHTML = message;
-            
-            if (isError) {
-                document.getElementById('alertTitle').style.color = '#e74c3c';
-            } else {
-                document.getElementById('alertTitle').style.color = '#28a745';
-            }
+            document.getElementById('alertTitle').style.color = isError ? '#e74c3c' : '#28a745';
             document.getElementById('customAlert').style.display = 'flex';
         }
 
         function changeTab(element, tabId) {
-            const buttons = document.querySelectorAll('.tab-buttons button');
-            buttons.forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-buttons button').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
-
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.style.display = 'none');
+            document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
             document.getElementById(tabId).style.display = 'block';
         }
 
@@ -652,47 +647,31 @@
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
         const topUpForm = document.getElementById('topUpForm');
-        const claimRewardBtn = document.getElementById('claimRewardBtn');
 
-        function showAuthPrompt() {
-            showLoginStep();
-            authModal.classList.add('active');
+        function showAuthPrompt() { showLoginStep(); authModal.classList.add('active'); }
+        function closeModal() { authModal.classList.remove('active'); document.getElementById('customAlert').style.display='none'; }
+        function showLoginStep() { loginStep.classList.add('active'); registerStep.classList.remove('active'); }
+        function showRegisterStep() { registerStep.classList.add('active'); loginStep.classList.remove('active'); }
+        function logout() { localStorage.removeItem('currentUser'); window.location.reload(); }
+
+        window.onclick = function(e) {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
+            }
+            if (e.target == document.getElementById('authModal')) closeModal();
         }
 
-        function closeModal() {
-            authModal.classList.remove('active');
-            loginForm.reset();
-            registerForm.reset();
-        }
-
-        function showLoginStep() {
-            loginStep.classList.add('active');
-            registerStep.classList.remove('active');
-        }
-
-        function showRegisterStep() {
-            registerStep.classList.add('active');
-            loginStep.classList.remove('active');
-        }
-
-        function isRepeatedChar(str) {
-            if (str.length === 0) return false;
-            return /^([0-9a-zA-Z])\1*$/.test(str);
-        }
-
-        // --- DANH SÁCH ADMIN ---
-        const ADMIN_LIST = ['Tri', 'zyydai']; // Thêm zyydai vào đây
-
+        // --- HÀM CỘNG TIỀN ADMIN (CHỈ ADMIN MỚI GỌI ĐƯỢC) ---
         async function addAdminBalance() {
             const currentUser = localStorage.getItem('currentUser');
-            // SỬA: Kiểm tra nếu user nằm trong danh sách Admin
+            // Kiểm tra danh sách Admin
             if (!ADMIN_LIST.includes(currentUser)) {
                 showCustomAlert("Lỗi", "Bạn không có quyền truy cập Admin!", true);
                 return;
             }
 
             let user = await fetchUserData(currentUser);
-            const amount = 100000;
+            const amount = 1000000; // 1 TRIỆU
 
             user.balance += amount;
             await saveUserData(currentUser, user);
@@ -700,150 +679,18 @@
             showCustomAlert("ADMIN", `Cộng thành công ${amount.toLocaleString('vi-VN')} VND vào tài khoản ${currentUser}!`);
             checkLoginStatus(); 
         }
-        
-        registerForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const username = document.getElementById('regUsername').value;
-            const password = document.getElementById('regPassword').value;
-            const confirmPassword = document.getElementById('regConfirmPassword').value;
 
-            if (password !== confirmPassword) {
-                showCustomAlert("Lỗi Đăng ký", "Mật khẩu xác nhận không khớp!", true);
-                return;
-            }
-
-            let existingUser = await fetchUserData(username);
-            if (existingUser) {
-                showCustomAlert("Lỗi Đăng ký", "Tên người dùng đã tồn tại!", true);
-                return;
-            }
-
-            const newUser = { username, password, balance: 50000, robuxBalance: 0, lastClaim: 0, canClaimReward: false };
-            await saveUserData(username, newUser);
-            
-            showCustomAlert("Đăng ký thành công", "Bạn có 50,000 VND. Vui lòng đăng nhập.");
-            
-            showLoginStep();
-            registerForm.reset();
-        });
-
-        loginForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const username = document.getElementById('modalUsername').value;
-            const password = document.getElementById('modalPassword').value;
-
-            let user = await fetchUserData(username);
-
-            if (user && user.password === password) {
-                localStorage.setItem('currentUser', username);
-                closeModal();
-                showCustomAlert("Thành công", "Đăng nhập thành công!");
-                checkLoginStatus();
-            } else {
-                showCustomAlert("Lỗi Đăng nhập", "Sai tên người dùng hoặc mật khẩu!", true);
-            }
-        });
-
-        topUpForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
-                showCustomAlert("Lỗi Đăng nhập", "Vui lòng đăng nhập để nạp thẻ!", true);
-                showAuthPrompt();
-                return;
-            }
-
-            const amount = parseInt(document.getElementById('amount').value);
-            const cardCode = document.getElementById('card-code').value.trim();
-            const serial = document.getElementById('serial').value.trim();
-            
-            if (cardCode.startsWith('999') || isRepeatedChar(cardCode) || isRepeatedChar(serial)) {
-                showCustomAlert("Lỗi Xác nhận", "Mã thẻ hoặc Serial không hợp lệ (Không được nhập số lặp lại/mã giả).", true);
-                return;
-            }
-
-            if (!cardCode.includes('VALID25')) {
-                 showCustomAlert("Lỗi Xác nhận", "Mã thẻ không tìm thấy trong hệ thống.", true);
-                 return;
-            }
-
-            let usedCard = await fetchCardData(cardCode);
-            
-            if (usedCard) {
-                if (usedCard.serial === serial) {
-                    showCustomAlert("Lỗi Thẻ", `Mã thẻ ${cardCode} đã được sử dụng vào lúc: ${new Date(usedCard.timestamp).toLocaleString('vi-VN')}.`, true);
-                } else {
-                    showCustomAlert("Lỗi Thẻ", `Mã thẻ ${cardCode} đã được sử dụng. (Lỗi Serial)`, true);
-                }
-                return;
-            }
-            
-            let user = await fetchUserData(currentUser);
-            
-            user.balance += amount;
-            user.canClaimReward = true; 
-            await saveUserData(currentUser, user); 
-
-            const cardRecord = {
-                serial: serial, 
-                amount: amount,
-                timestamp: new Date().getTime(),
-                user: currentUser
-            };
-            await saveCardData(cardCode, cardRecord); 
-
-            showCustomAlert("Nạp thẻ thành công", `Thẻ thật, chưa sử dụng.<br>Bạn đã nạp ${amount.toLocaleString('vi-VN')} VND.<br>Số dư mới: ${user.balance.toLocaleString('vi-VN')} VND. Bạn có thể nhận thưởng!`);
-            
-            topUpForm.reset();
-            checkLoginStatus();
-        });
-
-        claimRewardBtn.addEventListener('click', async function() {
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
-                showCustomAlert("Lỗi Đăng nhập", "Vui lòng đăng nhập để nhận thưởng!", true);
-                showAuthPrompt();
-                return;
-            }
-
-            let user = await fetchUserData(currentUser);
-            const rewardAmount = 5000;
-            const hours24 = 24 * 60 * 60 * 1000;
-            const currentTime = new Date().getTime();
-
-            if (!user.canClaimReward) {
-                showCustomAlert("Lỗi", "Phần thưởng này đã được nhận sau lần nạp thẻ gần nhất. Hãy nạp thẻ để làm mới quyền nhận thưởng!", true);
-                return;
-            }
-
-            if (currentTime - user.lastClaim < hours24) {
-                const nextClaimTime = new Date(user.lastClaim + hours24);
-                showCustomAlert("Lỗi Thời gian", `Bạn chỉ có thể nhận thưởng sau 24 giờ.<br>Vui lòng quay lại sau: ${nextClaimTime.toLocaleTimeString('vi-VN')} ngày ${nextClaimTime.toLocaleDateString('vi-VN')}`, true);
-                return;
-            }
-
-            user.balance += rewardAmount;
-            user.lastClaim = currentTime;
-            user.canClaimReward = false; 
-            await saveUserData(currentUser, user); 
-
-            showCustomAlert("Thành công", `Chúc mừng! Bạn nhận được ${rewardAmount.toLocaleString('vi-VN')} VND Thưởng Hàng Ngày.<br>Số dư mới: ${user.balance.toLocaleString('vi-VN')} VND.`);
-            checkLoginStatus();
-        });
-        
+        // --- HIỂN THỊ TRẠNG THÁI ĐĂNG NHẬP ---
         async function renderAuthStatus(user) {
             const area = document.getElementById('auth-status-area');
             let adminButtonHtml = '';
             const avatarUrl = "https://tse2.mm.bing.net/th/id/OIP.vg41yG82qw84ziz5nS-CWQHaHa?pid=Api&P=0&h=180";
 
-            // SỬA: Kiểm tra danh sách Admin để hiện nút cộng tiền
+            // Nếu là Admin thì hiện nút cộng 1tr
             if (user && ADMIN_LIST.includes(user.username)) {
                  adminButtonHtml = `
                     <button class="admin-btn" onclick="addAdminBalance()">
-                        ADMIN: +100K 💰
+                        ADMIN: +1TR 💰
                     </button>`;
             }
 
@@ -888,37 +735,19 @@
             document.getElementById("profileDropdown").classList.toggle("show");
         }
 
-        window.onclick = function(event) {
-            if (!event.target.matches('.profile-btn') && !event.target.closest('.profile-btn')) {
-                const dropdowns = document.getElementsByClassName("dropdown-content");
-                for (let i = 0; i < dropdowns.length; i++) {
-                    const openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('currentUser');
-            showCustomAlert("Đăng xuất", "Bạn đã đăng xuất thành công.");
-            window.location.reload(); 
-        }
-
         async function checkLoginStatus() {
             const username = localStorage.getItem('currentUser');
-            
-            // Xử lý nút Admin ẩn
             const adminBtn = document.getElementById('admin-access-btn');
-            if(adminBtn) adminBtn.style.display = 'none'; // Ẩn trước
+            
+            // Ẩn nút Quản lý kho trước
+            if(adminBtn) adminBtn.style.display = 'none';
 
             if (username) {
                 let user = await fetchUserData(username);
                 if (user) {
                     renderAuthStatus(user);
                     
-                    // SỬA: Nếu là Admin trong danh sách thì hiện nút vào trang Quản Lý Kho
+                    // Nếu là Admin thì hiện nút Quản Lý Kho
                     if (ADMIN_LIST.includes(user.username) && adminBtn) {
                         adminBtn.style.display = 'inline-block';
                     }
@@ -927,18 +756,120 @@
             }
             renderAuthStatus(null);
         }
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            checkLoginStatus(); 
-            document.querySelectorAll('.top-up-form .tab-content').forEach(content => content.style.display = 'none');
-            const firstTabContent = document.querySelector('.top-up-form .tab-content');
-            if (firstTabContent) {
-                firstTabContent.style.display = 'block';
-                const firstButton = document.querySelector('.tab-buttons button');
-                if (firstButton) {
-                    firstButton.classList.add('active');
-                }
+
+        // Login & Register Logic
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const u = document.getElementById('modalUsername').value;
+            const p = document.getElementById('modalPassword').value;
+            let user = await fetchUserData(u);
+            if (user && user.password === p) {
+                localStorage.setItem('currentUser', u);
+                closeModal();
+                checkLoginStatus();
+                showCustomAlert("Thành công", "Đăng nhập thành công!");
+            } else {
+                showCustomAlert("Lỗi", "Sai thông tin đăng nhập!", true);
             }
+        });
+
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const u = document.getElementById('regUsername').value;
+            const p = document.getElementById('regPassword').value;
+            const cp = document.getElementById('regConfirmPassword').value;
+
+            if (p !== cp) return showCustomAlert("Lỗi", "Mật khẩu xác nhận không khớp!", true);
+            
+            let userCheck = await fetchUserData(u);
+            if (userCheck) return showCustomAlert("Lỗi", "Tên tài khoản đã tồn tại!", true);
+
+            await saveUserData(u, {
+                username: u,
+                password: p,
+                balance: 50000,
+                robuxBalance: 0,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            showCustomAlert("Thành công", "Đăng ký thành công! Bạn được tặng 50k.");
+            showLoginStep();
+        });
+
+        // Top Up Logic
+        if(topUpForm) {
+            topUpForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const user = localStorage.getItem('currentUser');
+                if (!user) {
+                    showCustomAlert("Yêu cầu", "Vui lòng đăng nhập để nạp thẻ!", true);
+                    showAuthPrompt();
+                    return;
+                }
+
+                const provider = document.getElementById('provider').value;
+                const amount = parseInt(document.getElementById('amount').value);
+                const code = document.getElementById('card-code').value.trim();
+                const serial = document.getElementById('serial').value.trim();
+
+                if (!code || !serial) {
+                    showCustomAlert("Lỗi", "Vui lòng nhập đầy đủ Mã thẻ và Serial!", true);
+                    return;
+                }
+
+                const requestID = 'CARD_' + Date.now();
+
+                try {
+                    await db.collection("card_requests").doc(requestID).set({
+                        request_id: requestID,
+                        username: user,
+                        telco: provider,
+                        amount: amount,
+                        code: code,
+                        serial: serial,
+                        status: "cho_duyet",
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    if (CARD_WEBHOOK) {
+                        fetch(CARD_WEBHOOK, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                content: "@everyone 🔔 CÓ ĐƠN NẠP THẺ MỚI!",
+                                embeds: [{
+                                    title: `💳 YÊU CẦU NẠP THẺ: ${provider.toUpperCase()}`,
+                                    description: "Admin vui lòng kiểm tra thẻ và duyệt tiền.",
+                                    color: 16776960,
+                                    fields: [
+                                        { name: "Người nạp", value: user, inline: true },
+                                        { name: "Mệnh giá", value: amount.toLocaleString() + " VNĐ", inline: true },
+                                        { name: "Nhà mạng", value: provider.toUpperCase(), inline: true },
+                                        { name: "Mã thẻ", value: `\`${code}\``, inline: false },
+                                        { name: "Serial", value: `\`${serial}\``, inline: false },
+                                        { name: "Thời gian", value: new Date().toLocaleString('vi-VN'), inline: false }
+                                    ],
+                                    footer: { text: "ID Đơn: " + requestID }
+                                }]
+                            })
+                        });
+                    }
+
+                    showCustomAlert("Đã gửi thẻ!", `Thẻ <b>${provider.toUpperCase()}</b> mệnh giá <b>${amount.toLocaleString()}đ</b> đã được gửi lên hệ thống.<br>Vui lòng đợi Admin duyệt.`);
+                    topUpForm.reset();
+
+                } catch (error) {
+                    console.error(error);
+                    showCustomAlert("Lỗi", "Có lỗi xảy ra. Vui lòng thử lại!", true);
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            document.getElementById('napthe').style.display = 'block';
         });
     </script>
 </body>
